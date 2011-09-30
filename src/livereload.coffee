@@ -18,18 +18,20 @@ exports.LiveReload = class LiveReload
       return
 
     # i can haz options?
-    @options = Options.extract(@window.document)
+    unless @options = Options.extract(@window.document)
+      console.error("LiveReload disabled because it could not find its own <SCRIPT> tag")
+      return
 
     # i can haz connection?
     @connector = new Connector @options, @WebSocket, Timer,
-      connecting: ->
+      connecting: =>
 
-      socketConnected: ->
+      socketConnected: =>
 
-      connected: (protocol) ->
+      connected: (protocol) =>
         @log "LiveReload is connected to #{@options.host}:#{@options.port} (protocol v#{protocol})."
 
-      error: (e) ->
+      error: (e) =>
         if e instanceof ProtocolError
           console.log "#{e.message}."
         else
@@ -50,8 +52,8 @@ exports.LiveReload = class LiveReload
           else
             @log "LiveReload disconnected from #{@options.host}:#{@options.port} (#{reason}), reconnecting in #{nextDelay} sec."
 
-      message: (message) ->
+      message: (message) =>
         @log "LiveReload received message #{message.command}."
 
   log: (message) ->
-    @console.log "LiveReload: #{message}"
+    @console.log "#{message}"

@@ -1,1 +1,1 @@
-window.LiveReload = new (require('livereload').LiveReload)()
+window.LiveReload = new (require('livereload').LiveReload)(window)

@@ -22,7 +22,7 @@ exports.Options = class Options
 
 Options.extract = (document) ->
   for element in document.getElementsByTagName('script')
-    if (src = element.src) && (m = src.match ///^ https?:// ([^/:]+) : (\d+) / livereload\.js (?: \? (.*) )? $///)
+    if (src = element.src) && (m = src.match ///^ https?:// ([^/:]+) : (\d+) / z?livereload\.js (?: \? (.*) )? $///)
       options = new Options()
       options.host = m[1]
       options.port = parseInt(m[2], 10)

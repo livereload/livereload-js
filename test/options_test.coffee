@@ -18,6 +18,22 @@ exports['should extract host and port from a SCRIPT tag'] = (beforeExit, assert)
   beforeExit -> assert.ok _loaded
 
 
+exports['should recognize zlivereload.js as a valid SCRIPT tag for dev testing purposes'] = (beforeExit, assert) ->
+  _loaded = no
+  jsdom.env """
+    <script src="http://somewhere.com:9876/zlivereload.js"></script>
+  """, [], (errors, window) ->
+    assert.isNull errors
+    _loaded = yes
+
+    options = Options.extract(window.document)
+    assert.isNotNull options
+    assert.equal 'somewhere.com', options.host
+    assert.equal 9876, options.port
+
+  beforeExit -> assert.ok _loaded
+
+
 exports['should pick the correct SCRIPT tag'] = (beforeExit, assert) ->
   _loaded = no
   jsdom.env """
