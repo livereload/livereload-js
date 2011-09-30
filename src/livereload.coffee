@@ -1,6 +1,7 @@
 { Connector } = require 'connector'
-{ Timer } = require 'timer'
-{ Options } = require 'options'
+{ Timer }     = require 'timer'
+{ Options }   = require 'options'
+{ Reloader }  = require 'reloader'
 
 exports.LiveReload = class LiveReload
 
@@ -21,6 +22,9 @@ exports.LiveReload = class LiveReload
     unless @options = Options.extract(@window.document)
       console.error("LiveReload disabled because it could not find its own <SCRIPT> tag")
       return
+
+    # i can haz reloader?
+    @reloader = new Reloader(@window)
 
     # i can haz connection?
     @connector = new Connector @options, @WebSocket, Timer,
@@ -53,7 +57,16 @@ exports.LiveReload = class LiveReload
             @log "LiveReload disconnected from #{@options.host}:#{@options.port} (#{reason}), reconnecting in #{nextDelay} sec."
 
       message: (message) =>
-        @log "LiveReload received message #{message.command}."
+        switch message.command
+          when 'reload' then @performReload(message)
+          when 'alert'  then @performAlert(message)
 
   log: (message) ->
     @console.log "#{message}"
+
+  performReload: (message) ->
+    @log "LiveReload received reload request for #{message.path}."
+    @reloader.reload(message.path)
+
+  performAlert: (message) ->
+    alert message.message
