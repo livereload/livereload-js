@@ -6,6 +6,8 @@ This repository contains the JavaScript file served to the browsers by various L
 * [LiveReload 2.x GUI for Mac](http://livereload.com/)
 * [guard-livereload](https://github.com/guard/guard-livereload)
 
+[See this gist](https://gist.github.com/1059570) to download the latest version of livereload.js, built from this repository.
+
 
 Status
 ------
