@@ -25,7 +25,8 @@ Previously, the described logic has been part of LiveReload browser extensions. 
 * is standalone, [following the new approach to browser extensions](http://help.livereload.com/discussions/suggestions/12),
 * is covered with tests,
 * is modular and maintainable,
-* implements a [new future-proof protocol](http://help.livereload.com/kb/ecosystem/livereload-protocol).
+* implements a [new future-proof protocol](http://help.livereload.com/kb/ecosystem/livereload-protocol),
+* also supports the legacy protocol for easy migration.
 
 Currently, the code is missing the 'live refreshing' part — it reloads the whole page on any change. Aside from that, it is fully working.
 
