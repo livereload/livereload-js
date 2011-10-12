@@ -1,12 +1,27 @@
 LiveReload.js
 =============
 
-UNFINISHED WORK IN PROGRESS.
-
 This repository contains the JavaScript file served to the browsers by various LiveReload servers:
 
 * [LiveReload 2.x GUI for Mac](http://livereload.com/)
 * [guard-livereload](https://github.com/guard/guard-livereload)
+
+
+Status
+------
+
+Done:
+
+* live CSS reloading
+* full page reloading
+* protocol, WebSocket communication
+
+To Do:
+
+* live image reloading
+* CSS @import support
+* live JS reloading
+* live in-browser LESS.js reloading
 
 
 What is LiveReload?
@@ -27,8 +42,6 @@ Previously, the described logic has been part of LiveReload browser extensions. 
 * is modular and maintainable,
 * implements a [new future-proof protocol](http://help.livereload.com/kb/ecosystem/livereload-protocol),
 * also supports the legacy protocol for easy migration.
-
-Currently, the code is missing the 'live refreshing' part — it reloads the whole page on any change. Aside from that, it is fully working.
 
 Both old and new protocols are supported, so this file can readily work with existing LiveReload servers.
 

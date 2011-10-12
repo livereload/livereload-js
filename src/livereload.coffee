@@ -24,7 +24,7 @@ exports.LiveReload = class LiveReload
       return
 
     # i can haz reloader?
-    @reloader = new Reloader(@window)
+    @reloader = new Reloader(@window, @console, Timer)
 
     # i can haz connection?
     @connector = new Connector @options, @WebSocket, Timer,
@@ -66,7 +66,7 @@ exports.LiveReload = class LiveReload
 
   performReload: (message) ->
     @log "LiveReload received reload request for #{message.path}."
-    @reloader.reload(message.path)
+    @reloader.reload(message.path, message.liveCSS ? yes)
 
   performAlert: (message) ->
     alert message.message
