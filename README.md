@@ -38,3 +38,15 @@ CommonJS modules
 New code is split into CommonJS-style modules, stitched together using a simple Rakefile.
 
 I've tried to use Stitch.js, but it did not want to autorun startup code from startup.coffee module. The custom-made regexp-ridden approach works so much better (and produces much clearer code).
+
+
+Running tests
+-------------
+
+Use node.js 0.4.x (if you have 0.5.x installed, use nvm) and run:
+
+    expresso -I lib
+
+Get code coverage report (current coverage is about 70%):
+
+    expresso -c -I lib
