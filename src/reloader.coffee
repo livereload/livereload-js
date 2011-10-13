@@ -48,7 +48,6 @@ numberOfMatchingSegments = (path1, path2) ->
   while eqCount < len && comps1[eqCount] == comps2[eqCount]
     ++eqCount
 
-  console.log "numberOfMatchingSegments('#{path1}', '#{path2}') == #{eqCount}"
   return eqCount
 
 exports.Reloader = class Reloader
@@ -145,9 +144,6 @@ exports.Reloader = class Reloader
 
     # used to detect if reattachImportedRule has been called again on the same rule
     rule.__LiveReload_newHref = href
-
-    console.log ["rule is ", rule]
-    console.log ["parent is ", parent]
 
     # WORKAROUND FOR WEBKIT BUG: WebKit resets all styles if we add @import'ed
     # stylesheet that hasn't been cached yet. Workaround is to pre-cache the
