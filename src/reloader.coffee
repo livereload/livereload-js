@@ -58,8 +58,8 @@ exports.Reloader = class Reloader
     @stylesheetGracePeriod = 200
 
 
-  reload: (path, liveCSS) ->
-    if liveCSS
+  reload: (path, options) ->
+    if options.liveCSS
       if path.match(/\.css$/i)
         return if @reloadStylesheet(path)
     @reloadPage()
