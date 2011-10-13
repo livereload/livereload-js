@@ -6,7 +6,9 @@ This repository contains the JavaScript file served to the browsers by various L
 * [LiveReload 2.x GUI for Mac](http://livereload.com/)
 * [guard-livereload](https://github.com/guard/guard-livereload)
 
-[See this gist](https://gist.github.com/1059570) to download the latest version of livereload.js, built from this repository.
+See [dist/livereload.js](https://github.com/livereload/livereload-js/raw/master/dist/livereload.js) for the latest ready-to-use, reasonably stable version built using the sources in this repository.
+
+It's OK to hot-link to dist/livereload.js from this repository, however it's probably a bad idea because you would loose the ability to use LiveReload offline. We recommend LiveReload server vendors to distribute livereload.js as part of their apps.
 
 
 Status
