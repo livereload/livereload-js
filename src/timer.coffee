@@ -14,3 +14,6 @@ exports.Timer = class Timer
     if @running
       clearTimeout @id
       @running = no; @id = null
+
+Timer.start = (timeout, func) ->
+  setTimeout func, timeout

@@ -56,6 +56,7 @@ exports.Reloader = class Reloader
   constructor: (@window, @console, @Timer) ->
     @document = @window.document
     @stylesheetGracePeriod = 200
+    @importCacheWaitPeriod = 200
 
 
   reload: (path, options) ->
@@ -71,17 +72,48 @@ exports.Reloader = class Reloader
 
   reloadStylesheet: (path) ->
     # has to be a real array, because DOMNodeList will be modified
-    links = (link for link in @document.getElementsByTagName('link') when link.rel is 'stylesheet')
-    console.log "Found #{links.length} stylesheets"
-    match = pickBestMatch(path, links, (l) -> pathFromUrl(l.href))
+    links = (link for link in @document.getElementsByTagName('link') when link.rel is 'stylesheet' and not link.__LiveReload_pendingRemoval)
+
+    # find all imported stylesheets
+    imported = []
+    for link in links
+      @collectImportedStylesheets link, link.sheet, imported
+
+    @console.log "LiveReload found #{links.length} LINKed stylesheets, #{imported.length} @imported stylesheets"
+    match = pickBestMatch(path, links.concat(imported), (l) -> pathFromUrl(l.href))
+
     if match
-      @console.log "LiveReload is reloading stylesheet: #{match.object.href}"
-      @reattachStylesheetLink(match.object)
+      if match.object.rule
+        @console.log "LiveReload is reloading imported stylesheet: #{match.object.href}"
+        @reattachImportedRule(match.object)
+      else
+        @console.log "LiveReload is reloading stylesheet: #{match.object.href}"
+        @reattachStylesheetLink(match.object)
     else
       @console.log "LiveReload will reload all stylesheets because path '#{path}' did not match any specific one"
       for link in links
         @reattachStylesheetLink(link)
     return true
+
+
+  collectImportedStylesheets: (link, styleSheet, result) ->
+    # in WebKit, styleSheet.cssRules is null for inaccessible stylesheets;
+    # Firefox/Opera may throw exceptions
+    try
+      rules = styleSheet?.cssRules
+    catch e
+      #
+    if rules && rules.length
+      for rule, index in rules
+        switch rule.type
+          when CSSRule.CHARSET_RULE
+            continue # do nothing
+          when CSSRule.IMPORT_RULE
+            result.push { link, rule, index, href: rule.href }
+            @collectImportedStylesheets link, rule.styleSheet, result
+          else
+            break  # import rules can only be preceded by charset rules
+    return
 
 
   reattachStylesheetLink: (link) ->
@@ -103,6 +135,51 @@ exports.Reloader = class Reloader
     timer = new @Timer ->
       link.parentNode.removeChild(link) if link.parentNode
     timer.start(@stylesheetGracePeriod)
+
+
+  reattachImportedRule: ({ rule, index, link }) ->
+    parent  = rule.parentStyleSheet
+    href    = @generateCacheBustUrl(rule.href)
+    media   = if rule.media.length then [].join.call(rule.media, ', ') else ''
+    newRule = """@import url("#{href}") #{media};"""
+
+    # used to detect if reattachImportedRule has been called again on the same rule
+    rule.__LiveReload_newHref = href
+
+    console.log ["rule is ", rule]
+    console.log ["parent is ", parent]
+
+    # WORKAROUND FOR WEBKIT BUG: WebKit resets all styles if we add @import'ed
+    # stylesheet that hasn't been cached yet. Workaround is to pre-cache the
+    # stylesheet by temporarily adding it as a LINK tag.
+    tempLink = @document.createElement("link")
+    tempLink.rel = 'stylesheet'
+    tempLink.href = href
+    tempLink.__LiveReload_pendingRemoval = yes  # exclude from path matching
+    if link.parentNode
+      link.parentNode.insertBefore tempLink, link
+
+    # wait for it to load
+    @Timer.start @importCacheWaitPeriod, =>
+      tempLink.parentNode.removeChild(tempLink) if tempLink.parentNode
+
+      # if another reattachImportedRule call is in progress, abandon this one
+      return if rule.__LiveReload_newHref isnt href
+
+      parent.insertRule newRule, index
+      parent.deleteRule index+1
+
+      # save the new rule, so that we can detect another reattachImportedRule call
+      rule = parent.cssRules[index]
+      rule.__LiveReload_newHref = href
+
+      # repeat again for good measure
+      @Timer.start @importCacheWaitPeriod, =>
+        # if another reattachImportedRule call is in progress, abandon this one
+        return if rule.__LiveReload_newHref isnt href
+
+        parent.insertRule newRule, index
+        parent.deleteRule index+1
 
 
   generateUniqueString: ->

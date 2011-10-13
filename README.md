@@ -17,11 +17,11 @@ Done:
 * live CSS reloading
 * full page reloading
 * protocol, WebSocket communication
+* CSS @import support
 
 To Do:
 
 * live image reloading
-* CSS @import support
 * live JS reloading
 * live in-browser LESS.js reloading
 

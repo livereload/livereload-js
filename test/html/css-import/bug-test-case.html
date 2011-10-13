@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LiveReload Test</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <h1>I'm Header</h1>
+    <h2>I'm too</h2>
+
+    <script>
+        window.onload = function() {
+            // change number here and watch the styles disappear the first time you do this
+            document.styleSheets[0].insertRule("@import url(imported.css?livereload=287988);", 0);
+        };
+    </script>
+</body>
+</html>

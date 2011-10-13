@@ -1,0 +1,11 @@
+@import url('imported.css');
+
+
+body {
+    background: green;
+    background: #ccc;
+}
+
+h2 {
+    background: yellow;
+}
