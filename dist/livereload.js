@@ -385,6 +385,10 @@ var __protocol = {}, __connector = {}, __timer = {}, __options = {}, __reloader 
             return;
           }
         }
+        if (path.match(/\.less$/i) && this.window.less && this.window.less.refresh) {
+          this.window.less.refresh(true);
+          return;
+        }
       }
       if (options.liveImg) {
         if (path.match(/\.(jpe?g|png|gif)$/i)) {
