@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LiveReload Test</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <h1>Images Test</h1>
+
+    <div id="container">
+        <img src="pic.jpg" width="100" height="100" alt="">
+        <div id="img5" style="background: url(pic.jpg)"></div>
+        <div id="img6" style="-webkit-border-image: url(pic.jpg) 0; -moz-border-image: url(pic.jpg) 0; border-image: url(pic.jpg) 0;"></div>
+    </div>
+    <div id="container">
+        <div id="img1"></div>
+        <div id="img2"></div>
+    </div>
+    <div id="container">
+        <div id="img3"></div>
+        <div id="img4"></div>
+    </div>
+
+    <script src="../../../dist/livereload.js" async defer></script>
+    <script src="http://localhost:35729/zlivereload.js" async defer></script>
+</body>
+</html>

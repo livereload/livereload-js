@@ -1,0 +1,14 @@
+h1 {
+    color: blue;
+    color: green;
+}
+
+#img3 {
+    background: url(pic.jpg);
+}
+
+#img4 {
+    -webkit-border-image: url(pic.jpg) 0;
+    -moz-border-image: url(pic.jpg) 0;
+    border-image: url(pic.jpg) 0;
+}

@@ -1,0 +1,26 @@
+@import url('imported.css');
+
+#container {
+    background: #ccc;
+    width: 350px;
+    padding: 10px 0px 10px 10px;
+    overflow: hidden;
+}
+
+#container img, #container div {
+    display: block;
+    width: 100px;
+    height: 100px;
+    float: left;
+    margin-right: 10px;
+}
+
+#img1 {
+    background: url(pic.jpg);
+}
+
+#img2 {
+    -webkit-border-image: url(pic.jpg) 0;
+    -moz-border-image: url(pic.jpg) 0;
+    border-image: url(pic.jpg) 0;
+}

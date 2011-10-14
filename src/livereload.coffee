@@ -66,7 +66,9 @@ exports.LiveReload = class LiveReload
 
   performReload: (message) ->
     @log "LiveReload received reload request for #{message.path}."
-    @reloader.reload(message.path, liveCSS: message.liveCSS ? yes)
+    @reloader.reload message.path,
+      liveCSS: message.liveCSS ? yes
+      liveImg: message.liveImg ? yes
 
   performAlert: (message) ->
     alert message.message

@@ -50,6 +50,15 @@ numberOfMatchingSegments = (path1, path2) ->
 
   return eqCount
 
+pathsMatch = (path1, path2) -> numberOfMatchingSegments(path1, path2) > 0
+
+
+IMAGE_STYLES = [
+  { selector: 'background', styleNames: ['backgroundImage'] }
+  { selector: 'border', styleNames: ['borderImage', 'webkitBorderImage', 'MozBorderImage'] }
+]
+
+
 exports.Reloader = class Reloader
 
   constructor: (@window, @console, @Timer) ->
@@ -62,11 +71,66 @@ exports.Reloader = class Reloader
     if options.liveCSS
       if path.match(/\.css$/i)
         return if @reloadStylesheet(path)
+    if options.liveImg
+      if path.match(/\.(jpe?g|png|gif)$/i)
+        @reloadImages(path)
+        return
     @reloadPage()
 
 
   reloadPage: ->
     @window.document.location.reload()
+
+
+  reloadImages: (path) ->
+    expando = @generateUniqueString()
+
+    for img in this.document.images
+      if pathsMatch(path, pathFromUrl(img.src))
+        img.src = @generateCacheBustUrl(img.src, expando)
+
+    if @document.querySelectorAll
+      for { selector, styleNames } in IMAGE_STYLES
+        for img in @document.querySelectorAll("[style*=#{selector}]")
+          @reloadStyleImages img.style, styleNames, path, expando
+
+    if @document.styleSheets
+      for styleSheet in @document.styleSheets
+        @reloadStylesheetImages styleSheet, path, expando
+
+
+  reloadStylesheetImages: (styleSheet, path, expando) ->
+    try
+      rules = styleSheet?.cssRules
+    catch e
+      #
+    return unless rules
+
+    for rule in rules
+      switch rule.type
+        when CSSRule.IMPORT_RULE
+          @reloadStylesheetImages rule.styleSheet, path, expando
+        when CSSRule.STYLE_RULE
+          for { styleNames } in IMAGE_STYLES
+            @reloadStyleImages rule.style, styleNames, path, expando
+        when CSSRule.MEDIA_RULE
+          @reloadStylesheetImages rule, path, expando
+
+    return
+
+
+  reloadStyleImages: (style, styleNames, path, expando) ->
+    for styleName in styleNames
+      value = style[styleName]
+      if typeof value is 'string'
+        newValue = value.replace ///\b url \s* \( ([^)]*) \) ///, (match, src) =>
+          if pathsMatch(path, pathFromUrl(src))
+            "url(#{@generateCacheBustUrl(src, expando)})"
+          else
+            match
+        if newValue != value
+          style[styleName] = newValue
+    return
 
 
   reloadStylesheet: (path) ->
@@ -182,8 +246,7 @@ exports.Reloader = class Reloader
     'livereload=' + Date.now()
 
 
-  generateCacheBustUrl: (url) ->
-    expando = @generateUniqueString()
+  generateCacheBustUrl: (url, expando=@generateUniqueString()) ->
     { url, hash, params: oldParams } = splitUrl(url)
 
     params = oldParams.replace /(\?|&)livereload=(\d+)/, (match, sep) -> "#{sep}#{expando}"
