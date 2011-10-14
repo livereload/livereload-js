@@ -21,11 +21,11 @@ Done:
 * protocol, WebSocket communication
 * CSS @import support
 * live image reloading (IMG src, background-image and border-image properties, both inline and in stylesheets)
+* live in-browser LESS.js reloading
 
 To Do:
 
 * live JS reloading
-* live in-browser LESS.js reloading
 
 
 Issues & Limitations

@@ -71,6 +71,9 @@ exports.Reloader = class Reloader
     if options.liveCSS
       if path.match(/\.css$/i)
         return if @reloadStylesheet(path)
+      if path.match(/\.less$/i) and @window.less and @window.less.refresh
+        @window.less.refresh(true)
+        return
     if options.liveImg
       if path.match(/\.(jpe?g|png|gif)$/i)
         @reloadImages(path)
