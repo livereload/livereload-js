@@ -11,6 +11,18 @@ See [dist/livereload.js](https://github.com/livereload/livereload-js/raw/master/
 It's OK to hot-link to dist/livereload.js from this repository, however it's probably a bad idea because you would loose the ability to use LiveReload offline. We recommend LiveReload server vendors to distribute livereload.js as part of their apps.
 
 
+Communicating with livereload.js
+--------------------------------
+
+It is possible to communicate with a running LiveReload script using DOM events:
+
+* fire LiveReloadShutDown event on `document` to make LiveReload disconnect and go away
+* listen for LiveReloadConnect event on `document` to learn when the connection is established
+* listen for LiveReloadDisconnect event on `document` to learn when the connection is interrupted (or fails to be established)
+
+LiveReload object is also exposed as `window.LiveReload`, with `LiveReload.disconnect()`, `LiveReload.connect()` and `LiveReload.shutDown()` being available. However I'm not yet sure if I want to keep this API, so consider it non-contractual (and email me if you have a use for it).
+
+
 Status
 ------
 

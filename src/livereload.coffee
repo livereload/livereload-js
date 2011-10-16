@@ -6,6 +6,8 @@
 exports.LiveReload = class LiveReload
 
   constructor: (@window) ->
+    @listeners = {}
+
     # i can haz console?
     @console = if @window.console && @window.console.log && @window.console.error
       @window.console
@@ -33,6 +35,7 @@ exports.LiveReload = class LiveReload
       socketConnected: =>
 
       connected: (protocol) =>
+        @listeners.connect?()
         @log "LiveReload is connected to #{@options.host}:#{@options.port} (protocol v#{protocol})."
 
       error: (e) =>
@@ -42,6 +45,7 @@ exports.LiveReload = class LiveReload
           console.log "LiveReload internal error: #{e.message}"
 
       disconnected: (reason, nextDelay) =>
+        @listeners.disconnect?()
         switch reason
           when 'cannot-connect'
             @log "LiveReload cannot connect to #{@options.host}:#{@options.port}, will retry in #{nextDelay} sec."
@@ -61,6 +65,9 @@ exports.LiveReload = class LiveReload
           when 'reload' then @performReload(message)
           when 'alert'  then @performAlert(message)
 
+  on: (eventName, handler) ->
+    @listeners[eventName] = handler
+
   log: (message) ->
     @console.log "#{message}"
 
@@ -72,3 +79,7 @@ exports.LiveReload = class LiveReload
 
   performAlert: (message) ->
     alert message.message
+
+  shutDown: ->
+    @connector.disconnect()
+    @listeners.shutdown?()

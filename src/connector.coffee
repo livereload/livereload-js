@@ -5,6 +5,7 @@ exports.Connector = class Connector
   constructor: (@options, @WebSocket, @Timer, @handlers) ->
     @_uri = "ws://#{@options.host}:#{@options.port}/livereload"
     @_nextDelay = @options.mindelay
+    @_connectionDesired = no
 
     @protocolParser = new Parser
       connected: (protocol) =>
@@ -23,7 +24,9 @@ exports.Connector = class Connector
       @_disconnectionReason = 'handshake-timeout'
       @socket.close()
 
-    @_reconnectTimer = new Timer => @connect()
+    @_reconnectTimer = new Timer =>
+      return unless @_connectionDesired  # shouldn't hit this, but just in case
+      @connect()
 
     @connect()
 
@@ -32,6 +35,7 @@ exports.Connector = class Connector
     @socket and @socket.readyState is @WebSocket.OPEN
 
   connect: ->
+    @_connectionDesired = yes
     return if @_isSocketConnected()
 
     # prepare for a new connection
@@ -47,7 +51,16 @@ exports.Connector = class Connector
     @socket.onmessage = (e) => @_onmessage(e)
     @socket.onerror   = (e) => @_onerror(e)
 
+  disconnect: ->
+    @_connectionDesired = no
+    @_reconnectTimer.stop()   # in case it was running
+    return unless @_isSocketConnected()
+    @_disconnectionReason = 'manual'
+    @socket.close()
+
+
   _scheduleReconnection: ->
+    return unless @_connectionDesired  # don't reconnect after manual disconnection
     unless @_reconnectTimer.running
       @_reconnectTimer.start(@_nextDelay)
       @_nextDelay = Math.min(@options.maxdelay, @_nextDelay * 2)
@@ -74,7 +87,7 @@ exports.Connector = class Connector
 
   _onclose: (e) ->
     @handlers.disconnected @_disconnectionReason, @_nextDelay
-    @_scheduleReconnection() unless @_disconnectionReason is 'manual'
+    @_scheduleReconnection()
 
   _onerror: (e) ->
 
