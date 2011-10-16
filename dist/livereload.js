@@ -776,6 +776,7 @@ var __customevents = {}, __protocol = {}, __connector = {}, __timer = {}, __opti
     LiveReload.prototype.shutDown = function() {
       var _base;
       this.connector.disconnect();
+      this.log("LiveReload disconnected.");
       return typeof (_base = this.listeners).shutdown === "function" ? _base.shutdown() : void 0;
     };
     return LiveReload;
