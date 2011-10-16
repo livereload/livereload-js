@@ -2,7 +2,7 @@
 exports.Options = class Options
   constructor: ->
     @host    = null
-    @port    = null
+    @port    = 35729
 
     @snipver = null
     @ext     = null
@@ -22,13 +22,15 @@ exports.Options = class Options
 
 Options.extract = (document) ->
   for element in document.getElementsByTagName('script')
-    if (src = element.src) && (m = src.match ///^ https?:// ([^/:]+) : (\d+) / z?livereload\.js (?: \? (.*) )? $///)
+    if (src = element.src) && (m = src.match ///^ [^:]+ :// (.*) / z?livereload\.js (?: \? (.*) )? $///)
       options = new Options()
-      options.host = m[1]
-      options.port = parseInt(m[2], 10)
+      if mm = m[1].match ///^ ([^/:]+) (?: : (\d+) )? $///
+        options.host = mm[1]
+        if mm[2]
+          options.port = parseInt(mm[2], 10)
 
-      if m[3]
-        for pair in m[3].split('&')
+      if m[2]
+        for pair in m[2].split('&')
           if (keyAndValue = pair.split('=')).length > 1
             options.set keyAndValue[0].replace(/-/g, '_'), keyAndValue.slice(1).join('=')
       return options

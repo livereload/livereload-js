@@ -66,3 +66,18 @@ exports['should extract additional options'] = (beforeExit, assert) ->
     assert.equal '2.0', options.extver
 
   beforeExit -> assert.ok _loaded
+
+
+exports['should be cool with a strange URL'] = (beforeExit, assert) ->
+  _loaded = no
+  jsdom.env """
+    <script src="safari-ext://132324324/23243443/4343/livereload.js?host=somewhere.com"></script>
+  """, [], (errors, window) ->
+    assert.isNull errors
+    _loaded = yes
+
+    options = Options.extract(window.document)
+    assert.equal 'somewhere.com', options.host
+    assert.equal 35729, options.port
+
+  beforeExit -> assert.ok _loaded
