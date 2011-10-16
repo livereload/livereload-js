@@ -1,6 +1,6 @@
 
-exports.PROTOCOL_6 = PROTOCOL_6 = 'http://livereload.com/protocols/official/6'
-exports.PROTOCOL_7 = PROTOCOL_7 = 'http://livereload.com/protocols/official/7'
+exports.PROTOCOL_6 = PROTOCOL_6 = 'http://livereload.com/protocols/official-6'
+exports.PROTOCOL_7 = PROTOCOL_7 = 'http://livereload.com/protocols/official-7'
 
 exports.ProtocolError = class ProtocolError
   constructor: (reason, data) ->
