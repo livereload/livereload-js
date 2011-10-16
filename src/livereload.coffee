@@ -82,4 +82,5 @@ exports.LiveReload = class LiveReload
 
   shutDown: ->
     @connector.disconnect()
+    @log "LiveReload disconnected."
     @listeners.shutdown?()
