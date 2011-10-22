@@ -1,5 +1,7 @@
 { Parser, PROTOCOL_6, PROTOCOL_7 } = require 'protocol'
 
+Version = '2.0.1'
+
 exports.Connector = class Connector
 
   constructor: (@options, @WebSocket, @Timer, @handlers) ->
@@ -83,6 +85,7 @@ exports.Connector = class Connector
 
     # start handshake
     hello = { command: 'hello', protocols: [PROTOCOL_6, PROTOCOL_7] }
+    hello.ver     = Version
     hello.ext     = @options.ext     if @options.ext
     hello.extver  = @options.extver  if @options.extver
     hello.snipver = @options.snipver if @options.snipver
