@@ -82,7 +82,11 @@ exports.Connector = class Connector
     @_disconnectionReason = 'handshake-failed'
 
     # start handshake
-    @_sendCommand { command: 'hello', protocols: [PROTOCOL_6, PROTOCOL_7] }
+    hello = { command: 'hello', protocols: [PROTOCOL_6, PROTOCOL_7] }
+    hello.ext     = @options.ext     if @options.ext
+    hello.extver  = @options.extver  if @options.extver
+    hello.snipver = @options.snipver if @options.snipver
+    @_sendCommand hello
     @_handshakeTimeout.start(@options.handshake_timeout)
 
   _onclose: (e) ->
