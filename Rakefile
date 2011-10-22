@@ -8,8 +8,16 @@ VERSION_FILES = %w(
     src/connector.coffee
 )
 
+def coffee dst, src
+    sh 'coffee', '-c', '-b', '-o', File.dirname(dst), src
+end
+
 COFFEE.each do |coffee|
     JS << (js = File.join('lib', File.basename(coffee).ext('js')))
+
+    file js => [coffee] do
+        coffee js, coffee
+    end
 end
 
 class JSModule
@@ -68,7 +76,7 @@ def subst_version_refs_in_file file, ver
 end
 
 file DIST => JS do
-
+    puts "CONCAT #{DIST}"
     modules = {}
     JS.each do |js|
         mod = JSModule.new(js)
@@ -126,3 +134,4 @@ end
 task :default => :build
 
 CLOBBER << DIST
+CLEAN.include *JS
