@@ -784,7 +784,8 @@ __livereload.LiveReload = LiveReload = (function() {
     this.log("LiveReload received reload request for " + message.path + ".");
     return this.reloader.reload(message.path, {
       liveCSS: (_ref = message.liveCSS) != null ? _ref : true,
-      liveImg: (_ref2 = message.liveImg) != null ? _ref2 : true
+      liveImg: (_ref2 = message.liveImg) != null ? _ref2 : true,
+      originalPath: message.originalPath || ''
     });
   };
   LiveReload.prototype.performAlert = function(message) {
@@ -809,12 +810,14 @@ __livereload.LiveReload = LiveReload = (function() {
       _livereload: this,
       _reloader: this.reloader,
       _connector: this.connector,
+      console: this.console,
       Timer: Timer,
       generateCacheBustUrl: function(url) {
         return this.reloader.generateCacheBustUrl(url);
       }
     });
     this.plugins.push(plugin);
+    this.reloader.addPlugin(plugin);
   };
   LiveReload.prototype.analyze = function() {
     var plugin, pluginData, pluginsData, _i, _len, _ref;
@@ -847,9 +850,13 @@ __less = LessPlugin = (function() {
     this.host = host;
   }
   LessPlugin.prototype.reload = function(path, options) {
-    if (path.match(/\.less$/i) && this.window.less && this.window.less.refresh) {
+    console.log([path, options]);
+    if ((path.match(/\.less$/i) || options.originalPath.match(/\.less$/i)) && this.window.less && this.window.less.refresh) {
+      this.host.console.log("LiveReload is asking LESS to recompile all stylesheets");
       this.window.less.refresh(true);
+      return true;
     }
+    return false;
   };
   LessPlugin.prototype.analyze = function() {
     return {
