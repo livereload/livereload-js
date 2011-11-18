@@ -7,6 +7,7 @@ exports.LiveReload = class LiveReload
 
   constructor: (@window) ->
     @listeners = {}
+    @plugins = []
 
     # i can haz console?
     @console = if @window.console && @window.console.log && @window.console.error
@@ -84,3 +85,18 @@ exports.LiveReload = class LiveReload
     @connector.disconnect()
     @log "LiveReload disconnected."
     @listeners.shutdown?()
+
+  addPlugin: (pluginClass) ->
+    plugin = new pluginClass @window,
+
+      # expose internal objects for those who know what they're doing
+      # (note that these are private APIs and subject to change!)
+      _livereload: this
+      _reloader:   @reloader
+      _connector:  @connector
+
+      # official API
+      generateCacheBustUrl: (url) -> @reloader.generateCacheBustUrl(url)
+
+    @plugins.push plugin
+    return
