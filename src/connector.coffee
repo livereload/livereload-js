@@ -8,9 +8,10 @@ exports.Connector = class Connector
     @_uri = "ws://#{@options.host}:#{@options.port}/livereload"
     @_nextDelay = @options.mindelay
     @_connectionDesired = no
+    @protocol = 0
 
     @protocolParser = new Parser
-      connected: (protocol) =>
+      connected: (@protocol) =>
         @_handshakeTimeout.stop()
         @_nextDelay = @options.mindelay
         @_disconnectionReason = 'broken'
@@ -93,6 +94,7 @@ exports.Connector = class Connector
     @_handshakeTimeout.start(@options.handshake_timeout)
 
   _onclose: (e) ->
+    @protocol = 0
     @handlers.disconnected @_disconnectionReason, @_nextDelay
     @_scheduleReconnection()
 

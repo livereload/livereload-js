@@ -38,6 +38,7 @@ exports.LiveReload = class LiveReload
       connected: (protocol) =>
         @listeners.connect?()
         @log "LiveReload is connected to #{@options.host}:#{@options.port} (protocol v#{protocol})."
+        @analyze()
 
       error: (e) =>
         if e instanceof ProtocolError
@@ -90,13 +91,44 @@ exports.LiveReload = class LiveReload
     plugin = new pluginClass @window,
 
       # expose internal objects for those who know what they're doing
-      # (note that these are private APIs and subject to change!)
+      # (note that these are private APIs and subject to change at any time!)
       _livereload: this
       _reloader:   @reloader
       _connector:  @connector
 
       # official API
+      Timer: Timer
       generateCacheBustUrl: (url) -> @reloader.generateCacheBustUrl(url)
 
+    # API that pluginClass can/must provide:
+    #
+    # string pluginClass.identifier
+    #   -- required, globally-unique name of this plugin
+    #
+    # string pluginClass.version
+    #   -- required, plugin version number (format %d.%d or %d.%d.%d)
+    #
+    # plugin = new pluginClass(window, officialLiveReloadAPI)
+    #   -- required, plugin constructor
+    #
+    # bool plugin.reload(string path, { bool liveCSS, bool liveImg })
+    #   -- optional, attemp to reload the given path, return true if handled
+    #
+    # object plugin.analyze()
+    #   -- optional, returns plugin-specific information about the current document (to send to the connected server)
+    #      (LiveReload 2 server currently only defines 'disable' key in this object; return {disable:true} to disable server-side
+    #       compilation of a matching plugin's files)
+
     @plugins.push plugin
+    return
+
+  analyze: ->
+    return unless @connector.protocol >= 7
+
+    pluginsData = {}
+    for plugin in @plugins
+      pluginsData[plugin.constructor.identifier] = pluginData = plugin.analyze?() || {}
+      pluginData.version = plugin.constructor.version
+
+    @connector.sendCommand { command: 'info', plugins: pluginsData, url: @window.location.href }
     return

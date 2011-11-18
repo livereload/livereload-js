@@ -1,6 +1,7 @@
 
 module.exports = class LessPlugin
   @identifier = 'less'
+  @version = '1.0'
 
   constructor: (@window, @host) ->
 
