@@ -6,9 +6,12 @@ module.exports = class LessPlugin
   constructor: (@window, @host) ->
 
   reload: (path, options) ->
-    if path.match(/\.less$/i) and @window.less and @window.less.refresh
+    console.log [path, options]
+    if (path.match(/\.less$/i) || options.originalPath.match(/\.less$/i)) and @window.less and @window.less.refresh
+      @host.console.log "LiveReload is asking LESS to recompile all stylesheets"
       @window.less.refresh(true)
-      return
+      return true
+    false
 
   analyze: ->
     { disable: !!(@window.less and @window.less.refresh) }

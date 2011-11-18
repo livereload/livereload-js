@@ -79,6 +79,7 @@ exports.LiveReload = class LiveReload
     @reloader.reload message.path,
       liveCSS: message.liveCSS ? yes
       liveImg: message.liveImg ? yes
+      originalPath: message.originalPath || ''
 
   performAlert: (message) ->
     alert message.message
@@ -103,6 +104,7 @@ exports.LiveReload = class LiveReload
       _connector:  @connector
 
       # official API
+      console: @console
       Timer: Timer
       generateCacheBustUrl: (url) -> @reloader.generateCacheBustUrl(url)
 
@@ -126,6 +128,7 @@ exports.LiveReload = class LiveReload
     #       compilation of a matching plugin's files)
 
     @plugins.push plugin
+    @reloader.addPlugin plugin
     return
 
   analyze: ->
