@@ -8,6 +8,7 @@ exports.LiveReload = class LiveReload
   constructor: (@window) ->
     @listeners = {}
     @plugins = []
+    @pluginIdentifiers = {}
 
     # i can haz console?
     @console = if @window.console && @window.console.log && @window.console.error
@@ -87,7 +88,12 @@ exports.LiveReload = class LiveReload
     @log "LiveReload disconnected."
     @listeners.shutdown?()
 
+  hasPlugin: (identifier) -> !!@pluginIdentifiers[identifier]
+
   addPlugin: (pluginClass) ->
+    return if @hasPlugin(pluginClass.identifier)
+    @pluginIdentifiers[pluginClass.identifier] = yes
+
     plugin = new pluginClass @window,
 
       # expose internal objects for those who know what they're doing

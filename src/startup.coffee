@@ -1,6 +1,10 @@
 CustomEvents = require('customevents')
 LiveReload = window.LiveReload = new (require('livereload').LiveReload)(window)
 
+for k, v of window
+  if k.match(/^LiveReloadPlugin/)
+    LiveReload.addPlugin v
+
 LiveReload.addPlugin require('less')
 
 LiveReload.on 'shutdown', -> delete window.LiveReload
