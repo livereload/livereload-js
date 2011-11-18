@@ -106,7 +106,7 @@ exports.LiveReload = class LiveReload
       # official API
       console: @console
       Timer: Timer
-      generateCacheBustUrl: (url) -> @reloader.generateCacheBustUrl(url)
+      generateCacheBustUrl: (url) => @reloader.generateCacheBustUrl(url)
 
     # API that pluginClass can/must provide:
     #
