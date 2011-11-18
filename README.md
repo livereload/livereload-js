@@ -8,7 +8,7 @@ This repository contains the JavaScript file served to the browsers by various L
 
 See [dist/livereload.js](https://github.com/livereload/livereload-js/raw/master/dist/livereload.js) for the latest ready-to-use, reasonably stable version built using the sources in this repository.
 
-It's OK to hot-link to dist/livereload.js from this repository, however it's probably a bad idea because you would loose the ability to use LiveReload offline. We recommend LiveReload server vendors to distribute livereload.js as part of their apps.
+It's OK to hot-link to dist/livereload.js from this repository, however it's probably a bad idea because you would lose the ability to use LiveReload offline. We recommend LiveReload server vendors to distribute livereload.js as part of their apps.
 
 
 Using livereload.js
