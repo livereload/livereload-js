@@ -151,6 +151,8 @@ exports.Reloader = class Reloader
 
     # find all imported stylesheets
     imported = []
+    for style in @document.getElementsByTagName('style') when style.sheet
+      @collectImportedStylesheets style, style.sheet, imported
     for link in links
       @collectImportedStylesheets link, link.sheet, imported
 
