@@ -1,9 +1,8 @@
 CustomEvents = require('customevents')
 LiveReload = window.LiveReload = new (require('livereload').LiveReload)(window)
 
-for k, v of window
-  if k.match(/^LiveReloadPlugin/)
-    LiveReload.addPlugin v
+for k of window when k.match(/^LiveReloadPlugin/)
+  LiveReload.addPlugin window[k]
 
 LiveReload.addPlugin require('less')
 
