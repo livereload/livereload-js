@@ -11,7 +11,7 @@ exports.LiveReload = class LiveReload
     @pluginIdentifiers = {}
 
     # i can haz console?
-    @console = if @window.console && @window.console.log && @window.console.error
+    @console = if @window.location.href.match(/LR-verbose/) && @window.console && @window.console.log && @window.console.error
       @window.console
     else
       log:   ->
