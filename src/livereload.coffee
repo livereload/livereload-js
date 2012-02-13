@@ -80,6 +80,8 @@ exports.LiveReload = class LiveReload
       liveCSS: message.liveCSS ? yes
       liveImg: message.liveImg ? yes
       originalPath: message.originalPath || ''
+      overrideURL: message.overrideURL || ''
+      serverURL: "http://#{@options.host}:#{@options.port}"
 
   performAlert: (message) ->
     alert message.message
