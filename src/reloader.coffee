@@ -265,12 +265,8 @@ exports.Reloader = class Reloader
     { url, hash, params: oldParams } = splitUrl(url)
 
     if @options.overrideURL
-      console.log "@options.overrideURL = #{@options.overrideURL}"
-      console.log "@options.serverURL = #{@options.serverURL}"
-      console.log "url = #{url}"
       if url.indexOf(@options.serverURL) < 0
         url = @options.serverURL + @options.overrideURL + "?url=" + encodeURIComponent(url)
-        console.log "url' = #{url}"
 
     params = oldParams.replace /(\?|&)livereload=(\d+)/, (match, sep) -> "#{sep}#{expando}"
     if params == oldParams
