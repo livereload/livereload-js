@@ -127,7 +127,7 @@ var Connector, PROTOCOL_6, PROTOCOL_7, Parser, Version, _ref;
 
 _ref = __protocol, Parser = _ref.Parser, PROTOCOL_6 = _ref.PROTOCOL_6, PROTOCOL_7 = _ref.PROTOCOL_7;
 
-Version = '2.0.6';
+Version = '2.0.7';
 
 __connector.Connector = Connector = (function() {
 
@@ -177,7 +177,7 @@ __connector.Connector = Connector = (function() {
     var _this = this;
     this._connectionDesired = true;
     if (this._isSocketConnected()) return;
-    if (this._reconnectTimer) clearTimeout(this._reconnectTimer);
+    this._reconnectTimer.stop();
     this._disconnectionReason = 'cannot-connect';
     this.protocolParser.reset();
     this.handlers.connecting();
