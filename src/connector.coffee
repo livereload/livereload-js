@@ -42,7 +42,7 @@ exports.Connector = class Connector
     return if @_isSocketConnected()
 
     # prepare for a new connection
-    clearTimeout @_reconnectTimer if @_reconnectTimer
+    @_reconnectTimer.stop()
     @_disconnectionReason = 'cannot-connect'
     @protocolParser.reset()
 
