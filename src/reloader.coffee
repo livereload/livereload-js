@@ -63,7 +63,6 @@ exports.Reloader = class Reloader
 
   constructor: (@window, @console, @Timer) ->
     @document = @window.document
-    @stylesheetGracePeriod = 200
     @importCacheWaitPeriod = 200
     @plugins = []
 
@@ -78,6 +77,7 @@ exports.Reloader = class Reloader
 
   reload: (path, options) ->
     @options = options  # avoid passing it through all the funcs
+    @options.stylesheetReloadTimeout ?= 15000
     for plugin in @plugins
       if plugin.reload && plugin.reload(path, options)
         return
@@ -202,6 +202,16 @@ exports.Reloader = class Reloader
     clone = link.cloneNode(false)
     clone.href = @generateCacheBustUrl(link.href)
 
+    timeoutElapsed = no
+
+    removeOldLinkIfThatsAgreeable = ->
+      return if !link.parentNode
+      if timeoutElapsed or (clone.readyState is 'complete')
+        link.parentNode.removeChild(link)
+        clone.onreadystatechange = null
+
+    clone.onreadystatechange = removeOldLinkIfThatsAgreeable
+
     # insert the new LINK before the old one
     parent = link.parentNode
     if parent.lastChild is link
@@ -209,10 +219,11 @@ exports.Reloader = class Reloader
     else
         parent.insertBefore clone, link.nextSibling
 
-    # give the browser some time to parse the new stylesheet, then remove the old one
+    # remove the old LINK even if we don't get the completion event
     timer = new @Timer ->
-      link.parentNode.removeChild(link) if link.parentNode
-    timer.start(@stylesheetGracePeriod)
+      timeoutElapsed = yes
+      removeOldLinkIfThatsAgreeable()
+    timer.start(@options.stylesheetReloadTimeout)
 
 
   reattachImportedRule: ({ rule, index, link }) ->
