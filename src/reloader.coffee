@@ -194,6 +194,35 @@ exports.Reloader = class Reloader
     return
 
 
+  waitUntilCssLoads: (clone, func) ->
+    callbackExecuted = no
+
+    executeCallback = =>
+      return if callbackExecuted
+      callbackExecuted = yes
+      func()
+
+    # supported by Chrome 19+, Safari 5.2+, Firefox 9+, Opera 9+, IE6+
+    # http://www.zachleat.com/web/load-css-dynamically/
+    # http://pieisgood.org/test/script-link-events/
+    clone.onload = =>
+      console.log "onload!"
+      @knownToSupportCssOnLoad = yes
+      executeCallback()
+
+    unless @knownToSupportCssOnLoad
+      # polling
+      do poll = =>
+        if clone.sheet
+          console.log "polling!"
+          executeCallback()
+        else
+          @Timer.start 50, poll
+
+    # fail safe
+    @Timer.start @options.stylesheetReloadTimeout, executeCallback
+
+
   reattachStylesheetLink: (link) ->
     # ignore LINKs that will be removed by LR soon
     return if link.__LiveReload_pendingRemoval
@@ -202,16 +231,6 @@ exports.Reloader = class Reloader
     clone = link.cloneNode(false)
     clone.href = @generateCacheBustUrl(link.href)
 
-    timeoutElapsed = no
-
-    removeOldLinkIfThatsAgreeable = ->
-      return if !link.parentNode
-      if timeoutElapsed or (clone.readyState is 'complete')
-        link.parentNode.removeChild(link)
-        clone.onreadystatechange = null
-
-    clone.onreadystatechange = removeOldLinkIfThatsAgreeable
-
     # insert the new LINK before the old one
     parent = link.parentNode
     if parent.lastChild is link
@@ -219,11 +238,16 @@ exports.Reloader = class Reloader
     else
         parent.insertBefore clone, link.nextSibling
 
-    # remove the old LINK even if we don't get the completion event
-    timer = new @Timer ->
-      timeoutElapsed = yes
-      removeOldLinkIfThatsAgreeable()
-    timer.start(@options.stylesheetReloadTimeout)
+    @waitUntilCssLoads clone, =>
+      if /AppleWebKit/.test(navigator.userAgent)
+        additionalWaitingTime = 5
+      else
+        additionalWaitingTime = 200
+
+      @Timer.start additionalWaitingTime, =>
+        return if !link.parentNode
+        link.parentNode.removeChild(link)
+        clone.onreadystatechange = null
 
 
   reattachImportedRule: ({ rule, index, link }) ->
