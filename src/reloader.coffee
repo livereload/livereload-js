@@ -157,15 +157,20 @@ exports.Reloader = class Reloader
     for link in links
       @collectImportedStylesheets link, link.sheet, imported
 
+    # handle prefixfree
+    if @window.StyleFix && @document.querySelectorAll
+      for style in @document.querySelectorAll('style[data-href]')
+        links.push style
+
     @console.log "LiveReload found #{links.length} LINKed stylesheets, #{imported.length} @imported stylesheets"
-    match = pickBestMatch(path, links.concat(imported), (l) -> pathFromUrl(l.href))
+    match = pickBestMatch(path, links.concat(imported), (l) => pathFromUrl(@linkHref(l)))
 
     if match
       if match.object.rule
         @console.log "LiveReload is reloading imported stylesheet: #{match.object.href}"
         @reattachImportedRule(match.object)
       else
-        @console.log "LiveReload is reloading stylesheet: #{match.object.href}"
+        @console.log "LiveReload is reloading stylesheet: #{@linkHref(match.object)}"
         @reattachStylesheetLink(match.object)
     else
       @console.log "LiveReload will reload all stylesheets because path '#{path}' did not match any specific one"
@@ -223,13 +228,26 @@ exports.Reloader = class Reloader
     @Timer.start @options.stylesheetReloadTimeout, executeCallback
 
 
+  linkHref: (link) ->
+    # prefixfree uses data-href when it turns LINK into STYLE
+    link.href || link.getAttribute('data-href')
+
+
   reattachStylesheetLink: (link) ->
     # ignore LINKs that will be removed by LR soon
     return if link.__LiveReload_pendingRemoval
     link.__LiveReload_pendingRemoval = yes
 
-    clone = link.cloneNode(false)
-    clone.href = @generateCacheBustUrl(link.href)
+    if link.tagName is 'STYLE'
+      # prefixfree
+      clone = @document.createElement('link')
+      clone.rel      = 'stylesheet'
+      clone.media    = link.media
+      clone.disabled = link.disabled
+    else
+      clone = link.cloneNode(false)
+
+    clone.href = @generateCacheBustUrl(@linkHref(link))
 
     # insert the new LINK before the old one
     parent = link.parentNode
@@ -248,6 +266,8 @@ exports.Reloader = class Reloader
         return if !link.parentNode
         link.parentNode.removeChild(link)
         clone.onreadystatechange = null
+
+        @window.StyleFix?.link(clone) # prefixfree
 
 
   reattachImportedRule: ({ rule, index, link }) ->

@@ -1,0 +1,18 @@
+body {
+    background: green;
+    /*background: red;*/
+    font: 150% Times, serif;
+}
+
+div {
+    background: #eee;
+    padding: 10px;
+    border-radius: 8px;
+    width: 400px;
+    box-sizing: border-box;
+    transition: 0.5s width;
+}
+
+div:hover {
+    width: 300px;
+}
