@@ -1,8 +1,8 @@
 { Options }    = require 'options'
 { Connector }  = require 'connector'
-{ PROTOCOL_7 } = require 'protocol'
+{ Protocol } = require 'protocol'
 
-HELLO = { command: 'hello', protocols: [PROTOCOL_7] }
+HELLO = { command: 'hello', protocols: [Protocol.PROTOCOL_7] }
 
 class MockHandlers
   constructor: ->

@@ -1,10 +1,10 @@
-CustomEvents = require('customevents')
+CustomEvents = require('customevents').CustomEvents
 LiveReload = window.LiveReload = new (require('livereload').LiveReload)(window)
 
 for k of window when k.match(/^LiveReloadPlugin/)
   LiveReload.addPlugin window[k]
 
-LiveReload.addPlugin require('less')
+LiveReload.addPlugin require('less').Less
 
 LiveReload.on 'shutdown', -> delete window.LiveReload
 LiveReload.on 'connect', ->

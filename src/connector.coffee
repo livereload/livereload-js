@@ -1,4 +1,4 @@
-{ Parser, PROTOCOL_6, PROTOCOL_7 } = require 'protocol'
+{ Parser, PROTOCOL_6, PROTOCOL_7 } = require('protocol').Protocol
 
 Version = '2.0.8'
 

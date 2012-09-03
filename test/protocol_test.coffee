@@ -1,4 +1,4 @@
-{ Parser } = require 'protocol'
+Parser = require('protocol').Protocol.Parser
 
 class MockHandler
   constructor: ->

@@ -1,5 +1,5 @@
 
-module.exports = class LessPlugin
+exports.Less = class LessPlugin
   @identifier = 'less'
   @version = '1.0'
 
