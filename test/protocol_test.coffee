@@ -1,4 +1,5 @@
 Parser = require('protocol').Protocol.Parser
+assert = require 'assert'
 
 class MockHandler
   constructor: ->
@@ -16,8 +17,7 @@ class MockHandler
       when 'reload'     then @log "reload(#{msg.path})"
       else                   @log msg.commmand
 
-
-exports['should reject a bogus handshake'] = (beforeExit, assert) ->
+exports['should reject a bogus handshake'] = () ->
   handler = new MockHandler()
   parser  = new Parser(handler)
 
@@ -25,7 +25,7 @@ exports['should reject a bogus handshake'] = (beforeExit, assert) ->
   assert.ok handler.gotError
 
 
-exports['should speak protocol 6'] = (beforeExit, assert) ->
+exports['should speak protocol 6'] = () ->
   handler = new MockHandler()
   parser  = new Parser(handler)
 
@@ -36,11 +36,11 @@ exports['should speak protocol 6'] = (beforeExit, assert) ->
   assert.equal "reload(foo.css)", handler.obtainLog()
 
 
-exports['should speak protocol 7'] = (beforeExit, assert) ->
+exports['should speak protocol 7'] = () ->
   handler = new MockHandler()
   parser  = new Parser(handler)
 
-  parser.process '{ "command": "hello", "protocols": [ "http://livereload.com/protocols/official/7" ] }'
+  parser.process '{ "command": "hello", "protocols": [ "http://livereload.com/protocols/official-7" ] }'
   assert.equal null, handler.error?.message
   assert.equal 7, parser.protocol
 

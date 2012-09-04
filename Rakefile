@@ -121,6 +121,25 @@ end
 
 task :default => :build
 
+
+file 'node_modules/jsdom' do |f|
+    # On Windows (and, likely many other platforms) latest jsdom
+    # is very likely to fail to install, or install in a broken way
+    # This is mostly due to Contextify prereq, which, even Shimmed
+    # does not work reliably.
+    # jsdom 0.2.1 is the last version NOT to use Contextify. Hence, the '@0.2.1'
+    sh 'npm', 'install', 'jsdom@0.2.1'
+end
+
+task :test => ['node_modules/jsdom', :build] do
+    sh(
+        'mocha', 
+        '--ui', 'exports', 
+        '--globals', 'DOC_TYPE_START,DOC_TYPE_END',
+        '--compilers', 'coffee:coffee-script'
+    )
+end
+
 CLOBBER << DIST
 CLOBBER << 'node_modules'
 CLEAN.include *JS_MAIN
