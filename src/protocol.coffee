@@ -3,6 +3,8 @@ exports.Protocol = Protocol = {}
 Protocol.PROTOCOL_6 = PROTOCOL_6 = 'http://livereload.com/protocols/official-6'
 Protocol.PROTOCOL_7 = PROTOCOL_7 = 'http://livereload.com/protocols/official-7'
 
+Protocol.PROTOCOLS = [PROTOCOL_6, PROTOCOL_7]
+
 ProtocolError = class ProtocolError
   constructor: (reason, data) ->
     @message = "LiveReload protocol error (#{reason}) after receiving data: \"#{data}\"."

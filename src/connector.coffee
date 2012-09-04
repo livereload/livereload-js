@@ -1,4 +1,4 @@
-{ Parser, PROTOCOL_6, PROTOCOL_7 } = require('protocol').Protocol
+{ Parser, PROTOCOLS } = require('protocol').Protocol
 { Version } = require 'version'
 
 exports.Connector = class Connector
@@ -84,7 +84,7 @@ exports.Connector = class Connector
     @_disconnectionReason = 'handshake-failed'
 
     # start handshake
-    hello = { command: 'hello', protocols: [PROTOCOL_6, PROTOCOL_7] }
+    hello = { command: 'hello', protocols: PROTOCOLS }
     hello.ver     = Version
     hello.ext     = @options.ext     if @options.ext
     hello.extver  = @options.extver  if @options.extver
