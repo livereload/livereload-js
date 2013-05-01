@@ -131,3 +131,8 @@ Use node.js 0.4.x (if you have 0.5.x installed, use nvm) and run:
 Get code coverage report (current coverage is about 70%):
 
     expresso -c -I lib
+
+License
+-------
+
+livereload-js is available under the MIT license, see LICENSE file for details.
