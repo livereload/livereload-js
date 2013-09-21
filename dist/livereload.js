@@ -407,6 +407,7 @@ __options.Options = Options = (function() {
     this.mindelay = 1000;
     this.maxdelay = 60000;
     this.handshake_timeout = 5000;
+    this.animate = false;
   }
 
   Options.prototype.set = function(name, value) {
@@ -992,15 +993,16 @@ __livereload.LiveReload = LiveReload = (function() {
   };
 
   LiveReload.prototype.performReload = function(message) {
-    var _ref, _ref1;
+    var _base, _ref, _ref1;
     this.log("LiveReload received reload request for " + message.path + ".");
-    return this.reloader.reload(message.path, {
+    this.reloader.reload(message.path, {
       liveCSS: (_ref = message.liveCSS) != null ? _ref : true,
       liveImg: (_ref1 = message.liveImg) != null ? _ref1 : true,
       originalPath: message.originalPath || '',
       overrideURL: message.overrideURL || '',
       serverURL: "http://" + this.options.host + ":" + this.options.port
     });
+    return typeof (_base = this.listeners).reload === "function" ? _base.reload() : void 0;
   };
 
   LiveReload.prototype.performAlert = function(message) {
@@ -1058,6 +1060,24 @@ __livereload.LiveReload = LiveReload = (function() {
     });
   };
 
+  LiveReload.prototype.setUpCSSTransitions = function() {
+    var cssText, head, prefixer, styleNode;
+    prefixer = function(declaration) {
+      return (['-webkit-', '-moz-', ''].map(function(item) {
+        return "" + item + declaration;
+      })).join(' ');
+    };
+    head = document.getElementsByTagName('head')[0];
+    styleNode = document.createElement("style");
+    cssText = ".livereload-reloaded * { " + (prefixer('transition: all 280ms ease-out;')) + " }";
+    if (styleNode.styleSheet) {
+      styleNode.styleSheet.cssText = cssText;
+    } else {
+      styleNode.appendChild(document.createTextNode(cssText));
+    }
+    return head.appendChild(styleNode);
+  };
+
   return LiveReload;
 
 })();
@@ -1083,11 +1103,25 @@ LiveReload.on('shutdown', function() {
 });
 
 LiveReload.on('connect', function() {
+  if (!!/true|1$/.test(LiveReload.options.animate)) {
+    LiveReload.setUpCSSTransitions();
+  }
   return CustomEvents.fire(document, 'LiveReloadConnect');
 });
 
 LiveReload.on('disconnect', function() {
   return CustomEvents.fire(document, 'LiveReloadDisconnect');
+});
+
+LiveReload.on('reload', function() {
+  var existingHtmlClass, html, reloadedClass, _ref;
+  html = document.body.parentNode;
+  reloadedClass = ' livereload-reloaded';
+  existingHtmlClass = (_ref = html.getAttribute('class')) != null ? _ref : '';
+  html.setAttribute('class', "" + (existingHtmlClass.replace(reloadedClass, '')) + " " + reloadedClass);
+  return setTimeout((function() {
+    return html.setAttribute('class', existingHtmlClass.replace(reloadedClass, ''));
+  }), 300);
 });
 
 CustomEvents.bind(document, 'LiveReloadShutDown', function() {
