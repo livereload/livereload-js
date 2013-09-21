@@ -102,7 +102,7 @@ var Connector, PROTOCOL_6, PROTOCOL_7, Parser, Version, _ref;
 
 _ref = __protocol, Parser = _ref.Parser, PROTOCOL_6 = _ref.PROTOCOL_6, PROTOCOL_7 = _ref.PROTOCOL_7;
 
-Version = '2.0.8';
+Version = '2.0.9';
 
 __connector.Connector = Connector = (function() {
   function Connector(options, WebSocket, Timer, handlers) {
