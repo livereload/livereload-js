@@ -1,4 +1,4 @@
-{ Parser } = require 'protocol'
+{ Parser } = require '../src/protocol'
 
 class MockHandler
   constructor: ->

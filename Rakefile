@@ -33,7 +33,7 @@ class JSModule
         @visited = false
 
         @src = File.read(@file).gsub /require\('([^']+)'\)/ do |match|
-            depname = $1
+            depname = $1.gsub './', ''
             @deps << depname
             "__#{depname}"
         end.gsub(/\bmodule\.exports\b/, @varname).gsub(/\bexports\b/, @varname)
@@ -131,7 +131,11 @@ task :retag do
     sh 'git', 'tag', '-f', "v#{version}"
 end
 
-task :default => :build
+desc "Run expresso tests"
+task :test do
+    sh 'expresso', '-I', 'lib'
+end
+task :default => :test
 
 CLOBBER << DIST
 CLEAN.include *JS

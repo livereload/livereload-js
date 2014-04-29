@@ -1,4 +1,4 @@
-{ Timer } = require 'timer'
+{ Timer } = require '../src/timer'
 
 
 exports['timer should fire an event once in due time'] = (beforeExit, assert) ->

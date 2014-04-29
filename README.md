@@ -117,7 +117,6 @@ What is LiveReload?
 
 LiveReload is a tool for web developers and designers. See [livereload.com](http://livereload.com/) for more info.
 
-LiveReload.js connects to a LiveReload server via web sockets and listens for incoming change notifications. When CSS or image file is modified, it is live-refreshed without reloading the page. When any other file is modified, the page is reloaded.
 
 
 Reimplementation
@@ -142,16 +141,25 @@ New code is split into CommonJS-style modules, stitched together using a simple 
 I've tried to use Stitch.js, but it did not want to autorun startup code from startup.coffee module. The custom-made regexp-ridden approach works so much better (and produces much clearer code).
 
 
-Running tests
--------------
+Hacking on LiveReload.js
+------------------------
 
-Use node.js 0.4.x (if you have 0.5.x installed, use `nvm`) and run:
+Requirements
 
-    expresso -I lib
+* Node.js
+* CoffeeScript
+* Ruby
+* Rake
+* expresso
 
-Get code coverage report (current coverage is about 70%):
+To build:
 
-    expresso -c -I lib
+    rake build
+
+To run tests:
+
+    rake
+
 
 License
 -------

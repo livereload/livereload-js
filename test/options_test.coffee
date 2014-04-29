@@ -1,5 +1,6 @@
-{ Options } = require 'options'
 jsdom = require 'jsdom'
+
+{ Options } = require '../src/options'
 
 
 exports['should extract host and port from a SCRIPT tag'] = (beforeExit, assert) ->

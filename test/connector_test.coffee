@@ -1,6 +1,6 @@
-{ Options }    = require 'options'
-{ Connector }  = require 'connector'
-{ PROTOCOL_7 } = require 'protocol'
+{ Options }    = require '../src/options'
+{ Connector }  = require '../src/connector'
+{ PROTOCOL_7 } = require '../src/protocol'
 
 HELLO = { command: 'hello', protocols: [PROTOCOL_7] }
 

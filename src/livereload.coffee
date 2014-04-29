@@ -1,7 +1,7 @@
-{ Connector } = require 'connector'
-{ Timer }     = require 'timer'
-{ Options }   = require 'options'
-{ Reloader }  = require 'reloader'
+{ Connector } = require './connector'
+{ Timer }     = require './timer'
+{ Options }   = require './options'
+{ Reloader }  = require './reloader'
 
 exports.LiveReload = class LiveReload
 
