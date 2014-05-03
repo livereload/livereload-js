@@ -75,7 +75,7 @@ exports.LiveReload = class LiveReload
     @console.log "#{message}"
 
   performReload: (message) ->
-    @log "LiveReload received reload request for #{message.path}."
+    @log "LiveReload received reload request: #{JSON.stringify(message, null, 2)}"
     @reloader.reload message.path,
       liveCSS: message.liveCSS ? yes
       liveImg: message.liveImg ? yes

@@ -211,7 +211,7 @@ exports.Reloader = class Reloader
     # http://www.zachleat.com/web/load-css-dynamically/
     # http://pieisgood.org/test/script-link-events/
     clone.onload = =>
-      console.log "onload!"
+      @console.log "LiveReload: the new stylesheet has finished loading"
       @knownToSupportCssOnLoad = yes
       executeCallback()
 
@@ -219,7 +219,7 @@ exports.Reloader = class Reloader
       # polling
       do poll = =>
         if clone.sheet
-          console.log "polling!"
+          @console.log "LiveReload is polling until the new CSS finishes loading..."
           executeCallback()
         else
           @Timer.start 50, poll
@@ -321,7 +321,9 @@ exports.Reloader = class Reloader
 
     if @options.overrideURL
       if url.indexOf(@options.serverURL) < 0
+        originalUrl = url
         url = @options.serverURL + @options.overrideURL + "?url=" + encodeURIComponent(url)
+        @console.log "LiveReload is overriding source URL #{originalUrl} with #{url}"
 
     params = oldParams.replace /(\?|&)livereload=(\d+)/, (match, sep) -> "#{sep}#{expando}"
     if params == oldParams
