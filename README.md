@@ -62,6 +62,12 @@ It is possible to communicate with a running LiveReload script using DOM events:
 LiveReload object is also exposed as `window.LiveReload`, with `LiveReload.disconnect()`, `LiveReload.connect()` and `LiveReload.shutDown()` being available. However I'm not yet sure if I want to keep this API, so consider it non-contractual (and email me if you have a use for it).
 
 
+Having trouble?
+---------------
+
+To enable debugging output to console, append `?LR-verbose` to your URL.
+
+
 Status
 ------
 
