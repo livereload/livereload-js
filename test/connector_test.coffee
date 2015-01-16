@@ -1,3 +1,4 @@
+assert = require 'assert'
 { Options }    = require '../src/options'
 { Connector }  = require '../src/connector'
 { PROTOCOL_7 } = require '../src/protocol'
@@ -69,7 +70,7 @@ newMockWebSocket = ->
     receive: (message) ->
       @onmessage({ data: message })
 
-    assertMessages: (assert, messages) ->
+    assertMessages: (messages) ->
       actual   = []
       expected = []
 
@@ -97,10 +98,10 @@ newMockWebSocket = ->
   return MockWebSocket
 
 
-shouldBeConnecting = (assert, handlers) ->
+shouldBeConnecting = (handlers) ->
   assert.equal "connecting", handlers.obtainLog()
 
-shouldReconnect = (assert, handlers, timer, failed, code) ->
+shouldReconnect = (handlers, timer, failed, code) ->
   if failed
     delays = [1000, 2000, 4000, 8000, 16000, 32000, 60000, 60000, 60000]
   else
@@ -110,24 +111,24 @@ shouldReconnect = (assert, handlers, timer, failed, code) ->
     assert.equal "", handlers.obtainLog()
 
     timer.advance 100
-    shouldBeConnecting assert, handlers
+    shouldBeConnecting handlers
 
     code()
 
-cannotConnect = (assert, handlers, webSocket) ->
-  assert.isNotNull (ws = webSocket.last())
+cannotConnect = (handlers, webSocket) ->
+  assert.ok (ws = webSocket.last())?
   ws.disconnected()
   assert.equal "disconnected(cannot-connect)", handlers.obtainLog()
 
-connectionBroken = (assert, handlers, ws) ->
+connectionBroken = (handlers, ws) ->
   ws.disconnected()
   assert.equal "disconnected(broken)", handlers.obtainLog()
 
-connectAndPerformHandshake = (assert, handlers, webSocket, func) ->
-  assert.isNotNull (ws = webSocket.last())
+connectAndPerformHandshake = (handlers, webSocket, func) ->
+  assert.ok (ws = webSocket.last())?
 
   ws.connected()
-  ws.assertMessages assert, [{ command: 'hello' }]
+  ws.assertMessages [{ command: 'hello' }]
   assert.equal "", handlers.obtainLog()
 
   ws.receive JSON.stringify(HELLO)
@@ -135,72 +136,73 @@ connectAndPerformHandshake = (assert, handlers, webSocket, func) ->
 
   func?(ws)
 
-connectAndTimeoutHandshake = (assert, handlers, timer, webSocket, func) ->
-  assert.isNotNull (ws = webSocket.last())
+connectAndTimeoutHandshake = (handlers, timer, webSocket, func) ->
+  assert.ok (ws = webSocket.last())?
 
   ws.connected()
-  ws.assertMessages assert, [{ command: 'hello' }]
+  ws.assertMessages [{ command: 'hello' }]
   assert.equal "", handlers.obtainLog()
 
   timer.advance 5000
   assert.equal "disconnected(handshake-timeout)", handlers.obtainLog()
 
-sendReload = (assert, handlers, ws) ->
+sendReload = (handlers, ws) ->
   ws.receive JSON.stringify({ command: 'reload', path: 'foo.css' })
   assert.equal "message(reload)", handlers.obtainLog()
 
 
-exports['should connect and perform handshake'] = (beforeExit, assert) ->
-  handlers  = new MockHandlers()
-  options   = new Options()
-  timer     = newMockTimer()
-  webSocket = newMockWebSocket()
-  connector = new Connector(options, webSocket, timer, handlers)
+describe "Connector", ->
+  it "should connect and perform handshake", ->
+    handlers  = new MockHandlers()
+    options   = new Options()
+    timer     = newMockTimer()
+    webSocket = newMockWebSocket()
+    connector = new Connector(options, webSocket, timer, handlers)
 
-  shouldBeConnecting assert, handlers
-  connectAndPerformHandshake assert, handlers, webSocket, (ws) ->
-    sendReload assert, handlers, ws
-
-
-exports['should repeat connection attempts'] = (beforeExit, assert) ->
-  handlers  = new MockHandlers()
-  options   = new Options()
-  timer     = newMockTimer()
-  webSocket = newMockWebSocket()
-  connector = new Connector(options, webSocket, timer, handlers)
-
-  shouldBeConnecting assert, handlers
-  cannotConnect assert, handlers, webSocket
-
-  shouldReconnect assert, handlers, timer, yes, ->
-    cannotConnect assert, handlers, webSocket
+    shouldBeConnecting handlers
+    connectAndPerformHandshake handlers, webSocket, (ws) ->
+      sendReload handlers, ws
 
 
-exports['should reconnect after disconnection'] = (beforeExit, assert) ->
-  handlers  = new MockHandlers()
-  options   = new Options()
-  timer     = newMockTimer()
-  webSocket = newMockWebSocket()
-  connector = new Connector(options, webSocket, timer, handlers)
+  it "should repeat connection attempts", ->
+    handlers  = new MockHandlers()
+    options   = new Options()
+    timer     = newMockTimer()
+    webSocket = newMockWebSocket()
+    connector = new Connector(options, webSocket, timer, handlers)
 
-  shouldBeConnecting assert, handlers
-  connectAndPerformHandshake assert, handlers, webSocket, (ws) ->
-    connectionBroken assert, handlers, ws
+    shouldBeConnecting handlers
+    cannotConnect handlers, webSocket
 
-  shouldReconnect assert, handlers, timer, no, ->
-    connectAndPerformHandshake assert, handlers, webSocket, (ws) ->
-      connectionBroken assert, handlers, ws
+    shouldReconnect handlers, timer, yes, ->
+      cannotConnect handlers, webSocket
 
 
-exports['should timeout handshake after 5 sec'] = (beforeExit, assert) ->
-  handlers  = new MockHandlers()
-  options   = new Options()
-  timer     = newMockTimer()
-  webSocket = newMockWebSocket()
-  connector = new Connector(options, webSocket, timer, handlers)
+  it "should reconnect after disconnection", ->
+    handlers  = new MockHandlers()
+    options   = new Options()
+    timer     = newMockTimer()
+    webSocket = newMockWebSocket()
+    connector = new Connector(options, webSocket, timer, handlers)
 
-  shouldBeConnecting assert, handlers
-  connectAndTimeoutHandshake assert, handlers, timer, webSocket
+    shouldBeConnecting handlers
+    connectAndPerformHandshake handlers, webSocket, (ws) ->
+      connectionBroken handlers, ws
 
-  shouldReconnect assert, handlers, timer, yes, ->
-    connectAndTimeoutHandshake assert, handlers, timer, webSocket
+    shouldReconnect handlers, timer, no, ->
+      connectAndPerformHandshake handlers, webSocket, (ws) ->
+        connectionBroken handlers, ws
+
+
+  it "should timeout handshake after 5 sec", ->
+    handlers  = new MockHandlers()
+    options   = new Options()
+    timer     = newMockTimer()
+    webSocket = newMockWebSocket()
+    connector = new Connector(options, webSocket, timer, handlers)
+
+    shouldBeConnecting handlers
+    connectAndTimeoutHandshake handlers, timer, webSocket
+
+    shouldReconnect handlers, timer, yes, ->
+      connectAndTimeoutHandshake handlers, timer, webSocket
