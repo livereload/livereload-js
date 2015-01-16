@@ -12,12 +12,13 @@ exports.Options = class Options
     @handshake_timeout = 5000
 
   set: (name, value) ->
-    switch typeof @[value]
-      when 'undefined' then # ignore
-      when 'number'
-        @[name] = +value
-      else
-        @[name] = value
+    if typeof value is 'undefined'
+      return
+
+    if not isNaN(+value)
+      value = +value
+
+    @[name] = value
 
 Options.extract = (document) ->
   for element in document.getElementsByTagName('script')
