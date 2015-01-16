@@ -22,32 +22,47 @@ LiveReload 2 server listens on port 35729 and serves livereload.js over HTTP (be
 
 A slightly smarter way is to use the host name of the current page, assuming that it is being served from the same computer. This approach enables LiveReload when viewing the web page from other devices on the network:
 
+
+```html
     <script>document.write('<script src="http://'
         + location.host.split(':')[0]
         + ':35729/livereload.js"></'
         + 'script>')</script>
+```
+
 
 However, `location.host` is empty for file: URLs, so we need to account for that:
 
+
+```html
     <script>document.write('<script src="http://'
         + (location.host || 'localhost').split(':')[0]
         + ':35729/livereload.js"></'
         + 'script>')</script>
+```
+
 
 LiveReload.js finds a script tag that includes `.../livereload.js` and uses it to determine the hostname/port to connect to. It also understands some options from the query string: `host`, `port`, `snipver`, `mindelay` and `maxdelay`.
 
 `snipver` specifies a version of the snippet, so that we can warn when the snippet needs to be updated. The currently recommended version 1 of the snippet is:
 
+
+```html
     <script>document.write('<script src="http://'
         + (location.host || 'localhost').split(':')[0]
         + ':35729/livereload.js?snipver=1"></'
         + 'script>')</script>
+```
+
 
 Additionally, you might want to specify `mindelay` and `maxdelay`, which is minimum and maximum reconnection delay in milliseconds (defaulting to 1000 and 60000).
 
 Alternatively, instead of loading livereload.js from the LiveReload server, you might want to include it from a different URL. In this case include a `host` parameter to override the host name. For example:
 
+
+```html
     <script src="https://github.com/livereload/livereload-js/raw/master/dist/livereload.js?host=localhost"></script>
+```
 
 
 Communicating with livereload.js
@@ -76,8 +91,8 @@ Done:
 * live CSS reloading
 * full page reloading
 * protocol, WebSocket communication
-* CSS @import support
-* live image reloading (IMG src, background-image and border-image properties, both inline and in stylesheets)
+* CSS `@import` support
+* live image reloading (`<img src="..." />`, `background-image` and `border-image` properties, both inline and in stylesheets)
 * live in-browser LESS.js reloading
 
 To Do:
@@ -90,11 +105,11 @@ Issues & Limitations
 
 **Live reloading of imported stylesheets has a 200ms lag.** Modifying a CSS `@import` rule to reference a not-yet-cached file causes WebKit to lose all document styles, so we have to apply a workaround that causes a lag.
 
-Our workaround is to add a temporary LINK element for the imported stylesheet we're trying to reload, wait 200ms to make sure WebKit loads the new file, then remove the LINK tag and recreate the @import rule. This prevents a flash of unstyled content. (We also wait 200 more milliseconds and recreate the @import rule again, in case those initial 200ms were not enough.)
+Our workaround is to add a temporary `<link />` element for the imported stylesheet we're trying to reload, wait 200ms to make sure WebKit loads the new file, then remove `<link />` and recreate the `@import` rule. This prevents a flash of unstyled content. (We also wait 200 more milliseconds and recreate the `@import` rule again, in case those initial 200ms were not enough.)
 
-**Live image reloading is limited to IMG src, background-image and border-image styles.** Any other places where images can be mentioned?
+**Live image reloading is limited to `<img src="..." />`, `background-image` and `border-image` styles.** Any other places where images can be mentioned?
 
-**Live image reloading is limited to jpg, jpeg, gif and png extensions.** Maybe need to add SVG there? Anything else?
+**Live image reloading is limited to `jpg`, `jpeg`, `gif`, and `png` extensions.** Maybe need to add `svg` there? Anything else?
 
 
 What is LiveReload?
@@ -130,7 +145,7 @@ I've tried to use Stitch.js, but it did not want to autorun startup code from st
 Running tests
 -------------
 
-Use node.js 0.4.x (if you have 0.5.x installed, use nvm) and run:
+Use node.js 0.4.x (if you have 0.5.x installed, use `nvm`) and run:
 
     expresso -I lib
 
