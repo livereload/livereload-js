@@ -19,12 +19,12 @@ exports.LiveReload = class LiveReload
 
     # i can haz sockets?
     unless @WebSocket = @window.WebSocket || @window.MozWebSocket
-      console.error("LiveReload disabled because the browser does not seem to support web sockets")
+      @console.error("LiveReload disabled because the browser does not seem to support web sockets")
       return
 
     # i can haz options?
     unless @options = Options.extract(@window.document)
-      console.error("LiveReload disabled because it could not find its own <SCRIPT> tag")
+      @console.error("LiveReload disabled because it could not find its own <SCRIPT> tag")
       return
 
     # i can haz reloader?
@@ -43,9 +43,9 @@ exports.LiveReload = class LiveReload
 
       error: (e) =>
         if e instanceof ProtocolError
-          console.log "#{e.message}."
+          console.log "#{e.message}." if console?
         else
-          console.log "LiveReload internal error: #{e.message}"
+          console.log "LiveReload internal error: #{e.message}" if console?
 
       disconnected: (reason, nextDelay) =>
         @listeners.disconnect?()
