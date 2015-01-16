@@ -1,6 +1,6 @@
 { Parser, PROTOCOL_6, PROTOCOL_7 } = require './protocol'
 
-Version = '2.1.0'
+Version = '2.2.0'
 
 exports.Connector = class Connector
 
