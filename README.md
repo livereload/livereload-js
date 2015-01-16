@@ -157,6 +157,26 @@ The code is split into CommonJS modules, stitched together using a simple Rakefi
 I've tried to use Stitch.js, but it did not want to autorun startup code from startup.coffee module. The custom-made regexp-ridden approach works so much better (and produces much clearer code).
 
 
+Releasing a new version
+-----------------------
+
+1. Update the version number in `package.json`.
+
+1. Run `rake version` to update the version numbers in all other files, using the one from package.json.
+
+1. Run `rake build` to make sure `dist/livereload.js` is updated.
+
+1. Run the tests: `rake`
+
+1. Do some manual testing as well!
+
+1. Tag the version in Git: `rake tag` then `git push --tags`.
+
+1. `npm publish`
+
+1. `bower publish`
+
+
 License
 -------
 

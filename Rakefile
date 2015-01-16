@@ -7,7 +7,6 @@ JS = []
 VERSION_FILES = %w(
     src/connector.coffee
     bower.json
-    package.json
 )
 
 def coffee dst, src
@@ -52,7 +51,12 @@ class JSModule
 end
 
 def version
-    File.read('VERSION').strip
+    content = File.read('package.json')
+    if content =~ /"version": "(\d+\.\d+\.\d+)"/
+        return $1
+    else
+        raise "Failed to get version info from package.json"
+    end
 end
 
 def subst_version_refs_in_file file, ver
@@ -112,16 +116,6 @@ task :version do
     ver = version
     VERSION_FILES.each { |file| subst_version_refs_in_file(file, ver) }
     Rake::Task[:build].invoke
-end
-
-desc "Increase version number"
-task :bump do
-    prev = version
-    components = File.read('VERSION').strip.split('.')
-    components[-1] = (components[-1].to_i + 1).to_s
-    File.open('VERSION', 'w') { |f| f.write "#{components.join('.')}\n" }
-    puts "#{prev} => #{version}"
-    Rake::Task[:version].invoke
 end
 
 desc "Tag the current version"
