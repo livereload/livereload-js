@@ -427,14 +427,13 @@ __options.Options = Options = (function() {
   }
 
   Options.prototype.set = function(name, value) {
-    switch (typeof this[value]) {
-      case 'undefined':
-        break;
-      case 'number':
-        return this[name] = +value;
-      default:
-        return this[name] = value;
+    if (typeof value === 'undefined') {
+      return;
     }
+    if (!isNaN(+value)) {
+      value = +value;
+    }
+    return this[name] = value;
   };
 
   return Options;
