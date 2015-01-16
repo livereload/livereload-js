@@ -427,7 +427,7 @@ __options.Options = Options = (function() {
   }
 
   Options.prototype.set = function(name, value) {
-    switch (typeof this[name]) {
+    switch (typeof this[value]) {
       case 'undefined':
         break;
       case 'number':
@@ -951,11 +951,11 @@ __livereload.LiveReload = LiveReload = (function() {
       error: function() {}
     };
     if (!(this.WebSocket = this.window.WebSocket || this.window.MozWebSocket)) {
-      console.error("LiveReload disabled because the browser does not seem to support web sockets");
+      this.console.error("LiveReload disabled because the browser does not seem to support web sockets");
       return;
     }
     if (!(this.options = Options.extract(this.window.document))) {
-      console.error("LiveReload disabled because it could not find its own <SCRIPT> tag");
+      this.console.error("LiveReload disabled because it could not find its own <SCRIPT> tag");
       return;
     }
     this.reloader = new Reloader(this.window, this.console, Timer);
@@ -979,9 +979,13 @@ __livereload.LiveReload = LiveReload = (function() {
       error: (function(_this) {
         return function(e) {
           if (e instanceof ProtocolError) {
-            return console.log("" + e.message + ".");
+            if (typeof console !== "undefined" && console !== null) {
+              return console.log("" + e.message + ".");
+            }
           } else {
-            return console.log("LiveReload internal error: " + e.message);
+            if (typeof console !== "undefined" && console !== null) {
+              return console.log("LiveReload internal error: " + e.message);
+            }
           }
         };
       })(this),
