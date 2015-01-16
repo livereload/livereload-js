@@ -24,10 +24,10 @@ A slightly smarter way is to use the host name of the current page, assuming tha
 
 
 ```html
-    <script>document.write('<script src="http://'
-        + location.host.split(':')[0]
-        + ':35729/livereload.js"></'
-        + 'script>')</script>
+<script>document.write('<script src="http://'
+    + location.host.split(':')[0]
+    + ':35729/livereload.js"></'
+    + 'script>')</script>
 ```
 
 
@@ -35,10 +35,10 @@ However, `location.host` is empty for file: URLs, so we need to account for that
 
 
 ```html
-    <script>document.write('<script src="http://'
-        + (location.host || 'localhost').split(':')[0]
-        + ':35729/livereload.js"></'
-        + 'script>')</script>
+<script>document.write('<script src="http://'
+    + (location.host || 'localhost').split(':')[0]
+    + ':35729/livereload.js"></'
+    + 'script>')</script>
 ```
 
 
@@ -48,10 +48,10 @@ LiveReload.js finds a script tag that includes `.../livereload.js` and uses it t
 
 
 ```html
-    <script>document.write('<script src="http://'
-        + (location.host || 'localhost').split(':')[0]
-        + ':35729/livereload.js?snipver=1"></'
-        + 'script>')</script>
+<script>document.write('<script src="http://'
+    + (location.host || 'localhost').split(':')[0]
+    + ':35729/livereload.js?snipver=1"></'
+    + 'script>')</script>
 ```
 
 
@@ -61,7 +61,7 @@ Alternatively, instead of loading livereload.js from the LiveReload server, you 
 
 
 ```html
-    <script src="https://github.com/livereload/livereload-js/raw/master/dist/livereload.js?host=localhost"></script>
+<script src="https://github.com/livereload/livereload-js/raw/master/dist/livereload.js?host=localhost"></script>
 ```
 
 
