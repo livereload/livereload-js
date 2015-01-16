@@ -340,7 +340,7 @@ __less = LessPlugin = (function() {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         link = _ref[_i];
-        if (link.href && link.rel === 'stylesheet/less' || (link.rel.match(/stylesheet/) && link.type.match(/^text\/(x-)?less$/))) {
+        if (link.href && link.rel.match(/^stylesheet\/less$/i) || (link.rel.match(/stylesheet/i) && link.type.match(/^text\/(x-)?less$/i))) {
           _results.push(link);
         }
       }
@@ -698,7 +698,7 @@ __reloader.Reloader = Reloader = (function() {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         link = _ref[_i];
-        if (link.rel === 'stylesheet' && !link.__LiveReload_pendingRemoval) {
+        if (link.rel.match(/^stylesheet$/i) && !link.__LiveReload_pendingRemoval) {
           _results.push(link);
         }
       }

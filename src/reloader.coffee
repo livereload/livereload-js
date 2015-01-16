@@ -148,7 +148,7 @@ exports.Reloader = class Reloader
 
   reloadStylesheet: (path) ->
     # has to be a real array, because DOMNodeList will be modified
-    links = (link for link in @document.getElementsByTagName('link') when link.rel is 'stylesheet' and not link.__LiveReload_pendingRemoval)
+    links = (link for link in @document.getElementsByTagName('link') when link.rel.match(/^stylesheet$/i) and not link.__LiveReload_pendingRemoval)
 
     # find all imported stylesheets
     imported = []

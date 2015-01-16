@@ -14,7 +14,7 @@ module.exports = class LessPlugin
     no
 
   reloadLess: (path) ->
-    links = (link for link in document.getElementsByTagName('link') when link.href and link.rel is 'stylesheet/less' or (link.rel.match(/stylesheet/) and link.type.match(/^text\/(x-)?less$/)))
+    links = (link for link in document.getElementsByTagName('link') when link.href and link.rel.match(/^stylesheet\/less$/i) or (link.rel.match(/stylesheet/i) and link.type.match(/^text\/(x-)?less$/i)))
 
     return no if links.length is 0
 
