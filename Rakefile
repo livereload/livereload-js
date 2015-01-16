@@ -6,6 +6,7 @@ JS = []
 
 VERSION_FILES = %w(
     src/connector.coffee
+    bower.json
 )
 
 def coffee dst, src
