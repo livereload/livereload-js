@@ -1,4 +1,3 @@
-
 exports.Options = class Options
   constructor: ->
     @host    = null
@@ -13,7 +12,7 @@ exports.Options = class Options
     @handshake_timeout = 5000
 
   set: (name, value) ->
-    switch typeof @[name]
+    switch typeof @[value]
       when 'undefined' then # ignore
       when 'number'
         @[name] = +value
