@@ -1,8 +1,9 @@
 { Options }    = require 'options'
 { Connector }  = require 'connector'
-{ PROTOCOL_7 } = require 'protocol'
+{ Protocol } = require 'protocol'
+assert = require 'assert'
 
-HELLO = { command: 'hello', protocols: [PROTOCOL_7] }
+HELLO = { command: 'hello', protocols: [Protocol.PROTOCOL_7] }
 
 class MockHandlers
   constructor: ->
@@ -115,7 +116,7 @@ shouldReconnect = (assert, handlers, timer, failed, code) ->
     code()
 
 cannotConnect = (assert, handlers, webSocket) ->
-  assert.isNotNull (ws = webSocket.last())
+  assert.ok (ws = webSocket.last())?
   ws.disconnected()
   assert.equal "disconnected(cannot-connect)", handlers.obtainLog()
 
@@ -124,7 +125,7 @@ connectionBroken = (assert, handlers, ws) ->
   assert.equal "disconnected(broken)", handlers.obtainLog()
 
 connectAndPerformHandshake = (assert, handlers, webSocket, func) ->
-  assert.isNotNull (ws = webSocket.last())
+  assert.ok (ws = webSocket.last())?
 
   ws.connected()
   ws.assertMessages assert, [{ command: 'hello' }]
@@ -136,7 +137,7 @@ connectAndPerformHandshake = (assert, handlers, webSocket, func) ->
   func?(ws)
 
 connectAndTimeoutHandshake = (assert, handlers, timer, webSocket, func) ->
-  assert.isNotNull (ws = webSocket.last())
+  assert.ok (ws = webSocket.last())?
 
   ws.connected()
   ws.assertMessages assert, [{ command: 'hello' }]
@@ -150,7 +151,7 @@ sendReload = (assert, handlers, ws) ->
   assert.equal "message(reload)", handlers.obtainLog()
 
 
-exports['should connect and perform handshake'] = (beforeExit, assert) ->
+exports['should connect and perform handshake'] = () ->
   handlers  = new MockHandlers()
   options   = new Options()
   timer     = newMockTimer()
@@ -162,7 +163,7 @@ exports['should connect and perform handshake'] = (beforeExit, assert) ->
     sendReload assert, handlers, ws
 
 
-exports['should repeat connection attempts'] = (beforeExit, assert) ->
+exports['should repeat connection attempts'] = () ->
   handlers  = new MockHandlers()
   options   = new Options()
   timer     = newMockTimer()
@@ -176,7 +177,7 @@ exports['should repeat connection attempts'] = (beforeExit, assert) ->
     cannotConnect assert, handlers, webSocket
 
 
-exports['should reconnect after disconnection'] = (beforeExit, assert) ->
+exports['should reconnect after disconnection'] = () ->
   handlers  = new MockHandlers()
   options   = new Options()
   timer     = newMockTimer()
@@ -192,7 +193,7 @@ exports['should reconnect after disconnection'] = (beforeExit, assert) ->
       connectionBroken assert, handlers, ws
 
 
-exports['should timeout handshake after 5 sec'] = (beforeExit, assert) ->
+exports['should timeout handshake after 5 sec'] = () ->
   handlers  = new MockHandlers()
   options   = new Options()
   timer     = newMockTimer()

@@ -1,12 +1,15 @@
+exports.Protocol = Protocol = {}
 
-exports.PROTOCOL_6 = PROTOCOL_6 = 'http://livereload.com/protocols/official-6'
-exports.PROTOCOL_7 = PROTOCOL_7 = 'http://livereload.com/protocols/official-7'
+Protocol.PROTOCOL_6 = PROTOCOL_6 = 'http://livereload.com/protocols/official-6'
+Protocol.PROTOCOL_7 = PROTOCOL_7 = 'http://livereload.com/protocols/official-7'
 
-exports.ProtocolError = class ProtocolError
+Protocol.PROTOCOLS = [PROTOCOL_6, PROTOCOL_7]
+
+ProtocolError = class ProtocolError
   constructor: (reason, data) ->
     @message = "LiveReload protocol error (#{reason}) after receiving data: \"#{data}\"."
 
-exports.Parser = class Parser
+Protocol.Parser = class Parser
   constructor: (@handlers) ->
     @reset()
 

@@ -1,4 +1,4 @@
-CustomEvents =
+exports.CustomEvents = CustomEvents =
   bind: (element, eventName, handler) ->
     if element.addEventListener
       element.addEventListener eventName, handler, false
@@ -21,5 +21,3 @@ CustomEvents =
     else
       throw new Error("Attempt to fire custom event #{eventName} on something which isn't a DOMElement")
 
-exports.bind = CustomEvents.bind
-exports.fire = CustomEvents.fire
