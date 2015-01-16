@@ -53,6 +53,24 @@ Would love, but doesn't seem possible:
 * live JS reloading
 
 
+Installing using Bower and npm
+------------------------------
+
+This script is published on Bower and npm, although, again, the preferred method is to avoid installing it altogether, and instead use the one bundled with your LiveReload server/app/tool.
+
+Using Bower:
+
+    bower install livereload-js --save-dev
+
+This gives you a component containing a single script file, `dist/livereload.js`.
+
+If you're using Browserify, you can require LiveReload via npm:
+
+    npm install livereload-js --save
+
+Note that the package uses `window` and `document` globals, so won't run under Node.js environment.
+
+
 Using livereload.js
 -------------------
 

@@ -2,7 +2,7 @@
   "name": "livereload-js",
   "version": "2.1.0",
   "description": "LiveReload JS client - auto reload browser on changes",
-  "main": "lib/livereload.js",
+  "main": "lib/startup.js",
   "directories": {
     "test": "test"
   },
