@@ -192,3 +192,25 @@ License
 -------
 
 livereload-js is available under the MIT license, see LICENSE file for details.
+
+
+Version history
+---------------
+
+2.2.0 (Jan 16, 2015)
+
+* the first version stitched with Browserify; everything seems to work, but 2.1.0 is available just in case
+* switched the build system to Grunt
+
+2.1.0 (Jan 16, 2015)
+
+* use case-insensitive matching for `rel` attribute in `<link rel="stylesheet">` tags, to accomodate legacy Rails versions
+* avoid usage of `console` when it's not definited
+* some README changes
+
+2.0.8 (May 22, 2012)
+
+* Fix live CSS refresh to work with prefixfree
+* Correctly trigger removal of old `<link>` tags
+
+(older history not recorded)
