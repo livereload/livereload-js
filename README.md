@@ -197,6 +197,10 @@ livereload-js is available under the MIT license. See the LICENSE file for detai
 Version history
 ---------------
 
+2.2.1 (Jan 17, 2015)
+
+* npm fix: actually include `/lib` in the package
+
 2.2.0 (Jan 16, 2015)
 
 * the first version stitched with Browserify; everything seems to work, but 2.1.0 is available just in case
