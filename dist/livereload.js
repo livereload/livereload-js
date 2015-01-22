@@ -385,17 +385,29 @@
     LiveReload.prototype.performReload = function(message) {
       var _ref, _ref1;
       this.log("LiveReload received reload request: " + (JSON.stringify(message, null, 2)));
-      return this.reloader.reload(message.path, {
+      this.reloader.reload(message.path, {
         liveCSS: (_ref = message.liveCSS) != null ? _ref : true,
         liveImg: (_ref1 = message.liveImg) != null ? _ref1 : true,
         originalPath: message.originalPath || '',
         overrideURL: message.overrideURL || '',
-        serverURL: "http://" + this.options.host + ":" + this.options.port
+        serverURL: "//" + this.options.host + ":" + this.options.port
       });
+      return this.performTransition();
     };
 
     LiveReload.prototype.performAlert = function(message) {
       return alert(message.message);
+    };
+
+    LiveReload.prototype.performTransition = function() {
+      var existingHtmlClass, html, reloadedClass, _ref;
+      html = document.body.parentNode;
+      reloadedClass = ' livereload-reloaded ';
+      existingHtmlClass = (_ref = html.getAttribute('class')) != null ? _ref : '';
+      html.setAttribute('class', "" + (existingHtmlClass.replace(reloadedClass, '')) + " " + reloadedClass);
+      return setTimeout((function() {
+        return html.setAttribute('class', existingHtmlClass.replace(reloadedClass, ''));
+      }), parseInt(this.options.animation_duration, 10) + 20);
     };
 
     LiveReload.prototype.shutDown = function() {
@@ -450,6 +462,24 @@
       });
     };
 
+    LiveReload.prototype.setUpCSSTransitions = function() {
+      var cssText, head, prefixer, styleNode;
+      prefixer = function(declaration) {
+        return (['-webkit-', '-moz-', ''].map(function(item) {
+          return "" + item + declaration;
+        })).join(' ');
+      };
+      head = document.getElementsByTagName('head')[0];
+      styleNode = document.createElement("style");
+      cssText = ".livereload-reloaded * { " + (prefixer('transition: all ' + this.options.animation_duration + 'ms ease-out;')) + " }";
+      if (styleNode.styleSheet) {
+        styleNode.styleSheet.cssText = cssText;
+      } else {
+        styleNode.appendChild(document.createTextNode(cssText));
+      }
+      return head.appendChild(styleNode);
+    };
+
     return LiveReload;
 
   })();
@@ -470,6 +500,8 @@
       this.mindelay = 1000;
       this.maxdelay = 60000;
       this.handshake_timeout = 5000;
+      this.animate = false;
+      this.animation_duration = 280;
     }
 
     Options.prototype.set = function(name, value) {
@@ -1095,6 +1127,9 @@
   });
 
   LiveReload.on('connect', function() {
+    if (!!/true|1$/.test(LiveReload.options.animate)) {
+      LiveReload.setUpCSSTransitions();
+    }
     return CustomEvents.fire(document, 'LiveReloadConnect');
   });
 
