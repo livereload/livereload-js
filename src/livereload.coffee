@@ -82,9 +82,18 @@ exports.LiveReload = class LiveReload
       originalPath: message.originalPath || ''
       overrideURL: message.overrideURL || ''
       serverURL: "http://#{@options.host}:#{@options.port}"
+    @performTransition() if !!(/true|1$/).test(LiveReload.options.animate)
 
   performAlert: (message) ->
     alert message.message
+
+  performTransition: ->
+    html = document.body.parentNode
+    reloadedClass = ' livereload-reloaded '
+    existingHtmlClass = html.getAttribute('class') ? ''
+    html.setAttribute('class', "#{existingHtmlClass.replace(reloadedClass, '')} #{reloadedClass}")
+    setTimeout (-> html.setAttribute('class', existingHtmlClass.replace(reloadedClass, ''))),
+      parseInt(@options.animation_duration, 10) + 20
 
   shutDown: ->
     @connector.disconnect()
@@ -143,3 +152,19 @@ exports.LiveReload = class LiveReload
 
     @connector.sendCommand { command: 'info', plugins: pluginsData, url: @window.location.href }
     return
+
+  setUpCSSTransitions: ->
+    prefixer = (declaration) ->
+      (['-webkit-', '-moz-', ''].map (item) -> ("#{item}#{declaration}")).join(' ')
+
+    head = document.getElementsByTagName('head')[0]
+    styleNode = document.createElement("style")
+    cssText = ".livereload-reloaded * { #{prefixer('transition: all ' +
+      @options.animation_duration + 'ms ease-out;')} }"
+
+    if styleNode.styleSheet
+      styleNode.styleSheet.cssText = cssText
+    else
+      styleNode.appendChild(document.createTextNode(cssText))
+
+    head.appendChild(styleNode)

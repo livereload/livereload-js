@@ -11,6 +11,9 @@ exports.Options = class Options
     @maxdelay = 60000
     @handshake_timeout = 5000
 
+    @animate  = false
+    @animation_duration = 280 # ms
+
   set: (name, value) ->
     if typeof value is 'undefined'
       return
