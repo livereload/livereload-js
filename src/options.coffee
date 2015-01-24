@@ -11,8 +11,7 @@ exports.Options = class Options
     @maxdelay = 60000
     @handshake_timeout = 5000
 
-    @animate  = false
-    @animation_duration = 280 # ms
+    @animate = false  # true or value in milliseconds, e.g. 420
 
   set: (name, value) ->
     if typeof value is 'undefined'
@@ -20,6 +19,10 @@ exports.Options = class Options
 
     if not isNaN(+value)
       value = +value
+
+    if name == 'animate'
+      value = 280 if value is 'true'  # default animation duration
+      return if !/true|^\d+$/.test(value)
 
     @[name] = value
 

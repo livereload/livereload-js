@@ -82,7 +82,7 @@ exports.LiveReload = class LiveReload
       originalPath: message.originalPath || ''
       overrideURL: message.overrideURL || ''
       serverURL: "http://#{@options.host}:#{@options.port}"
-    @performTransition() if !!(/true|1$/).test(LiveReload.options.animate)
+    @performTransition() if @options.animate
 
   performAlert: (message) ->
     alert message.message
@@ -93,7 +93,7 @@ exports.LiveReload = class LiveReload
     existingHtmlClass = html.getAttribute('class') ? ''
     html.setAttribute('class', "#{existingHtmlClass.replace(reloadedClass, '')} #{reloadedClass}")
     setTimeout (-> html.setAttribute('class', existingHtmlClass.replace(reloadedClass, ''))),
-      parseInt(@options.animation_duration, 10) + 20
+      parseInt(@options.animate, 10)
 
   shutDown: ->
     @connector.disconnect()
@@ -160,7 +160,7 @@ exports.LiveReload = class LiveReload
     head = document.getElementsByTagName('head')[0]
     styleNode = document.createElement("style")
     cssText = ".livereload-reloaded * { #{prefixer('transition: all ' +
-      @options.animation_duration + 'ms ease-out;')} }"
+      @options.animate + 'ms ease-out;')} }"
 
     if styleNode.styleSheet
       styleNode.styleSheet.cssText = cssText

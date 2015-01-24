@@ -8,7 +8,7 @@ LiveReload.addPlugin require('./less')
 
 LiveReload.on 'shutdown', -> delete window.LiveReload
 LiveReload.on 'connect', ->
-  LiveReload.setUpCSSTransitions() if !!(/true|1$/).test(LiveReload.options.animate)
+  LiveReload.setUpCSSTransitions() if LiveReload.options.animate
   CustomEvents.fire document, 'LiveReloadConnect'
 LiveReload.on 'disconnect', ->
   CustomEvents.fire document, 'LiveReloadDisconnect'
