@@ -206,3 +206,14 @@ describe "Connector", ->
 
     shouldReconnect handlers, timer, yes, ->
       connectAndTimeoutHandshake handlers, timer, webSocket
+
+  it "should use wss protocol with https option", ->
+    handlers  = new MockHandlers()
+    timer     = newMockTimer()
+    webSocket = newMockWebSocket()
+    options   = new Options()
+    options.https = true
+    options.host = "localhost"
+    connector = new Connector(options, webSocket, timer, handlers)
+
+    assert.equal "wss://localhost:35729/livereload", connector._uri

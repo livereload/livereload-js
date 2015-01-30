@@ -12,7 +12,7 @@
       this.WebSocket = WebSocket;
       this.Timer = Timer;
       this.handlers = handlers;
-      this._uri = "ws://" + this.options.host + ":" + this.options.port + "/livereload";
+      this._uri = "ws" + (this.options.https ? "s" : "") + "://" + this.options.host + ":" + this.options.port + "/livereload";
       this._nextDelay = this.options.mindelay;
       this._connectionDesired = false;
       this.protocol = 0;
@@ -462,6 +462,7 @@
 
   exports.Options = Options = (function() {
     function Options() {
+      this.https = false;
       this.host = null;
       this.port = 35729;
       this.snipver = null;
@@ -493,6 +494,7 @@
       element = _ref[_i];
       if ((src = element.src) && (m = src.match(/^[^:]+:\/\/(.*)\/z?livereload\.js(?:\?(.*))?$/))) {
         options = new Options();
+        options.https = src.indexOf("https") === 0;
         if (mm = m[1].match(/^([^\/:]+)(?::(\d+))?$/)) {
           options.host = mm[1];
           if (mm[2]) {
