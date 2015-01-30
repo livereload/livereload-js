@@ -1,5 +1,6 @@
 exports.Options = class Options
   constructor: ->
+    @https   = false
     @host    = null
     @port    = 35729
 
@@ -24,6 +25,7 @@ Options.extract = (document) ->
   for element in document.getElementsByTagName('script')
     if (src = element.src) && (m = src.match ///^ [^:]+ :// (.*) / z?livereload\.js (?: \? (.*) )? $///)
       options = new Options()
+      options.https = src.indexOf("https") is 0
       if mm = m[1].match ///^ ([^/:]+) (?: : (\d+) )? $///
         options.host = mm[1]
         if mm[2]

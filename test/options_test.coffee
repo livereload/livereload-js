@@ -74,3 +74,15 @@ describe "Options", ->
       assert.equal 35729, options.port
 
       done()
+
+  it "should set https when using an https URL ", (done) ->
+    jsdom.env """
+      <script src="https://somewhere.com:9876/livereload.js"></script>
+    """, [], (errors, window) ->
+      assert.ok !errors
+
+      options = Options.extract(window.document)
+      assert.ok options?
+      assert.equal true, options.https
+
+      done()
