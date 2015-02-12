@@ -11,11 +11,16 @@ exports.LiveReload = class LiveReload
     @pluginIdentifiers = {}
 
     # i can haz console?
-    @console = if @window.location.href.match(/LR-verbose/) && @window.console && @window.console.log && @window.console.error
-      @window.console
-    else
-      log:   ->
-      error: ->
+    @console =
+      if @window.console && @window.console.log && @window.console.error
+        if @window.location.href.match(/LR-verbose/)
+          @window.console
+        else
+          log:   ->
+          error: @window.console.error.bind(@window.console)
+      else
+        log:   ->
+        error: ->
 
     # i can haz sockets?
     unless @WebSocket = @window.WebSocket || @window.MozWebSocket
@@ -74,6 +79,8 @@ exports.LiveReload = class LiveReload
           when 'reload' then @performReload(message)
           when 'alert'  then @performAlert(message)
 
+    @initialized = yes
+
   on: (eventName, handler) ->
     @listeners[eventName] = handler
 
@@ -93,6 +100,7 @@ exports.LiveReload = class LiveReload
     alert message.message
 
   shutDown: ->
+    return unless @initialized
     @connector.disconnect()
     @log "LiveReload disconnected."
     @listeners.shutdown?()
@@ -100,6 +108,8 @@ exports.LiveReload = class LiveReload
   hasPlugin: (identifier) -> !!@pluginIdentifiers[identifier]
 
   addPlugin: (pluginClass) ->
+    return unless @initialized
+
     return if @hasPlugin(pluginClass.identifier)
     @pluginIdentifiers[pluginClass.identifier] = yes
 
@@ -140,6 +150,7 @@ exports.LiveReload = class LiveReload
     return
 
   analyze: ->
+    return unless @initialized
     return unless @connector.protocol >= 7
 
     pluginsData = {}
