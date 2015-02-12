@@ -23,9 +23,15 @@ exports.LiveReload = class LiveReload
       return
 
     # i can haz options?
-    unless @options = Options.extract(@window.document)
-      @console.error("LiveReload disabled because it could not find its own <SCRIPT> tag")
-      return
+    if 'LiveReloadOptions' of window
+      @options = new Options()
+      for own k, v of window['LiveReloadOptions']
+        @options.set(k, v)
+    else
+      @options = Options.extract(@window.document)
+      unless @options
+        @console.error("LiveReload disabled because it could not find its own <SCRIPT> tag")
+        return
 
     # i can haz reloader?
     @reloader = new Reloader(@window, @console, Timer)
