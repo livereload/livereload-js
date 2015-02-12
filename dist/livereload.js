@@ -278,7 +278,8 @@
 
 },{}],4:[function(require,module,exports){
 (function() {
-  var Connector, LiveReload, Options, Reloader, Timer;
+  var Connector, LiveReload, Options, Reloader, Timer,
+    __hasProp = {}.hasOwnProperty;
 
   Connector = require('./connector').Connector;
 
@@ -290,11 +291,15 @@
 
   exports.LiveReload = LiveReload = (function() {
     function LiveReload(window) {
+      var k, v, _ref;
       this.window = window;
       this.listeners = {};
       this.plugins = [];
       this.pluginIdentifiers = {};
-      this.console = this.window.location.href.match(/LR-verbose/) && this.window.console && this.window.console.log && this.window.console.error ? this.window.console : {
+      this.console = this.window.console && this.window.console.log && this.window.console.error ? this.window.location.href.match(/LR-verbose/) ? this.window.console : {
+        log: function() {},
+        error: this.window.console.error.bind(this.window.console)
+      } : {
         log: function() {},
         error: function() {}
       };
@@ -302,9 +307,20 @@
         this.console.error("LiveReload disabled because the browser does not seem to support web sockets");
         return;
       }
-      if (!(this.options = Options.extract(this.window.document))) {
-        this.console.error("LiveReload disabled because it could not find its own <SCRIPT> tag");
-        return;
+      if ('LiveReloadOptions' in window) {
+        this.options = new Options();
+        _ref = window['LiveReloadOptions'];
+        for (k in _ref) {
+          if (!__hasProp.call(_ref, k)) continue;
+          v = _ref[k];
+          this.options.set(k, v);
+        }
+      } else {
+        this.options = Options.extract(this.window.document);
+        if (!this.options) {
+          this.console.error("LiveReload disabled because it could not find its own <SCRIPT> tag");
+          return;
+        }
       }
       this.reloader = new Reloader(this.window, this.console, Timer);
       this.connector = new Connector(this.options, this.WebSocket, Timer, {
@@ -372,6 +388,7 @@
           };
         })(this)
       });
+      this.initialized = true;
     }
 
     LiveReload.prototype.on = function(eventName, handler) {
@@ -400,6 +417,9 @@
 
     LiveReload.prototype.shutDown = function() {
       var _base;
+      if (!this.initialized) {
+        return;
+      }
       this.connector.disconnect();
       this.log("LiveReload disconnected.");
       return typeof (_base = this.listeners).shutdown === "function" ? _base.shutdown() : void 0;
@@ -411,6 +431,9 @@
 
     LiveReload.prototype.addPlugin = function(pluginClass) {
       var plugin;
+      if (!this.initialized) {
+        return;
+      }
       if (this.hasPlugin(pluginClass.identifier)) {
         return;
       }
@@ -433,6 +456,9 @@
 
     LiveReload.prototype.analyze = function() {
       var plugin, pluginData, pluginsData, _i, _len, _ref;
+      if (!this.initialized) {
+        return;
+      }
       if (!(this.connector.protocol >= 7)) {
         return;
       }
