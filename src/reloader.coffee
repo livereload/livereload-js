@@ -173,9 +173,15 @@ exports.Reloader = class Reloader
         @console.log "LiveReload is reloading stylesheet: #{@linkHref(match.object)}"
         @reattachStylesheetLink(match.object)
     else
-      @console.log "LiveReload will reload all stylesheets because path '#{path}' did not match any specific one"
-      for link in links
-        @reattachStylesheetLink(link)
+      if this.options.reloadMissingCSS
+        @console.log "LiveReload will reload all stylesheets because path '#{path}' did not match any specific one.
+          To disable this behavior, set 'options.reloadMissingCSS' to 'false'."
+        for link in links
+          @reattachStylesheetLink(link)
+      else
+        @console.log "LiveReload will not reload path '#{path}' because the stylesheet was not found on the page
+          and 'options.reloadMissingCSS' was set to 'false'."
+
     return true
 
 
