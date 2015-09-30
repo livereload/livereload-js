@@ -240,7 +240,7 @@ Version history
 
 2.1.0 (Jan 16, 2015)
 
-* use case-insensitive matching for `rel` attribute in `<link rel="stylesheet">` tags, to accomodate legacy Rails versions
+* use case-insensitive matching for `rel` attribute in `<link rel="stylesheet">` tags, to accommodate legacy Rails versions
 * avoid usage of `console` when it's not definited
 * some README changes
 
