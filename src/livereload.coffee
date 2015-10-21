@@ -17,7 +17,7 @@ exports.LiveReload = class LiveReload
           @window.console
         else
           log:   ->
-          error: @window.console.error.bind(@window.console)
+          error: typeof @window.console.error === 'function' ? @window.console.error.bind(@window.console) : ->
       else
         log:   ->
         error: ->
