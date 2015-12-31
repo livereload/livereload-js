@@ -5,7 +5,14 @@ splitUrl = (url) ->
   else
     hash = ''
 
-  if (index = url.indexOf('?')) >= 0
+  # http://your.domain.com/path/to/combo/??file1.css,file2,css
+  comboSign = url.indexOf('??')
+  if comboSign >= 0
+    if comboSign + 1 != url.lastIndexOf('?')
+      index = url.lastIndexOf('?')
+  else
+    index = url.indexOf('?')
+  if index >= 0
     params = url.slice(index)
     url = url.slice(0, index)
   else
