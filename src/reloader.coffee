@@ -35,8 +35,8 @@ pickBestMatch = (path, objects, pathFunc) ->
 
 numberOfMatchingSegments = (path1, path2) ->
   # get rid of leading slashes and normalize to lower case
-  path1 = path1.replace(/^\/+/, '').toLowerCase()
-  path2 = path2.replace(/^\/+/, '').toLowerCase()
+  path1 = path1.replace(/\\/g, '/').replace(/^\/+/, '').toLowerCase()
+  path2 = path2.replace(/\\/g, '/').replace(/^\/+/, '').toLowerCase()
 
   return 10000 if path1 is path2
 
