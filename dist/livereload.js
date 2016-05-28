@@ -278,7 +278,7 @@
 
 },{}],4:[function(require,module,exports){
 (function() {
-  var Connector, LiveReload, Options, Reloader, Timer,
+  var Connector, LiveReload, Options, ProtocolError, Reloader, Timer,
     __hasProp = {}.hasOwnProperty;
 
   Connector = require('./connector').Connector;
@@ -288,6 +288,8 @@
   Options = require('./options').Options;
 
   Reloader = require('./reloader').Reloader;
+
+  ProtocolError = require('./protocol').ProtocolError;
 
   exports.LiveReload = LiveReload = (function() {
     function LiveReload(window) {
@@ -482,7 +484,7 @@
 
 }).call(this);
 
-},{"./connector":1,"./options":5,"./reloader":7,"./timer":9}],5:[function(require,module,exports){
+},{"./connector":1,"./options":5,"./protocol":6,"./reloader":7,"./timer":9}],5:[function(require,module,exports){
 (function() {
   var Options;
 
