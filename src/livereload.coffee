@@ -10,6 +10,11 @@ exports.LiveReload = class LiveReload
     @plugins = []
     @pluginIdentifiers = {}
 
+    # i can haz window.document (i.e., not a web worker)?
+    if typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope
+      @console.error("LiveReload disabled because we're in a Web Worker context.")
+      return
+
     # i can haz console?
     @console =
       if @window.console && @window.console.log && @window.console.error
