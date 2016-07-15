@@ -400,10 +400,11 @@
     };
 
     LiveReload.prototype.performReload = function(message) {
-      var _ref, _ref1;
+      var _ref, _ref1, _ref2;
       this.log("LiveReload received reload request: " + (JSON.stringify(message, null, 2)));
       return this.reloader.reload(message.path, {
         liveCSS: (_ref = message.liveCSS) != null ? _ref : true,
+        liveJS: (_ref = message.liveCSS) != null ? _ref : true,
         liveImg: (_ref1 = message.liveImg) != null ? _ref1 : true,
         originalPath: message.originalPath || '',
         overrideURL: message.overrideURL || '',
@@ -768,6 +769,14 @@
           }
         }
       }
+      if (options.liveJS) {
+        if (path.match(/\.js$/i)) {
+          // debugger; //do something w/ the path here
+          if (this.reloadJavascript(path)) {
+            return;
+          }
+        }
+      }
       if (options.liveImg) {
         if (path.match(/\.(jpe?g|png|gif)$/i)) {
           this.reloadImages(path);
@@ -779,6 +788,12 @@
 
     Reloader.prototype.reloadPage = function() {
       return this.window.document.location.reload();
+    };
+    Reloader.prototype.reloadJavascript = function (path) {
+      // TODO: check for component
+      window.devtools.service('hot-reload').trigger('newChanges', path);
+      // NOTE: for now always returning true.
+      return true;
     };
 
     Reloader.prototype.reloadImages = function(path) {
