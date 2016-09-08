@@ -761,18 +761,14 @@
           return;
         }
       }
-      if (options.liveCSS) {
-        if (path.match(/\.css$/i)) {
-          if (this.reloadStylesheet(path)) {
-            return;
-          }
-        }
-      }
-      if (options.liveImg) {
-        if (path.match(/\.(jpe?g|png|gif)$/i)) {
-          this.reloadImages(path);
+      if (options.liveCSS && path.match(/\.css(?:\.map)?$/i)) {
+        if (this.reloadStylesheet(path)) {
           return;
         }
+      }
+      if (options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)) {
+        this.reloadImages(path);
+        return;
       }
       return this.reloadPage();
     };
