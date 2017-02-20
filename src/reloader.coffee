@@ -88,12 +88,17 @@ exports.Reloader = class Reloader
       if path.match(/\.(jpe?g|png|gif)$/i)
         @reloadImages(path)
         return
+    if options.isChromeExtension
+      @reloadChromeExtension()
+      return
     @reloadPage()
 
 
   reloadPage: ->
     @window.document.location.reload()
 
+  reloadChromeExtension: ->
+    @window.chrome.runtime.reload()
 
   reloadImages: (path) ->
     expando = @generateUniqueString()
