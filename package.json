@@ -22,11 +22,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/zaius/livereload-js.git"
+    "url": "git://github.com/livereload/livereload-js.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zaius/livereload-js/issues"
+    "url": "https://github.com/livereload/livereload-js/issues"
   },
-  "homepage": "https://github.com/zaius/livereload-js"
+  "homepage": "https://github.com/livereload/livereload-js"
 }
