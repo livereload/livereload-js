@@ -14,7 +14,7 @@
     "grunt-contrib-coffee": "^0.12.0",
     "grunt-mocha-test": "^0.12.6",
     "jsdom": "~11.5.1",
-    "mocha": "^2.1.0"
+    "mocha": "^4.1.0"
   },
   "scripts": {
     "prepare": "grunt build",
