@@ -1,6 +1,5 @@
-/lib-cov/
-/src/
+/lib/
 /test/
 /bower.json
 /Rakefile
-/Gruntfile.js
+/rollup.config.js

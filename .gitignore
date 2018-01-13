@@ -1,6 +1,6 @@
 .DS_Store
-lib/*.js
-lib/*/*.js
 node_modules/
 *.tgz
 npm-debug.log
+/dist/
+!/dist/livereload.js
