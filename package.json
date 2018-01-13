@@ -17,7 +17,7 @@
     "mocha": "^2.1.0"
   },
   "scripts": {
-    "prepublish": "grunt build",
+    "prepare": "grunt build",
     "test": "grunt test"
   },
   "repository": {
