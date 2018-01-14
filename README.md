@@ -16,6 +16,7 @@ The server notifies the client whenever a change is made. Available servers are:
 * [rack-livereload](https://github.com/johnbintz/rack-livereload)
 * [guard-livereload](https://github.com/guard/guard-livereload)
 * [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)
+* [python-livereload](https://github.com/lepture/python-livereload)
 * more available on Google :-)
 * you can even write your own; refer to the [LiveReload protocol](http://help.livereload.com/kb/ecosystem/livereload-protocol)
 

@@ -2,6 +2,7 @@
 { Timer }     = require './timer'
 { Options }   = require './options'
 { Reloader }  = require './reloader'
+{ ProtocolError }  = require './protocol'
 
 exports.LiveReload = class LiveReload
 
@@ -92,6 +93,7 @@ exports.LiveReload = class LiveReload
     @reloader.reload message.path,
       liveCSS: message.liveCSS ? yes
       liveImg: message.liveImg ? yes
+      reloadMissingCSS: message.reloadMissingCSS ? yes
       originalPath: message.originalPath || ''
       overrideURL: message.overrideURL || ''
       serverURL: "http://#{@options.host}:#{@options.port}"

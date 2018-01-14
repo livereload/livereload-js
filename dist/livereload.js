@@ -8,11 +8,13 @@
 
   exports.Connector = Connector = (function() {
     function Connector(options, WebSocket, Timer, handlers) {
+      var path;
       this.options = options;
       this.WebSocket = WebSocket;
       this.Timer = Timer;
       this.handlers = handlers;
-      this._uri = "ws" + (this.options.https ? "s" : "") + "://" + this.options.host + ":" + this.options.port + "/livereload";
+      path = this.options.path ? "" + this.options.path : "livereload";
+      this._uri = "ws" + (this.options.https ? "s" : "") + "://" + this.options.host + ":" + this.options.port + "/" + path;
       this._nextDelay = this.options.mindelay;
       this._connectionDesired = false;
       this.protocol = 0;
@@ -278,7 +280,7 @@
 
 },{}],4:[function(require,module,exports){
 (function() {
-  var Connector, LiveReload, Options, Reloader, Timer,
+  var Connector, LiveReload, Options, ProtocolError, Reloader, Timer,
     __hasProp = {}.hasOwnProperty;
 
   Connector = require('./connector').Connector;
@@ -288,6 +290,8 @@
   Options = require('./options').Options;
 
   Reloader = require('./reloader').Reloader;
+
+  ProtocolError = require('./protocol').ProtocolError;
 
   exports.LiveReload = LiveReload = (function() {
     function LiveReload(window) {
@@ -482,7 +486,7 @@
 
 }).call(this);
 
-},{"./connector":1,"./options":5,"./reloader":7,"./timer":9}],5:[function(require,module,exports){
+},{"./connector":1,"./options":5,"./protocol":6,"./reloader":7,"./timer":9}],5:[function(require,module,exports){
 (function() {
   var Options;
 
@@ -761,18 +765,14 @@
           return;
         }
       }
-      if (options.liveCSS) {
-        if (path.match(/\.css$/i)) {
-          if (this.reloadStylesheet(path)) {
-            return;
-          }
-        }
-      }
-      if (options.liveImg) {
-        if (path.match(/\.(jpe?g|png|gif)$/i)) {
-          this.reloadImages(path);
+      if (options.liveCSS && path.match(/\.css(?:\.map)?$/i)) {
+        if (this.reloadStylesheet(path)) {
           return;
         }
+      }
+      if (options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)) {
+        this.reloadImages(path);
+        return;
       }
       if (options.isChromeExtension) {
         this.reloadChromeExtension();

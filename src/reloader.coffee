@@ -5,7 +5,14 @@ splitUrl = (url) ->
   else
     hash = ''
 
-  if (index = url.indexOf('?')) >= 0
+  # http://your.domain.com/path/to/combo/??file1.css,file2,css
+  comboSign = url.indexOf('??')
+  if comboSign >= 0
+    if comboSign + 1 != url.lastIndexOf('?')
+      index = url.lastIndexOf('?')
+  else
+    index = url.indexOf('?')
+  if index >= 0
     params = url.slice(index)
     url = url.slice(0, index)
   else
@@ -81,13 +88,11 @@ exports.Reloader = class Reloader
     for plugin in @plugins
       if plugin.reload && plugin.reload(path, options)
         return
-    if options.liveCSS
-      if path.match(/\.css$/i)
-        return if @reloadStylesheet(path)
-    if options.liveImg
-      if path.match(/\.(jpe?g|png|gif)$/i)
-        @reloadImages(path)
-        return
+    if options.liveCSS && path.match(/\.css(?:\.map)?$/i)
+      return if @reloadStylesheet(path)
+    if options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)
+      @reloadImages(path)
+      return
     if options.isChromeExtension
       @reloadChromeExtension()
       return
@@ -178,9 +183,15 @@ exports.Reloader = class Reloader
         @console.log "LiveReload is reloading stylesheet: #{@linkHref(match.object)}"
         @reattachStylesheetLink(match.object)
     else
-      @console.log "LiveReload will reload all stylesheets because path '#{path}' did not match any specific one"
-      for link in links
-        @reattachStylesheetLink(link)
+      if this.options.reloadMissingCSS
+        @console.log "LiveReload will reload all stylesheets because path '#{path}' did not match any specific one.
+          To disable this behavior, set 'options.reloadMissingCSS' to 'false'."
+        for link in links
+          @reattachStylesheetLink(link)
+      else
+        @console.log "LiveReload will not reload path '#{path}' because the stylesheet was not found on the page
+          and 'options.reloadMissingCSS' was set to 'false'."
+
     return true
 
 
