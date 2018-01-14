@@ -404,11 +404,12 @@
     };
 
     LiveReload.prototype.performReload = function(message) {
-      var _ref, _ref1;
+      var _ref, _ref1, _ref2;
       this.log("LiveReload received reload request: " + (JSON.stringify(message, null, 2)));
       return this.reloader.reload(message.path, {
         liveCSS: (_ref = message.liveCSS) != null ? _ref : true,
         liveImg: (_ref1 = message.liveImg) != null ? _ref1 : true,
+        reloadMissingCSS: (_ref2 = message.reloadMissingCSS) != null ? _ref2 : true,
         originalPath: message.originalPath || '',
         overrideURL: message.overrideURL || '',
         serverURL: "http://" + this.options.host + ":" + this.options.port
@@ -650,14 +651,22 @@
   var IMAGE_STYLES, Reloader, numberOfMatchingSegments, pathFromUrl, pathsMatch, pickBestMatch, splitUrl;
 
   splitUrl = function(url) {
-    var hash, index, params;
+    var comboSign, hash, index, params;
     if ((index = url.indexOf('#')) >= 0) {
       hash = url.slice(index);
       url = url.slice(0, index);
     } else {
       hash = '';
     }
-    if ((index = url.indexOf('?')) >= 0) {
+    comboSign = url.indexOf('??');
+    if (comboSign >= 0) {
+      if (comboSign + 1 !== url.lastIndexOf('?')) {
+        index = url.lastIndexOf('?');
+      }
+    } else {
+      index = url.indexOf('?');
+    }
+    if (index >= 0) {
       params = url.slice(index);
       url = url.slice(0, index);
     } else {
@@ -918,10 +927,14 @@
           this.reattachStylesheetLink(match.object);
         }
       } else {
-        this.console.log("LiveReload will reload all stylesheets because path '" + path + "' did not match any specific one");
-        for (_l = 0, _len3 = links.length; _l < _len3; _l++) {
-          link = links[_l];
-          this.reattachStylesheetLink(link);
+        if (this.options.reloadMissingCSS) {
+          this.console.log("LiveReload will reload all stylesheets because path '" + path + "' did not match any specific one. To disable this behavior, set 'options.reloadMissingCSS' to 'false'.");
+          for (_l = 0, _len3 = links.length; _l < _len3; _l++) {
+            link = links[_l];
+            this.reattachStylesheetLink(link);
+          }
+        } else {
+          this.console.log("LiveReload will not reload path '" + path + "' because the stylesheet was not found on the page and 'options.reloadMissingCSS' was set to 'false'.");
         }
       }
       return true;
