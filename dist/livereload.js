@@ -774,11 +774,19 @@
         this.reloadImages(path);
         return;
       }
+      if (options.isChromeExtension) {
+        this.reloadChromeExtension();
+        return;
+      }
       return this.reloadPage();
     };
 
     Reloader.prototype.reloadPage = function() {
       return this.window.document.location.reload();
+    };
+
+    Reloader.prototype.reloadChromeExtension = function() {
+      return this.window.chrome.runtime.reload();
     };
 
     Reloader.prototype.reloadImages = function(path) {
