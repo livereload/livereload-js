@@ -144,8 +144,11 @@ The set of supported options is the same for both methods:
 
 * `host`: the host that runs a LiveReload server; required if specifying `LiveReloadOptions`, otherwise will be autodetected as the origin of the `<script>` tag
 * `port`: optional server port override
+* `path`: optional path to livereload server (default: 'livereload')
 * `mindelay`, `maxdelay`: range of reconnection delays (if `livereload.js` cannot connect to the server, it will attempt to reconnect with increasing delays); defaults to 1,000 ms minimum and 60,000 ms maximum
 * `handshake_timeout`: timeout for a protocol handshake to be completed after a connection attempt; mostly only needed if you're running an interactive debugger on your web socket server
+* `isChromeExtension`: reload chrome runtime instead of page when true (default: false)
+* `reloadMissingCSS`: prevent reload of CSS when changed stylesheet isn't found in page (default: true)
 
 
 Issues & Limitations
