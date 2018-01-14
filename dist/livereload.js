@@ -312,40 +312,6 @@ Options.prototype.set = function set (name, value) {
   this[name] = value;
 };
 
-function extractOptions(document) {
-  var elements = document.getElementsByTagName('script');
-  for (var i = 0; i < elements.length; i++) {
-    var element = elements[i];
-
-    var m, src;
-    if ((src = element.src) && (m = src.match(new RegExp("^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$")))) {
-      var mm;
-      var options = new Options();
-      options.https = src.indexOf("https") === 0;
-      if (mm = m[1].match(new RegExp("^([^/:]+)(?::(\\d+))?$"))) {
-        options.host = mm[1];
-        if (mm[2]) {
-          options.port = parseInt(mm[2], 10);
-        }
-      }
-
-      if (m[2]) {
-        for (var i$1 = 0, list = Array.from(m[2].split('&')); i$1 < list.length; i$1 += 1) {
-          var pair = list[i$1];
-
-          var keyAndValue;
-          if ((keyAndValue = pair.split('=')).length > 1) {
-            options.set(keyAndValue[0].replace(/-/g, '_'), keyAndValue.slice(1).join('='));
-          }
-        }
-      }
-      return options
-    }
-  }
-
-  return null
-}
-
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -887,7 +853,7 @@ var LiveReload = function LiveReload(window) {
       this$1.options.set(k, v);
     }
   } else {
-    this.options = extractOptions(this.window.document);
+    this.options = Options.extract(this.window.document);
     if (!this.options) {
       this.console.error("LiveReload disabled because it could not find its own <SCRIPT> tag");
       return;
@@ -1050,71 +1016,6 @@ LiveReload.prototype.analyze = function analyze () {
 
 /*
  * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS206: Consider reworking classes to avoid initClass
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-
-var LessPlugin = function LessPlugin(window, host) {
-  this.window = window;
-  this.host = host;
-};
-
-LessPlugin.initClass = function initClass () {
-  this.identifier = 'less';
-  this.version = '1.0';
-};
-
-LessPlugin.prototype.reload = function reload (path, options) {
-  if (this.window.less && this.window.less.refresh) {
-    if (path.match(/\.less$/i)) {
-      return this.reloadLess(path);
-    }
-    if (options.originalPath.match(/\.less$/i)) {
-      return this.reloadLess(options.originalPath);
-    }
-  }
-  return false;
-};
-
-LessPlugin.prototype.reloadLess = function reloadLess (path) {
-    var this$1 = this;
-
-  var link;
-  var links = ((function () {
-    var result = [];
-    for (var i = 0, list = Array.from(document.getElementsByTagName('link')); i < list.length; i += 1) {         link = list[i];
-
-        if ((link.href && link.rel.match(/^stylesheet\/less$/i)) || (link.rel.match(/stylesheet/i) && link.type.match(/^text\/(x-)?less$/i))) {
-        result.push(link);
-      }
-    }
-    return result;
-  })());
-
-  if (links.length === 0) { return false; }
-
-  for (var i = 0, list = Array.from(links); i < list.length; i += 1) {
-    link = list[i];
-
-      link.href = this$1.host.generateCacheBustUrl(link.href);
-  }
-
-  this.host.console.log("LiveReload is asking LESS to recompile all stylesheets");
-  this.window.less.refresh(true);
-  return true;
-};
-
-LessPlugin.prototype.analyze = function analyze () {
-  return { disable: !!(this.window.less && this.window.less.refresh) };
-};
-
-LessPlugin.initClass();
-
-/*
- * decaffeinate suggestions:
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
@@ -1125,7 +1026,7 @@ for (var k in window) {
   }
 }
 
-LiveReload$1.addPlugin(LessPlugin);
+LiveReload$1.addPlugin(require('./less'));
 
 LiveReload$1.on('shutdown', function () { return delete window.LiveReload; });
 LiveReload$1.on('connect', function () { return fire(document, 'LiveReloadConnect'); });
