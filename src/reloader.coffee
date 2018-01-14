@@ -81,13 +81,11 @@ exports.Reloader = class Reloader
     for plugin in @plugins
       if plugin.reload && plugin.reload(path, options)
         return
-    if options.liveCSS
-      if path.match(/\.css$/i)
-        return if @reloadStylesheet(path)
-    if options.liveImg
-      if path.match(/\.(jpe?g|png|gif)$/i)
-        @reloadImages(path)
-        return
+    if options.liveCSS && path.match(/\.css(?:\.map)?$/i)
+      return if @reloadStylesheet(path)
+    if options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)
+      @reloadImages(path)
+      return
     @reloadPage()
 
 
