@@ -75,9 +75,8 @@ Parser.prototype.process = function process (data) {
       if (!message.length) {
         throw new ProtocolError("protocol 6 messages must be arrays", data)
       }
-      var ref = Array.from(message);
-        var command = ref[0];
-        var options = ref[1];
+      var command = message[0];
+        var options = message[1];
       if (command !== 'refresh') {
         throw new ProtocolError("unknown protocol 6 command", data)
       }
@@ -282,7 +281,6 @@ Timer.start = function start (timeout, func) {
 
 /*
  * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
@@ -330,7 +328,7 @@ function extractOptions(document) {
       }
 
       if (m[2]) {
-        for (var i$1 = 0, list = Array.from(m[2].split('&')); i$1 < list.length; i$1 += 1) {
+        for (var i$1 = 0, list = m[2].split('&'); i$1 < list.length; i$1 += 1) {
           var pair = list[i$1];
 
           var keyAndValue;
@@ -348,14 +346,14 @@ function extractOptions(document) {
 
 /*
  * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
  * DS102: Remove unnecessary code created because of implicit returns
  * DS205: Consider reworking code to avoid use of IIFEs
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 var Reloader;
-var splitUrl = function(url) {
+
+function splitUrl(url) {
   var hash, index, params;
   if ((index = url.indexOf('#')) >= 0) {
     hash = url.slice(index);
@@ -372,9 +370,9 @@ var splitUrl = function(url) {
   }
 
   return { url: url, params: params, hash: hash };
-};
+}
 
-var pathFromUrl = function(url) {
+function pathFromUrl(url) {
   var path;
   var assign;
   ((assign = splitUrl(url), url = assign.url));
@@ -387,12 +385,12 @@ var pathFromUrl = function(url) {
 
   // decodeURI has special handling of stuff like semicolons, so use decodeURIComponent
   return decodeURIComponent(path);
-};
+}
 
-var pickBestMatch = function(path, objects, pathFunc) {
+function pickBestMatch(path, objects, pathFunc) {
   var score;
   var bestMatch = { score: 0 };
-  for (var i = 0, list = Array.from(objects); i < list.length; i += 1) {
+  for (var i = 0, list = objects; i < list.length; i += 1) {
     var object = list[i];
 
     score = numberOfMatchingSegments(path, pathFunc(object));
@@ -401,10 +399,14 @@ var pickBestMatch = function(path, objects, pathFunc) {
     }
   }
 
-  if (bestMatch.score > 0) { return bestMatch; } else { return null; }
-};
+  if (bestMatch.score > 0) {
+    return bestMatch
+  } else {
+    return null
+  }
+}
 
-var numberOfMatchingSegments = function(path1, path2) {
+function numberOfMatchingSegments(path1, path2) {
   // get rid of leading slashes and normalize to lower case
   path1 = path1.replace(/^\/+/, '').toLowerCase();
   path2 = path2.replace(/^\/+/, '').toLowerCase();
@@ -421,10 +423,11 @@ var numberOfMatchingSegments = function(path1, path2) {
   }
 
   return eqCount;
-};
+}
 
-var pathsMatch = function (path1, path2) { return numberOfMatchingSegments(path1, path2) > 0; };
-
+function pathsMatch(path1, path2) {
+  return numberOfMatchingSegments(path1, path2) > 0
+}
 
 var IMAGE_STYLES = [
   { selector: 'background', styleNames: ['backgroundImage'] },
@@ -457,7 +460,7 @@ Reloader.prototype.reload = function reload (path, options) {
 
   this.options = options;// avoid passing it through all the funcs
   if (this.options.stylesheetReloadTimeout == null) { this.options.stylesheetReloadTimeout = 15000; }
-  for (var i = 0, list = Array.from(this$1.plugins); i < list.length; i += 1) {
+  for (var i = 0, list = this$1.plugins; i < list.length; i += 1) {
     var plugin = list[i];
 
       if (plugin.reload && plugin.reload(path, options)) {
@@ -489,7 +492,7 @@ Reloader.prototype.reloadImages = function reloadImages (path) {
 
   var expando = this.generateUniqueString();
 
-  for (var i = 0, list = Array.from(this$1.document.images); i < list.length; i += 1) {
+  for (var i = 0, list = this$1.document.images; i < list.length; i += 1) {
     var img = list[i];
 
       if (pathsMatch(path, pathFromUrl(img.src))) {
@@ -498,12 +501,12 @@ Reloader.prototype.reloadImages = function reloadImages (path) {
   }
 
   if (this.document.querySelectorAll) {
-    for (var i$2 = 0, list$2 = Array.from(IMAGE_STYLES); i$2 < list$2.length; i$2 += 1) {
+    for (var i$2 = 0, list$2 = IMAGE_STYLES; i$2 < list$2.length; i$2 += 1) {
       var ref = list$2[i$2];
         var selector = ref.selector;
         var styleNames = ref.styleNames;
 
-        for (var i$1 = 0, list$1 = Array.from(this$1.document.querySelectorAll(("[style*=" + selector + "]"))); i$1 < list$1.length; i$1 += 1) {
+        for (var i$1 = 0, list$1 = this$1.document.querySelectorAll(("[style*=" + selector + "]")); i$1 < list$1.length; i$1 += 1) {
         img = list$1[i$1];
 
           this$1.reloadStyleImages(img.style, styleNames, path, expando);
@@ -512,7 +515,11 @@ Reloader.prototype.reloadImages = function reloadImages (path) {
   }
 
   if (this.document.styleSheets) {
-    return Array.from(this.document.styleSheets).map(function (styleSheet) { return this$1.reloadStylesheetImages(styleSheet, path, expando); });
+    for (var i$3 = 0, list$3 = this$1.document.styleSheets; i$3 < list$3.length; i$3 += 1) {
+      var styleSheet = list$3[i$3];
+
+        this$1.reloadStylesheetImages(styleSheet, path, expando);
+    }
   }
 };
 
@@ -527,7 +534,7 @@ Reloader.prototype.reloadStylesheetImages = function reloadStylesheetImages (sty
     //
   if (!rules) { return; }
 
-  for (var i$1 = 0, list$1 = Array.from(rules); i$1 < list$1.length; i$1 += 1) {
+  for (var i$1 = 0, list$1 = rules; i$1 < list$1.length; i$1 += 1) {
     var rule = list$1[i$1];
 
       switch (rule.type) {
@@ -843,7 +850,6 @@ var Reloader$1 = Reloader;
 
 /*
  * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
  * DS102: Remove unnecessary code created because of implicit returns
  * DS203: Remove `|| {}` from converted for-own loops
  * DS207: Consider shorter variations of null checks
@@ -1037,7 +1043,7 @@ LiveReload.prototype.analyze = function analyze () {
   if (!(this.connector.protocol >= 7)) { return; }
 
   var pluginsData = {};
-  for (var i = 0, list = Array.from(this$1.plugins); i < list.length; i += 1) {
+  for (var i = 0, list = this$1.plugins; i < list.length; i += 1) {
     var plugin = list[i];
 
       var pluginData;
@@ -1050,7 +1056,6 @@ LiveReload.prototype.analyze = function analyze () {
 
 /*
  * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
  * DS102: Remove unnecessary code created because of implicit returns
  * DS205: Consider reworking code to avoid use of IIFEs
  * DS206: Consider reworking classes to avoid initClass
@@ -1060,11 +1065,6 @@ LiveReload.prototype.analyze = function analyze () {
 var LessPlugin = function LessPlugin(window, host) {
   this.window = window;
   this.host = host;
-};
-
-LessPlugin.initClass = function initClass () {
-  this.identifier = 'less';
-  this.version = '1.0';
 };
 
 LessPlugin.prototype.reload = function reload (path, options) {
@@ -1082,22 +1082,19 @@ LessPlugin.prototype.reload = function reload (path, options) {
 LessPlugin.prototype.reloadLess = function reloadLess (path) {
     var this$1 = this;
 
-  var link;
-  var links = ((function () {
-    var result = [];
-    for (var i = 0, list = Array.from(document.getElementsByTagName('link')); i < list.length; i += 1) {         link = list[i];
+  var links = [];
+  for (var i = 0, list = document.getElementsByTagName('link'); i < list.length; i += 1) {
+    link = list[i];
 
-        if ((link.href && link.rel.match(/^stylesheet\/less$/i)) || (link.rel.match(/stylesheet/i) && link.type.match(/^text\/(x-)?less$/i))) {
-        result.push(link);
-      }
+      if ((link.href && link.rel.match(/^stylesheet\/less$/i)) || (link.rel.match(/stylesheet/i) && link.type.match(/^text\/(x-)?less$/i))) {
+      links.push(link);
     }
-    return result;
-  })());
+  }
 
   if (links.length === 0) { return false; }
 
-  for (var i = 0, list = Array.from(links); i < list.length; i += 1) {
-    link = list[i];
+  for (var i$1 = 0, list$1 = links; i$1 < list$1.length; i$1 += 1) {
+    link = list$1[i$1];
 
       link.href = this$1.host.generateCacheBustUrl(link.href);
   }
@@ -1111,7 +1108,8 @@ LessPlugin.prototype.analyze = function analyze () {
   return { disable: !!(this.window.less && this.window.less.refresh) };
 };
 
-LessPlugin.initClass();
+LessPlugin.identifier = 'less';
+LessPlugin.version = '1.0';
 
 /*
  * decaffeinate suggestions:
@@ -1127,8 +1125,8 @@ for (var k in window) {
 
 LiveReload$1.addPlugin(LessPlugin);
 
-LiveReload$1.on('shutdown', function () { return delete window.LiveReload; });
-LiveReload$1.on('connect', function () { return fire(document, 'LiveReloadConnect'); });
+LiveReload$1.on('shutdown',   function () { return delete window.LiveReload; });
+LiveReload$1.on('connect',    function () { return fire(document, 'LiveReloadConnect'); });
 LiveReload$1.on('disconnect', function () { return fire(document, 'LiveReloadDisconnect'); });
 
 bind(document, 'LiveReloadShutDown', function () { return LiveReload$1.shutDown(); });
