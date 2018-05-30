@@ -158,11 +158,21 @@ exports.Reloader = class Reloader
 
   reloadStylesheet: (path) ->
     # has to be a real array, because DOMNodeList will be modified
-    links = (link for link in @document.getElementsByTagName('link') when link.rel.match(/^stylesheet$/i) and not link.__LiveReload_pendingRemoval)
+
+    getElementsByTagNameRecursive = (document, tagName) ->
+      slice = Array.prototype.slice
+      elements = []
+      elements = elements.concat(slice.call(document.getElementsByTagName(tagName)))
+      
+      for iframe in document.getElementsByTagName('iframe')
+        elements = elements.concat(slice.call(getElementsByTagNameRecursive(iframe.contentWindow.document, tagName)))
+      return elements
+
+    links = (link for link in getElementsByTagNameRecursive(@document, 'link') when link.rel.match(/^stylesheet$/i) and not link.__LiveReload_pendingRemoval)
 
     # find all imported stylesheets
     imported = []
-    for style in @document.getElementsByTagName('style') when style.sheet
+    for style in getElementsByTagNameRecursive(@document, 'style') when style.sheet
       @collectImportedStylesheets style, style.sheet, imported
     for link in links
       @collectImportedStylesheets link, link.sheet, imported

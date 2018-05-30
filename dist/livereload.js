@@ -880,10 +880,22 @@
     };
 
     Reloader.prototype.reloadStylesheet = function(path) {
-      var imported, link, links, match, style, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1;
+      var getElementsByTagNameRecursive, imported, link, links, match, style, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1;
+      getElementsByTagNameRecursive = function(document, tagName) {
+        var elements, iframe, slice, _i, _len, _ref;
+        slice = Array.prototype.slice;
+        elements = [];
+        elements = elements.concat(slice.call(document.getElementsByTagName(tagName)));
+        _ref = document.getElementsByTagName('iframe');
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          iframe = _ref[_i];
+          elements = elements.concat(slice.call(getElementsByTagNameRecursive(iframe.contentWindow.document, tagName)));
+        }
+        return elements;
+      };
       links = (function() {
         var _i, _len, _ref, _results;
-        _ref = this.document.getElementsByTagName('link');
+        _ref = getElementsByTagNameRecursive(this.document, 'link');
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           link = _ref[_i];
@@ -894,7 +906,7 @@
         return _results;
       }).call(this);
       imported = [];
-      _ref = this.document.getElementsByTagName('style');
+      _ref = getElementsByTagNameRecursive(this.document, 'style');
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         style = _ref[_i];
         if (style.sheet) {
