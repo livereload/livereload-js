@@ -48,6 +48,11 @@ describe "Options", ->
     assert.equal 'somewhere.com', options.host
     assert.equal 35729, options.port
 
+  it "should accept when livereload is not being served domain root", ->
+    dom = new JSDOM("""<script src="http://somewhere.com:9876/132324324/23243443/4343/livereload.js"></script>""")
+    options = Options.extract(dom.window.document)
+    assert.equal 'somewhere.com', options.host
+    assert.equal 9876, options.port
 
   it "should set https when using an https URL ", ->
     dom = new JSDOM("""<script src="https://somewhere.com:9876/livereload.js"></script>""")
