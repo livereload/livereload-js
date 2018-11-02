@@ -18,7 +18,7 @@ The server notifies the client whenever a change is made. Available servers are:
 * [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)
 * [python-livereload](https://github.com/lepture/python-livereload)
 * more available on Google :-)
-* you can even write your own; refer to the [LiveReload protocol](http://help.livereload.com/kb/ecosystem/livereload-protocol)
+* you can even write your own; refer to the [LiveReload protocol](http://livereload.com/api/protocol/)
 
 If you are a web developer looking to _use_ LiveReload, you should refer to your LiveReload server/app/tool's documentation, rather that this repository. **You should use the copy of livereload.js script bundled with your server**, because it's guaranteed to be compatible, and may be customized for that server.
 
