@@ -18,7 +18,8 @@
   },
   "scripts": {
     "prepare": "grunt build",
-    "test": "grunt test"
+    "test": "grunt test",
+    "preversion": "npm run prepare"
   },
   "repository": {
     "type": "git",
