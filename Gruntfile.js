@@ -14,7 +14,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         options: {
-
+          transform: ['envify']
         },
         src: ['lib/startup.js'],
         dest: 'dist/livereload.js'

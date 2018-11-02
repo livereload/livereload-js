@@ -1,6 +1,6 @@
 { Parser, PROTOCOL_6, PROTOCOL_7 } = require './protocol'
 
-Version = '2.2.2'
+Version = process.env.npm_package_version
 
 exports.Connector = class Connector
 
