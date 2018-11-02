@@ -17,19 +17,19 @@ exports.Connector = class Connector
         @_handshakeTimeout.stop()
         @_nextDelay = @options.mindelay
         @_disconnectionReason = 'broken'
-        @handlers.connected(protocol)
+        @handlers.connected(@protocol)
       error: (e) =>
         @handlers.error(e)
         @_closeOnError()
       message: (message) =>
         @handlers.message(message)
 
-    @_handshakeTimeout = new Timer =>
+    @_handshakeTimeout = new @Timer =>
       return unless @_isSocketConnected()
       @_disconnectionReason = 'handshake-timeout'
       @socket.close()
 
-    @_reconnectTimer = new Timer =>
+    @_reconnectTimer = new @Timer =>
       return unless @_connectionDesired  # shouldn't hit this, but just in case
       @connect()
 
