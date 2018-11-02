@@ -154,8 +154,6 @@ The set of supported options is the same for both methods:
 Issues & Limitations
 --------------------
 
-**Serving livereload.js outside of the domain root.** Livereload.js expects to be served from the domain root (i.e. `http://myawesomeblog.com/livereload.js`). Serving from outside the domain root is possible, just add the `host` parameter to the `script` tag (see parameters documentation above). 
-
 **Live reloading of imported stylesheets has a 200ms lag.** Modifying a CSS `@import` rule to reference a not-yet-cached file causes WebKit to lose all document styles, so we have to apply a workaround that causes a lag.
 
 Our workaround is to add a temporary `<link />` element for the imported stylesheet we're trying to reload, wait 200ms to make sure WebKit loads the new file, then remove `<link />` and recreate the `@import` rule. This prevents a flash of unstyled content. (We also wait 200 more milliseconds and recreate the `@import` rule again, in case those initial 200ms were not enough.)
