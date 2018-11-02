@@ -20,7 +20,7 @@
   "scripts": {
     "test": "grunt test",
     "build": "grunt build",
-    "preversion": "npm run build"
+    "postversion": "npm run build"
   },
   "repository": {
     "type": "git",
