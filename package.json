@@ -17,9 +17,9 @@
     "mocha": "^5.2.0"
   },
   "scripts": {
-    "prepare": "grunt build",
     "test": "grunt test",
-    "preversion": "npm run prepare"
+    "build": "grunt build",
+    "preversion": "npm run build"
   },
   "repository": {
     "type": "git",
