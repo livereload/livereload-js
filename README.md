@@ -134,6 +134,10 @@ Alternatively, instead of loading livereload.js from the LiveReload server, you 
 <script src="https://github.com/livereload/livereload-js/raw/master/dist/livereload.js?host=localhost"></script>
 ```
 
+### Animated transitions
+
+LiveReload can animate changes. To enable animated transitions pass `animate=true` to `livereload.js` when including in the script tag. The default transition duration is 280ms and configurable when an integer is passed as value to `animate`, e.g. `animate=400` (in milliseconds).
+
 
 Options
 -------
