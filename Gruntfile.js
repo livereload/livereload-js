@@ -1,14 +1,5 @@
 module.exports = function (grunt) {
   grunt.initConfig({
-    browserify: {
-      dist: {
-        options: {
-          transform: ['envify', 'babelify']
-        },
-        src: ['src/startup.js'],
-        dest: 'dist/livereload.js'
-      }
-    },
     mochaTest: {
       test: {
         options: {
@@ -19,10 +10,8 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-mocha-test');
 
-  grunt.registerTask('build', ['browserify:dist']);
   grunt.registerTask('test', ['mochaTest']);
-  grunt.registerTask('default', ['build', 'test']);
+  grunt.registerTask('default', ['test']);
 };
