@@ -1,13 +1,4 @@
 /* eslint no-new: "off" */
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS203: Remove `|| {}` from converted for-own loops
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const assert = require('assert');
 const { Options } = require('../src/options');
 const { Connector } = require('../src/connector');
@@ -58,8 +49,10 @@ const newMockTimer = function () {
     MockTimer.now += period;
     return (() => {
       const result = [];
-      for (let timer of Array.from(MockTimer.timers)) {
-        if ((timer.time != null) && (timer.time <= MockTimer.now)) { result.push(timer.fire()); } else {
+      for (let timer of MockTimer.timers) {
+        if (timer.time && timer.time <= MockTimer.now) {
+          result.push(timer.fire());
+        } else {
           result.push(undefined);
         }
       }
@@ -109,18 +102,20 @@ const newMockWebSocket = function () {
       const expected = [];
 
       const keys = [];
-      for (message of Array.from(messages)) {
-        for (key of Object.keys(message || {})) {
-          if (!Array.from(keys).includes(key)) { keys.push(key); }
+      for (message of messages) {
+        for (key of Object.keys(message)) {
+          if (!keys.includes(key)) {
+            keys.push(key);
+          }
         }
       }
       keys.sort();
 
-      for (let payload of Array.from(this.sent)) {
+      for (let payload of this.sent) {
         message = JSON.parse(payload);
         actual.push(((() => {
           const result = [];
-          for (key of Array.from(keys)) {
+          for (key of keys) {
             if (message.hasOwnProperty(key)) {
               result.push(`${key} = ${JSON.stringify(message[key])}`);
             }
@@ -128,10 +123,10 @@ const newMockWebSocket = function () {
           return result;
         })()));
       }
-      for (message of Array.from(messages)) {
+      for (message of messages) {
         expected.push(((() => {
           const result1 = [];
-          for (key of Array.from(keys)) {
+          for (key of keys) {
             if (message.hasOwnProperty(key)) {
               result1.push(`${key} = ${JSON.stringify(message[key])}`);
             }
@@ -165,7 +160,7 @@ const shouldReconnect = function (handlers, timer, failed, code) {
   }
   return (() => {
     const result = [];
-    for (let delay of Array.from(delays)) {
+    for (let delay of delays) {
       timer.advance(delay - 100);
       assert.strictEqual('', handlers.obtainLog());
 

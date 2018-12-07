@@ -1,9 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const assert = require('assert');
 const { JSDOM } = require('jsdom');
 
@@ -14,7 +8,7 @@ describe('Options', function () {
     const dom = new JSDOM('<script src="http://somewhere.com:9876/livereload.js"></script>');
 
     const options = Options.extract(dom.window.document);
-    assert.ok(options != null);
+    assert.ok(options);
     assert.strictEqual('somewhere.com', options.host);
     return assert.strictEqual(9876, options.port);
   });
@@ -23,7 +17,7 @@ describe('Options', function () {
     const dom = new JSDOM('<script src="http://somewhere.com:9876/zlivereload.js"></script>');
 
     const options = Options.extract(dom.window.document);
-    assert.ok(options != null);
+    assert.ok(options);
     assert.strictEqual('somewhere.com', options.host);
     return assert.strictEqual(9876, options.port);
   });
@@ -32,7 +26,7 @@ describe('Options', function () {
     const dom = new JSDOM('<script src="http://elsewhere.com:1234/livesomething.js"></script> <script src="http://somewhere.com:9876/livereload.js"></script> <script src="http://elsewhere.com:1234/dontreload.js"></script>');
 
     const options = Options.extract(dom.window.document);
-    assert.ok(options != null);
+    assert.ok(options);
     assert.strictEqual('somewhere.com', options.host);
     return assert.strictEqual(9876, options.port);
   });
@@ -65,7 +59,7 @@ describe('Options', function () {
     const dom = new JSDOM('<script src="https://somewhere.com:9876/livereload.js"></script>');
 
     const options = Options.extract(dom.window.document);
-    assert.ok(options != null);
+    assert.ok(options);
     return assert.strictEqual(true, options.https);
   });
 });
