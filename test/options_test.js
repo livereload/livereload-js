@@ -15,8 +15,8 @@ describe('Options', function () {
 
     const options = Options.extract(dom.window.document);
     assert.ok(options != null);
-    assert.equal('somewhere.com', options.host);
-    return assert.equal(9876, options.port);
+    assert.strictEqual('somewhere.com', options.host);
+    return assert.strictEqual(9876, options.port);
   });
 
   it('should recognize zlivereload.js as a valid SCRIPT tag for dev testing purposes', function () {
@@ -24,8 +24,8 @@ describe('Options', function () {
 
     const options = Options.extract(dom.window.document);
     assert.ok(options != null);
-    assert.equal('somewhere.com', options.host);
-    return assert.equal(9876, options.port);
+    assert.strictEqual('somewhere.com', options.host);
+    return assert.strictEqual(9876, options.port);
   });
 
   it('should pick the correct SCRIPT tag', function () {
@@ -33,32 +33,32 @@ describe('Options', function () {
 
     const options = Options.extract(dom.window.document);
     assert.ok(options != null);
-    assert.equal('somewhere.com', options.host);
-    return assert.equal(9876, options.port);
+    assert.strictEqual('somewhere.com', options.host);
+    return assert.strictEqual(9876, options.port);
   });
 
   it('should extract additional options', function () {
     const dom = new JSDOM('<script src="http://somewhere.com:9876/livereload.js?snipver=1&ext=Safari&extver=2.0"></script>');
 
     const options = Options.extract(dom.window.document);
-    assert.equal('1', options.snipver);
-    assert.equal('Safari', options.ext);
-    return assert.equal('2.0', options.extver);
+    assert.strictEqual(1, options.snipver);
+    assert.strictEqual('Safari', options.ext);
+    return assert.strictEqual(2, options.extver);
   });
 
   it('should be cool with a strange URL', function () {
     const dom = new JSDOM('<script src="safari-ext://132324324/23243443/4343/livereload.js?host=somewhere.com"></script>');
 
     const options = Options.extract(dom.window.document);
-    assert.equal('somewhere.com', options.host);
-    return assert.equal(35729, options.port);
+    assert.strictEqual('somewhere.com', options.host);
+    return assert.strictEqual(35729, options.port);
   });
 
   it('should accept when livereload is not being served domain root', function () {
     const dom = new JSDOM('<script src="http://somewhere.com:9876/132324324/23243443/4343/livereload.js"></script>');
     const options = Options.extract(dom.window.document);
-    assert.equal('somewhere.com', options.host);
-    return assert.equal(9876, options.port);
+    assert.strictEqual('somewhere.com', options.host);
+    return assert.strictEqual(9876, options.port);
   });
 
   return it('should set https when using an https URL ', function () {
@@ -66,6 +66,6 @@ describe('Options', function () {
 
     const options = Options.extract(dom.window.document);
     assert.ok(options != null);
-    return assert.equal(true, options.https);
+    return assert.strictEqual(true, options.https);
   });
 });

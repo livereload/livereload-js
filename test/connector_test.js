@@ -1,3 +1,4 @@
+/* eslint no-new: "off" */
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -38,11 +39,11 @@ const newMockTimer = function () {
     }
 
     start (timeout) {
-      return this.time = MockTimer.now + timeout;
+      this.time = MockTimer.now + timeout;
     }
 
     stop () {
-      return this.time = null;
+      this.time = null;
     }
 
     fire () {
@@ -110,7 +111,6 @@ const newMockWebSocket = function () {
       const keys = [];
       for (message of Array.from(messages)) {
         for (key of Object.keys(message || {})) {
-          const value = message[key];
           if (!Array.from(keys).includes(key)) { keys.push(key); }
         }
       }
@@ -140,8 +140,8 @@ const newMockWebSocket = function () {
         })()));
       }
 
-      assert.equal(expected.join('\n'), actual.join('\n'));
-      return this.sent = [];
+      assert.strictEqual(expected.join('\n'), actual.join('\n'));
+      this.sent = [];
     }
   }
 
@@ -154,7 +154,7 @@ const newMockWebSocket = function () {
   return MockWebSocket;
 };
 
-const shouldBeConnecting = handlers => assert.equal('connecting', handlers.obtainLog());
+const shouldBeConnecting = handlers => assert.strictEqual('connecting', handlers.obtainLog());
 
 const shouldReconnect = function (handlers, timer, failed, code) {
   let delays;
@@ -167,7 +167,7 @@ const shouldReconnect = function (handlers, timer, failed, code) {
     const result = [];
     for (let delay of Array.from(delays)) {
       timer.advance(delay - 100);
-      assert.equal('', handlers.obtainLog());
+      assert.strictEqual('', handlers.obtainLog());
 
       timer.advance(100);
       shouldBeConnecting(handlers);
@@ -182,12 +182,12 @@ const cannotConnect = function (handlers, webSocket) {
   let ws;
   assert.ok((ws = webSocket.last()) != null);
   ws.disconnected();
-  return assert.equal('disconnected(cannot-connect)', handlers.obtainLog());
+  return assert.strictEqual('disconnected(cannot-connect)', handlers.obtainLog());
 };
 
 const connectionBroken = function (handlers, ws) {
   ws.disconnected();
-  return assert.equal('disconnected(broken)', handlers.obtainLog());
+  return assert.strictEqual('disconnected(broken)', handlers.obtainLog());
 };
 
 const connectAndPerformHandshake = function (handlers, webSocket, func) {
@@ -196,10 +196,10 @@ const connectAndPerformHandshake = function (handlers, webSocket, func) {
 
   ws.connected();
   ws.assertMessages([{ command: 'hello' }]);
-  assert.equal('', handlers.obtainLog());
+  assert.strictEqual('', handlers.obtainLog());
 
   ws.receive(JSON.stringify(HELLO));
-  assert.equal('connected(7)', handlers.obtainLog());
+  assert.strictEqual('connected(7)', handlers.obtainLog());
 
   return (typeof func === 'function' ? func(ws) : undefined);
 };
@@ -210,15 +210,15 @@ const connectAndTimeoutHandshake = function (handlers, timer, webSocket, func) {
 
   ws.connected();
   ws.assertMessages([{ command: 'hello' }]);
-  assert.equal('', handlers.obtainLog());
+  assert.strictEqual('', handlers.obtainLog());
 
   timer.advance(5000);
-  return assert.equal('disconnected(handshake-timeout)', handlers.obtainLog());
+  return assert.strictEqual('disconnected(handshake-timeout)', handlers.obtainLog());
 };
 
 const sendReload = function (handlers, ws) {
   ws.receive(JSON.stringify({ command: 'reload', path: 'foo.css' }));
-  return assert.equal('message(reload)', handlers.obtainLog());
+  return assert.strictEqual('message(reload)', handlers.obtainLog());
 };
 
 describe('Connector', function () {
@@ -227,7 +227,7 @@ describe('Connector', function () {
     const options = new Options();
     const timer = newMockTimer();
     const webSocket = newMockWebSocket();
-    const connector = new Connector(options, webSocket, timer, handlers);
+    new Connector(options, webSocket, timer, handlers);
 
     shouldBeConnecting(handlers);
     return connectAndPerformHandshake(handlers, webSocket, ws => sendReload(handlers, ws));
@@ -238,7 +238,7 @@ describe('Connector', function () {
     const options = new Options();
     const timer = newMockTimer();
     const webSocket = newMockWebSocket();
-    const connector = new Connector(options, webSocket, timer, handlers);
+    new Connector(options, webSocket, timer, handlers);
 
     shouldBeConnecting(handlers);
     cannotConnect(handlers, webSocket);
@@ -251,7 +251,7 @@ describe('Connector', function () {
     const options = new Options();
     const timer = newMockTimer();
     const webSocket = newMockWebSocket();
-    const connector = new Connector(options, webSocket, timer, handlers);
+    new Connector(options, webSocket, timer, handlers);
 
     shouldBeConnecting(handlers);
     connectAndPerformHandshake(handlers, webSocket, ws => connectionBroken(handlers, ws));
@@ -266,7 +266,7 @@ describe('Connector', function () {
     const options = new Options();
     const timer = newMockTimer();
     const webSocket = newMockWebSocket();
-    const connector = new Connector(options, webSocket, timer, handlers);
+    new Connector(options, webSocket, timer, handlers);
 
     shouldBeConnecting(handlers);
     connectAndTimeoutHandshake(handlers, timer, webSocket);
@@ -283,6 +283,6 @@ describe('Connector', function () {
     options.host = 'localhost';
     const connector = new Connector(options, webSocket, timer, handlers);
 
-    return assert.equal('wss://localhost:35729/livereload', connector._uri);
+    return assert.strictEqual('wss://localhost:35729/livereload', connector._uri);
   });
 });

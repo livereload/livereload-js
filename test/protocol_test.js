@@ -19,7 +19,10 @@ class MockHandler {
   connected (protocol) {
     this.protocol = protocol;
   }
-  error (error) { this.error = error; return this.gotError = true; }
+  error (error) {
+    this.error = error;
+    this.gotError = true;
+  }
 
   message (msg) {
     switch (msg.command) {
@@ -43,10 +46,10 @@ describe('Protocol', function () {
     const parser = new Parser(handler);
 
     parser.process('!!ver:1.6');
-    assert.equal(6, parser.protocol);
+    assert.strictEqual(6, parser.protocol);
 
     parser.process('[ "refresh", { "path": "foo.css" } ]');
-    return assert.equal('reload(foo.css)', handler.obtainLog());
+    return assert.strictEqual('reload(foo.css)', handler.obtainLog());
   });
 
   return it('should speak protocol 7', function () {
@@ -54,10 +57,10 @@ describe('Protocol', function () {
     const parser = new Parser(handler);
 
     parser.process('{ "command": "hello", "protocols": [ "http://livereload.com/protocols/official-7" ] }');
-    assert.equal(null, handler.error != null ? handler.error.message : undefined);
-    assert.equal(7, parser.protocol);
+    assert.strictEqual(undefined, (handler.error || {}).message);
+    assert.strictEqual(7, parser.protocol);
 
     parser.process('{ "command": "reload", "path": "foo.css" }');
-    return assert.equal('reload(foo.css)', handler.obtainLog());
+    return assert.strictEqual('reload(foo.css)', handler.obtainLog());
   });
 });

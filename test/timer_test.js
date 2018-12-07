@@ -13,12 +13,12 @@ describe('Timer', function () {
       return ++fired;
     });
 
-    assert.equal(false, timer.running);
+    assert.strictEqual(false, timer.running);
     timer.start(20);
-    assert.equal(true, timer.running);
+    assert.strictEqual(true, timer.running);
 
     return setTimeout(function () {
-      assert.equal(1, fired);
+      assert.strictEqual(1, fired);
       return done();
     }
     , 50);
@@ -34,7 +34,7 @@ describe('Timer', function () {
     setTimeout(() => timer.stop(), 10);
 
     return setTimeout(function () {
-      assert.equal(0, fired);
+      assert.strictEqual(0, fired);
       return done();
     }
     , 50);
@@ -44,16 +44,16 @@ describe('Timer', function () {
     let okToFire = false;
     let fired = 0;
     const timer = new Timer(function () {
-      assert.equal(true, okToFire);
+      assert.strictEqual(true, okToFire);
       return ++fired;
     });
 
     timer.start(10);
     setTimeout(() => timer.start(50), 5);
-    setTimeout(() => okToFire = true, 15);
+    setTimeout(() => { okToFire = true; }, 15);
 
     return setTimeout(function () {
-      assert.equal(1, fired);
+      assert.strictEqual(1, fired);
       return done();
     }
     , 100);
