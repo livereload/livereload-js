@@ -17,13 +17,14 @@ exports.Timer = (Timer = class Timer {
   start (timeout) {
     if (this.running) { clearTimeout(this.id); }
     this.id = setTimeout(this._handler, timeout);
-    return this.running = true;
+    this.running = true;
   }
 
   stop () {
     if (this.running) {
       clearTimeout(this.id);
-      this.running = false; return this.id = null;
+      this.running = false;
+      this.id = null;
     }
   }
 });

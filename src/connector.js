@@ -4,12 +4,11 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let Connector;
 const { Parser, PROTOCOL_6, PROTOCOL_7 } = require('./protocol');
 
 const Version = process.env.npm_package_version;
 
-exports.Connector = (Connector = class Connector {
+exports.Connector = class Connector {
   constructor (options, WebSocket, Timer, handlers) {
     this.options = options;
     this.WebSocket = WebSocket;
@@ -72,7 +71,7 @@ exports.Connector = (Connector = class Connector {
     this.socket.onopen = e => this._onopen(e);
     this.socket.onclose = e => this._onclose(e);
     this.socket.onmessage = e => this._onmessage(e);
-    return this.socket.onerror = e => this._onerror(e);
+    this.socket.onerror = e => this._onerror(e);
   }
 
   disconnect () {
@@ -87,7 +86,7 @@ exports.Connector = (Connector = class Connector {
     if (!this._connectionDesired) { return; } // don't reconnect after manual disconnection
     if (!this._reconnectTimer.running) {
       this._reconnectTimer.start(this._nextDelay);
-      return this._nextDelay = Math.min(this.options.maxdelay, this._nextDelay * 2);
+      this._nextDelay = Math.min(this.options.maxdelay, this._nextDelay * 2);
     }
   }
 
@@ -131,4 +130,4 @@ exports.Connector = (Connector = class Connector {
   _onmessage (e) {
     return this.protocolParser.process(e.data);
   }
-});
+};

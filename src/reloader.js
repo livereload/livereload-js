@@ -1,3 +1,4 @@
+/* global CSSRule */
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -6,7 +7,6 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let Reloader;
 const splitUrl = function (url) {
   let hash, index, params;
   if ((index = url.indexOf('#')) >= 0) {
@@ -88,7 +88,7 @@ const IMAGE_STYLES = [
   { selector: 'border', styleNames: ['borderImage', 'webkitBorderImage', 'MozBorderImage'] }
 ];
 
-exports.Reloader = (Reloader = class Reloader {
+exports.Reloader = class Reloader {
   constructor (window, console, Timer) {
     this.window = window;
     this.console = console;
@@ -103,7 +103,6 @@ exports.Reloader = (Reloader = class Reloader {
   }
 
   analyze (callback) {
-    return results;
   }
 
   reload (path, options) {
@@ -278,7 +277,6 @@ and 'options.reloadMissingCSS' was set to 'false'.`
         switch (rule.type) {
           case CSSRule.CHARSET_RULE:
             continue; // do nothing
-            break;
           case CSSRule.IMPORT_RULE:
             result.push({ link, rule, index, href: rule.href });
             this.collectImportedStylesheets(link, rule.styleSheet, result);
@@ -447,4 +445,4 @@ and 'options.reloadMissingCSS' was set to 'false'.`
 
     return url + params + hash;
   }
-});
+};

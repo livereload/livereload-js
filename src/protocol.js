@@ -6,24 +6,24 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 
-let Parser, PROTOCOL_6, PROTOCOL_7, ProtocolError;
+let PROTOCOL_6, PROTOCOL_7, ProtocolError;
 exports.PROTOCOL_6 = (PROTOCOL_6 = 'http://livereload.com/protocols/official-6');
 exports.PROTOCOL_7 = (PROTOCOL_7 = 'http://livereload.com/protocols/official-7');
 
 exports.ProtocolError = (ProtocolError = class ProtocolError {
   constructor (reason, data) {
-    this.message = `LiveReload protocol error (${reason}) after receiving data: \"${data}\".`;
+    this.message = `LiveReload protocol error (${reason}) after receiving data: "${data}".`;
   }
 });
 
-exports.Parser = (Parser = class Parser {
+exports.Parser = class Parser {
   constructor (handlers) {
     this.handlers = handlers;
     this.reset();
   }
 
   reset () {
-    return this.protocol = null;
+    this.protocol = null;
   }
 
   process (data) {
@@ -32,7 +32,7 @@ exports.Parser = (Parser = class Parser {
       if ((this.protocol == null)) {
         if (data.match(new RegExp(`^!!ver:([\\d.]+)$`))) {
           this.protocol = 6;
-        } else if (message = this._parseMessage(data, ['hello'])) {
+        } else if ((message = this._parseMessage(data, ['hello']))) {
           if (!message.protocols.length) {
             throw new ProtocolError('no protocols specified in handshake message');
           } else if (Array.from(message.protocols).includes(PROTOCOL_7)) {
@@ -83,4 +83,4 @@ exports.Parser = (Parser = class Parser {
     }
     return message;
   }
-});
+};

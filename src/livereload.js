@@ -1,3 +1,4 @@
+/* global alert */
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -6,14 +7,13 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-let LiveReload;
 const { Connector } = require('./connector');
 const { Timer } = require('./timer');
 const { Options } = require('./options');
 const { Reloader } = require('./reloader');
 const { ProtocolError } = require('./protocol');
 
-exports.LiveReload = (LiveReload = class LiveReload {
+exports.LiveReload = class LiveReload {
   constructor (window) {
     this.window = window;
     this.listeners = {};
@@ -113,7 +113,7 @@ exports.LiveReload = (LiveReload = class LiveReload {
   }
 
   on (eventName, handler) {
-    return this.listeners[eventName] = handler;
+    this.listeners[eventName] = handler;
   }
 
   log (message) {
@@ -146,13 +146,13 @@ exports.LiveReload = (LiveReload = class LiveReload {
 
   hasPlugin (identifier) { return !!this.pluginIdentifiers[identifier]; }
 
-  addPlugin (pluginClass) {
+  addPlugin (PluginClass) {
     if (!this.initialized) { return; }
 
-    if (this.hasPlugin(pluginClass.identifier)) { return; }
-    this.pluginIdentifiers[pluginClass.identifier] = true;
+    if (this.hasPlugin(PluginClass.identifier)) { return; }
+    this.pluginIdentifiers[PluginClass.identifier] = true;
 
-    const plugin = new pluginClass(this.window, {
+    const plugin = new PluginClass(this.window, {
 
       // expose internal objects for those who know what they're doing
       // (note that these are private APIs and subject to change at any time!)
@@ -203,4 +203,4 @@ exports.LiveReload = (LiveReload = class LiveReload {
 
     this.connector.sendCommand({ command: 'info', plugins: pluginsData, url: this.window.location.href });
   }
-});
+};

@@ -29,7 +29,7 @@ exports.Options = (Options = class Options {
       value = +value;
     }
 
-    return this[name] = value;
+    this[name] = value;
   }
 });
 
@@ -40,7 +40,7 @@ Options.extract = function (document) {
       var mm;
       const options = new Options();
       options.https = src.indexOf('https') === 0;
-      if (mm = m[1].match(new RegExp(`^([^/:]+)(?::(\\d+))?(\\/+.*)?$`))) {
+      if ((mm = m[1].match(new RegExp(`^([^/:]+)(?::(\\d+))?(\\/+.*)?$`)))) {
         options.host = mm[1];
         if (mm[2]) {
           options.port = parseInt(mm[2], 10);
