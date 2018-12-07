@@ -31,9 +31,10 @@
     "postversion": "npm run build && git add dist && git commit -m 'build' && git push && git push --tags"
   },
   "browserslist": [
-    "last 1 version",
-    "> 0.25%",
-    "maintained node versions",
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 1 Safari version",
+    "last 1 Edge version",
     "not dead"
   ],
   "repository": {

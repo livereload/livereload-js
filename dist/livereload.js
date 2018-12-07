@@ -13,7 +13,7 @@ module.exports = function (key) {
   ArrayProto[UNSCOPABLES][key] = true;
 };
 
-},{"./_hide":23,"./_wks":74}],3:[function(require,module,exports){
+},{"./_hide":21,"./_wks":66}],3:[function(require,module,exports){
 'use strict';
 var at = require('./_string-at')(true);
 
@@ -23,14 +23,14 @@ module.exports = function (S, index, unicode) {
   return index + (unicode ? at(S, index).length : 1);
 };
 
-},{"./_string-at":62}],4:[function(require,module,exports){
+},{"./_string-at":56}],4:[function(require,module,exports){
 var isObject = require('./_is-object');
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-},{"./_is-object":30}],5:[function(require,module,exports){
+},{"./_is-object":27}],5:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = require('./_to-iobject');
@@ -55,7 +55,7 @@ module.exports = function (IS_INCLUDES) {
   };
 };
 
-},{"./_to-absolute-index":65,"./_to-iobject":67,"./_to-length":68}],6:[function(require,module,exports){
+},{"./_to-absolute-index":57,"./_to-iobject":59,"./_to-length":60}],6:[function(require,module,exports){
 // getting tag from 19.1.3.6 Object.prototype.toString()
 var cof = require('./_cof');
 var TAG = require('./_wks')('toStringTag');
@@ -80,7 +80,7 @@ module.exports = function (it) {
     : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
 };
 
-},{"./_cof":7,"./_wks":74}],7:[function(require,module,exports){
+},{"./_cof":7,"./_wks":66}],7:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = function (it) {
@@ -92,16 +92,6 @@ var core = module.exports = { version: '2.6.0' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 },{}],9:[function(require,module,exports){
-'use strict';
-var $defineProperty = require('./_object-dp');
-var createDesc = require('./_property-desc');
-
-module.exports = function (object, index, value) {
-  if (index in object) $defineProperty.f(object, index, createDesc(0, value));
-  else object[index] = value;
-};
-
-},{"./_object-dp":41,"./_property-desc":52}],10:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
 module.exports = function (fn, that, length) {
@@ -123,20 +113,20 @@ module.exports = function (fn, that, length) {
   };
 };
 
-},{"./_a-function":1}],11:[function(require,module,exports){
+},{"./_a-function":1}],10:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
 module.exports = function (it) {
   if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./_fails')(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_fails":18}],13:[function(require,module,exports){
+},{"./_fails":16}],12:[function(require,module,exports){
 var isObject = require('./_is-object');
 var document = require('./_global').document;
 // typeof document.createElement is 'object' in old IE
@@ -145,13 +135,13 @@ module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
 
-},{"./_global":21,"./_is-object":30}],14:[function(require,module,exports){
+},{"./_global":19,"./_is-object":27}],13:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 // all enumerable object keys, includes symbols
 var getKeys = require('./_object-keys');
 var gOPS = require('./_object-gops');
@@ -168,7 +158,7 @@ module.exports = function (it) {
   } return result;
 };
 
-},{"./_object-gops":46,"./_object-keys":49,"./_object-pie":50}],16:[function(require,module,exports){
+},{"./_object-gops":41,"./_object-keys":44,"./_object-pie":45}],15:[function(require,module,exports){
 var global = require('./_global');
 var core = require('./_core');
 var hide = require('./_hide');
@@ -213,21 +203,7 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 module.exports = $export;
 
-},{"./_core":8,"./_ctx":10,"./_global":21,"./_hide":23,"./_redefine":53}],17:[function(require,module,exports){
-var MATCH = require('./_wks')('match');
-module.exports = function (KEY) {
-  var re = /./;
-  try {
-    '/./'[KEY](re);
-  } catch (e) {
-    try {
-      re[MATCH] = false;
-      return !'/./'[KEY](re);
-    } catch (f) { /* empty */ }
-  } return true;
-};
-
-},{"./_wks":74}],18:[function(require,module,exports){
+},{"./_core":8,"./_ctx":9,"./_global":19,"./_hide":21,"./_redefine":47}],16:[function(require,module,exports){
 module.exports = function (exec) {
   try {
     return !!exec();
@@ -236,7 +212,7 @@ module.exports = function (exec) {
   }
 };
 
-},{}],19:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 require('./es6.regexp.exec');
 var redefine = require('./_redefine');
@@ -334,7 +310,7 @@ module.exports = function (KEY, length, exec) {
   }
 };
 
-},{"./_defined":11,"./_fails":18,"./_hide":23,"./_redefine":53,"./_regexp-exec":55,"./_wks":74,"./es6.regexp.exec":80}],20:[function(require,module,exports){
+},{"./_defined":10,"./_fails":16,"./_hide":21,"./_redefine":47,"./_regexp-exec":49,"./_wks":66,"./es6.regexp.exec":69}],18:[function(require,module,exports){
 'use strict';
 // 21.2.5.3 get RegExp.prototype.flags
 var anObject = require('./_an-object');
@@ -349,7 +325,7 @@ module.exports = function () {
   return result;
 };
 
-},{"./_an-object":4}],21:[function(require,module,exports){
+},{"./_an-object":4}],19:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self
@@ -357,13 +333,13 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
   : Function('return this')();
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
-},{}],22:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
 module.exports = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
 
-},{}],23:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var dP = require('./_object-dp');
 var createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function (object, key, value) {
@@ -373,16 +349,16 @@ module.exports = require('./_descriptors') ? function (object, key, value) {
   return object;
 };
 
-},{"./_descriptors":12,"./_object-dp":41,"./_property-desc":52}],24:[function(require,module,exports){
+},{"./_descriptors":11,"./_object-dp":36,"./_property-desc":46}],22:[function(require,module,exports){
 var document = require('./_global').document;
 module.exports = document && document.documentElement;
 
-},{"./_global":21}],25:[function(require,module,exports){
+},{"./_global":19}],23:[function(require,module,exports){
 module.exports = !require('./_descriptors') && !require('./_fails')(function () {
   return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_descriptors":12,"./_dom-create":13,"./_fails":18}],26:[function(require,module,exports){
+},{"./_descriptors":11,"./_dom-create":12,"./_fails":16}],24:[function(require,module,exports){
 var isObject = require('./_is-object');
 var setPrototypeOf = require('./_set-proto').set;
 module.exports = function (that, target, C) {
@@ -393,7 +369,7 @@ module.exports = function (that, target, C) {
   } return that;
 };
 
-},{"./_is-object":30,"./_set-proto":56}],27:[function(require,module,exports){
+},{"./_is-object":27,"./_set-proto":50}],25:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
 // eslint-disable-next-line no-prototype-builtins
@@ -401,29 +377,19 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
 
-},{"./_cof":7}],28:[function(require,module,exports){
-// check on default Array iterator
-var Iterators = require('./_iterators');
-var ITERATOR = require('./_wks')('iterator');
-var ArrayProto = Array.prototype;
-
-module.exports = function (it) {
-  return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
-};
-
-},{"./_iterators":37,"./_wks":74}],29:[function(require,module,exports){
+},{"./_cof":7}],26:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
 module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
 
-},{"./_cof":7}],30:[function(require,module,exports){
+},{"./_cof":7}],27:[function(require,module,exports){
 module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-},{}],31:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 // 7.2.8 IsRegExp(argument)
 var isObject = require('./_is-object');
 var cof = require('./_cof');
@@ -433,21 +399,7 @@ module.exports = function (it) {
   return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : cof(it) == 'RegExp');
 };
 
-},{"./_cof":7,"./_is-object":30,"./_wks":74}],32:[function(require,module,exports){
-// call something on iterator step with safe closing on error
-var anObject = require('./_an-object');
-module.exports = function (iterator, fn, value, entries) {
-  try {
-    return entries ? fn(anObject(value)[0], value[1]) : fn(value);
-  // 7.4.6 IteratorClose(iterator, completion)
-  } catch (e) {
-    var ret = iterator['return'];
-    if (ret !== undefined) anObject(ret.call(iterator));
-    throw e;
-  }
-};
-
-},{"./_an-object":4}],33:[function(require,module,exports){
+},{"./_cof":7,"./_is-object":27,"./_wks":66}],29:[function(require,module,exports){
 'use strict';
 var create = require('./_object-create');
 var descriptor = require('./_property-desc');
@@ -462,7 +414,7 @@ module.exports = function (Constructor, NAME, next) {
   setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-},{"./_hide":23,"./_object-create":40,"./_property-desc":52,"./_set-to-string-tag":58,"./_wks":74}],34:[function(require,module,exports){
+},{"./_hide":21,"./_object-create":35,"./_property-desc":46,"./_set-to-string-tag":52,"./_wks":66}],30:[function(require,module,exports){
 'use strict';
 var LIBRARY = require('./_library');
 var $export = require('./_export');
@@ -533,42 +485,18 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
   return methods;
 };
 
-},{"./_export":16,"./_hide":23,"./_iter-create":33,"./_iterators":37,"./_library":38,"./_object-gpo":47,"./_redefine":53,"./_set-to-string-tag":58,"./_wks":74}],35:[function(require,module,exports){
-var ITERATOR = require('./_wks')('iterator');
-var SAFE_CLOSING = false;
-
-try {
-  var riter = [7][ITERATOR]();
-  riter['return'] = function () { SAFE_CLOSING = true; };
-  // eslint-disable-next-line no-throw-literal
-  Array.from(riter, function () { throw 2; });
-} catch (e) { /* empty */ }
-
-module.exports = function (exec, skipClosing) {
-  if (!skipClosing && !SAFE_CLOSING) return false;
-  var safe = false;
-  try {
-    var arr = [7];
-    var iter = arr[ITERATOR]();
-    iter.next = function () { return { done: safe = true }; };
-    arr[ITERATOR] = function () { return iter; };
-    exec(arr);
-  } catch (e) { /* empty */ }
-  return safe;
-};
-
-},{"./_wks":74}],36:[function(require,module,exports){
+},{"./_export":15,"./_hide":21,"./_iter-create":29,"./_iterators":32,"./_library":33,"./_object-gpo":42,"./_redefine":47,"./_set-to-string-tag":52,"./_wks":66}],31:[function(require,module,exports){
 module.exports = function (done, value) {
   return { value: value, done: !!done };
 };
 
-},{}],37:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 module.exports = {};
 
-},{}],38:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = false;
 
-},{}],39:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var META = require('./_uid')('meta');
 var isObject = require('./_is-object');
 var has = require('./_has');
@@ -623,7 +551,7 @@ var meta = module.exports = {
   onFreeze: onFreeze
 };
 
-},{"./_fails":18,"./_has":22,"./_is-object":30,"./_object-dp":41,"./_uid":71}],40:[function(require,module,exports){
+},{"./_fails":16,"./_has":20,"./_is-object":27,"./_object-dp":36,"./_uid":63}],35:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = require('./_an-object');
 var dPs = require('./_object-dps');
@@ -666,7 +594,7 @@ module.exports = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":4,"./_dom-create":13,"./_enum-bug-keys":14,"./_html":24,"./_object-dps":42,"./_shared-key":59}],41:[function(require,module,exports){
+},{"./_an-object":4,"./_dom-create":12,"./_enum-bug-keys":13,"./_html":22,"./_object-dps":37,"./_shared-key":53}],36:[function(require,module,exports){
 var anObject = require('./_an-object');
 var IE8_DOM_DEFINE = require('./_ie8-dom-define');
 var toPrimitive = require('./_to-primitive');
@@ -684,7 +612,7 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   return O;
 };
 
-},{"./_an-object":4,"./_descriptors":12,"./_ie8-dom-define":25,"./_to-primitive":70}],42:[function(require,module,exports){
+},{"./_an-object":4,"./_descriptors":11,"./_ie8-dom-define":23,"./_to-primitive":62}],37:[function(require,module,exports){
 var dP = require('./_object-dp');
 var anObject = require('./_an-object');
 var getKeys = require('./_object-keys');
@@ -699,7 +627,7 @@ module.exports = require('./_descriptors') ? Object.defineProperties : function 
   return O;
 };
 
-},{"./_an-object":4,"./_descriptors":12,"./_object-dp":41,"./_object-keys":49}],43:[function(require,module,exports){
+},{"./_an-object":4,"./_descriptors":11,"./_object-dp":36,"./_object-keys":44}],38:[function(require,module,exports){
 var pIE = require('./_object-pie');
 var createDesc = require('./_property-desc');
 var toIObject = require('./_to-iobject');
@@ -717,7 +645,7 @@ exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor
   if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
 };
 
-},{"./_descriptors":12,"./_has":22,"./_ie8-dom-define":25,"./_object-pie":50,"./_property-desc":52,"./_to-iobject":67,"./_to-primitive":70}],44:[function(require,module,exports){
+},{"./_descriptors":11,"./_has":20,"./_ie8-dom-define":23,"./_object-pie":45,"./_property-desc":46,"./_to-iobject":59,"./_to-primitive":62}],39:[function(require,module,exports){
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 var toIObject = require('./_to-iobject');
 var gOPN = require('./_object-gopn').f;
@@ -738,7 +666,7 @@ module.exports.f = function getOwnPropertyNames(it) {
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_object-gopn":45,"./_to-iobject":67}],45:[function(require,module,exports){
+},{"./_object-gopn":40,"./_to-iobject":59}],40:[function(require,module,exports){
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var $keys = require('./_object-keys-internal');
 var hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
@@ -747,10 +675,10 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
 };
 
-},{"./_enum-bug-keys":14,"./_object-keys-internal":48}],46:[function(require,module,exports){
+},{"./_enum-bug-keys":13,"./_object-keys-internal":43}],41:[function(require,module,exports){
 exports.f = Object.getOwnPropertySymbols;
 
-},{}],47:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = require('./_has');
 var toObject = require('./_to-object');
@@ -765,7 +693,7 @@ module.exports = Object.getPrototypeOf || function (O) {
   } return O instanceof Object ? ObjectProto : null;
 };
 
-},{"./_has":22,"./_shared-key":59,"./_to-object":69}],48:[function(require,module,exports){
+},{"./_has":20,"./_shared-key":53,"./_to-object":61}],43:[function(require,module,exports){
 var has = require('./_has');
 var toIObject = require('./_to-iobject');
 var arrayIndexOf = require('./_array-includes')(false);
@@ -784,7 +712,7 @@ module.exports = function (object, names) {
   return result;
 };
 
-},{"./_array-includes":5,"./_has":22,"./_shared-key":59,"./_to-iobject":67}],49:[function(require,module,exports){
+},{"./_array-includes":5,"./_has":20,"./_shared-key":53,"./_to-iobject":59}],44:[function(require,module,exports){
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys = require('./_object-keys-internal');
 var enumBugKeys = require('./_enum-bug-keys');
@@ -793,22 +721,10 @@ module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
 };
 
-},{"./_enum-bug-keys":14,"./_object-keys-internal":48}],50:[function(require,module,exports){
+},{"./_enum-bug-keys":13,"./_object-keys-internal":43}],45:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
 
-},{}],51:[function(require,module,exports){
-// most Object methods by ES6 should accept primitives
-var $export = require('./_export');
-var core = require('./_core');
-var fails = require('./_fails');
-module.exports = function (KEY, exec) {
-  var fn = (core.Object || {})[KEY] || Object[KEY];
-  var exp = {};
-  exp[KEY] = exec(fn);
-  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
-};
-
-},{"./_core":8,"./_export":16,"./_fails":18}],52:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 module.exports = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
@@ -818,7 +734,7 @@ module.exports = function (bitmap, value) {
   };
 };
 
-},{}],53:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 var global = require('./_global');
 var hide = require('./_hide');
 var has = require('./_has');
@@ -851,7 +767,7 @@ require('./_core').inspectSource = function (it) {
   return typeof this == 'function' && this[SRC] || $toString.call(this);
 });
 
-},{"./_core":8,"./_global":21,"./_has":22,"./_hide":23,"./_uid":71}],54:[function(require,module,exports){
+},{"./_core":8,"./_global":19,"./_has":20,"./_hide":21,"./_uid":63}],48:[function(require,module,exports){
 'use strict';
 
 var classof = require('./_classof');
@@ -874,7 +790,7 @@ module.exports = function (R, S) {
   return builtinExec.call(R, S);
 };
 
-},{"./_classof":6}],55:[function(require,module,exports){
+},{"./_classof":6}],49:[function(require,module,exports){
 'use strict';
 
 var regexpFlags = require('./_flags');
@@ -934,7 +850,7 @@ if (PATCH) {
 
 module.exports = patchedExec;
 
-},{"./_flags":20}],56:[function(require,module,exports){
+},{"./_flags":18}],50:[function(require,module,exports){
 // Works with __proto__ only. Old v8 can't work with null proto objects.
 /* eslint-disable no-proto */
 var isObject = require('./_is-object');
@@ -961,7 +877,7 @@ module.exports = {
   check: check
 };
 
-},{"./_an-object":4,"./_ctx":10,"./_is-object":30,"./_object-gopd":43}],57:[function(require,module,exports){
+},{"./_an-object":4,"./_ctx":9,"./_is-object":27,"./_object-gopd":38}],51:[function(require,module,exports){
 'use strict';
 var global = require('./_global');
 var dP = require('./_object-dp');
@@ -976,7 +892,7 @@ module.exports = function (KEY) {
   });
 };
 
-},{"./_descriptors":12,"./_global":21,"./_object-dp":41,"./_wks":74}],58:[function(require,module,exports){
+},{"./_descriptors":11,"./_global":19,"./_object-dp":36,"./_wks":66}],52:[function(require,module,exports){
 var def = require('./_object-dp').f;
 var has = require('./_has');
 var TAG = require('./_wks')('toStringTag');
@@ -985,14 +901,14 @@ module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
-},{"./_has":22,"./_object-dp":41,"./_wks":74}],59:[function(require,module,exports){
+},{"./_has":20,"./_object-dp":36,"./_wks":66}],53:[function(require,module,exports){
 var shared = require('./_shared')('keys');
 var uid = require('./_uid');
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
-},{"./_shared":60,"./_uid":71}],60:[function(require,module,exports){
+},{"./_shared":54,"./_uid":63}],54:[function(require,module,exports){
 var core = require('./_core');
 var global = require('./_global');
 var SHARED = '__core-js_shared__';
@@ -1006,7 +922,7 @@ var store = global[SHARED] || (global[SHARED] = {});
   copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
 });
 
-},{"./_core":8,"./_global":21,"./_library":38}],61:[function(require,module,exports){
+},{"./_core":8,"./_global":19,"./_library":33}],55:[function(require,module,exports){
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
 var anObject = require('./_an-object');
 var aFunction = require('./_a-function');
@@ -1017,7 +933,7 @@ module.exports = function (O, D) {
   return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
 };
 
-},{"./_a-function":1,"./_an-object":4,"./_wks":74}],62:[function(require,module,exports){
+},{"./_a-function":1,"./_an-object":4,"./_wks":66}],56:[function(require,module,exports){
 var toInteger = require('./_to-integer');
 var defined = require('./_defined');
 // true  -> String#at
@@ -1036,38 +952,7 @@ module.exports = function (TO_STRING) {
   };
 };
 
-},{"./_defined":11,"./_to-integer":66}],63:[function(require,module,exports){
-// helper for String#{startsWith, endsWith, includes}
-var isRegExp = require('./_is-regexp');
-var defined = require('./_defined');
-
-module.exports = function (that, searchString, NAME) {
-  if (isRegExp(searchString)) throw TypeError('String#' + NAME + " doesn't accept regex!");
-  return String(defined(that));
-};
-
-},{"./_defined":11,"./_is-regexp":31}],64:[function(require,module,exports){
-var $export = require('./_export');
-var fails = require('./_fails');
-var defined = require('./_defined');
-var quot = /"/g;
-// B.2.3.2.1 CreateHTML(string, tag, attribute, value)
-var createHTML = function (string, tag, attribute, value) {
-  var S = String(defined(string));
-  var p1 = '<' + tag;
-  if (attribute !== '') p1 += ' ' + attribute + '="' + String(value).replace(quot, '&quot;') + '"';
-  return p1 + '>' + S + '</' + tag + '>';
-};
-module.exports = function (NAME, exec) {
-  var O = {};
-  O[NAME] = exec(createHTML);
-  $export($export.P + $export.F * fails(function () {
-    var test = ''[NAME]('"');
-    return test !== test.toLowerCase() || test.split('"').length > 3;
-  }), 'String', O);
-};
-
-},{"./_defined":11,"./_export":16,"./_fails":18}],65:[function(require,module,exports){
+},{"./_defined":10,"./_to-integer":58}],57:[function(require,module,exports){
 var toInteger = require('./_to-integer');
 var max = Math.max;
 var min = Math.min;
@@ -1076,7 +961,7 @@ module.exports = function (index, length) {
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
 
-},{"./_to-integer":66}],66:[function(require,module,exports){
+},{"./_to-integer":58}],58:[function(require,module,exports){
 // 7.1.4 ToInteger
 var ceil = Math.ceil;
 var floor = Math.floor;
@@ -1084,7 +969,7 @@ module.exports = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
 
-},{}],67:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = require('./_iobject');
 var defined = require('./_defined');
@@ -1092,7 +977,7 @@ module.exports = function (it) {
   return IObject(defined(it));
 };
 
-},{"./_defined":11,"./_iobject":27}],68:[function(require,module,exports){
+},{"./_defined":10,"./_iobject":25}],60:[function(require,module,exports){
 // 7.1.15 ToLength
 var toInteger = require('./_to-integer');
 var min = Math.min;
@@ -1100,14 +985,14 @@ module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
 
-},{"./_to-integer":66}],69:[function(require,module,exports){
+},{"./_to-integer":58}],61:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
 module.exports = function (it) {
   return Object(defined(it));
 };
 
-},{"./_defined":11}],70:[function(require,module,exports){
+},{"./_defined":10}],62:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -1121,14 +1006,14 @@ module.exports = function (it, S) {
   throw TypeError("Can't convert object to primitive value");
 };
 
-},{"./_is-object":30}],71:[function(require,module,exports){
+},{"./_is-object":27}],63:[function(require,module,exports){
 var id = 0;
 var px = Math.random();
 module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
-},{}],72:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 var global = require('./_global');
 var core = require('./_core');
 var LIBRARY = require('./_library');
@@ -1139,10 +1024,10 @@ module.exports = function (name) {
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
 };
 
-},{"./_core":8,"./_global":21,"./_library":38,"./_object-dp":41,"./_wks-ext":73}],73:[function(require,module,exports){
+},{"./_core":8,"./_global":19,"./_library":33,"./_object-dp":36,"./_wks-ext":65}],65:[function(require,module,exports){
 exports.f = require('./_wks');
 
-},{"./_wks":74}],74:[function(require,module,exports){
+},{"./_wks":66}],66:[function(require,module,exports){
 var store = require('./_shared')('wks');
 var uid = require('./_uid');
 var Symbol = require('./_global').Symbol;
@@ -1155,56 +1040,7 @@ var $exports = module.exports = function (name) {
 
 $exports.store = store;
 
-},{"./_global":21,"./_shared":60,"./_uid":71}],75:[function(require,module,exports){
-var classof = require('./_classof');
-var ITERATOR = require('./_wks')('iterator');
-var Iterators = require('./_iterators');
-module.exports = require('./_core').getIteratorMethod = function (it) {
-  if (it != undefined) return it[ITERATOR]
-    || it['@@iterator']
-    || Iterators[classof(it)];
-};
-
-},{"./_classof":6,"./_core":8,"./_iterators":37,"./_wks":74}],76:[function(require,module,exports){
-'use strict';
-var ctx = require('./_ctx');
-var $export = require('./_export');
-var toObject = require('./_to-object');
-var call = require('./_iter-call');
-var isArrayIter = require('./_is-array-iter');
-var toLength = require('./_to-length');
-var createProperty = require('./_create-property');
-var getIterFn = require('./core.get-iterator-method');
-
-$export($export.S + $export.F * !require('./_iter-detect')(function (iter) { Array.from(iter); }), 'Array', {
-  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
-  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
-    var O = toObject(arrayLike);
-    var C = typeof this == 'function' ? this : Array;
-    var aLen = arguments.length;
-    var mapfn = aLen > 1 ? arguments[1] : undefined;
-    var mapping = mapfn !== undefined;
-    var index = 0;
-    var iterFn = getIterFn(O);
-    var length, result, step, iterator;
-    if (mapping) mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
-    // if object isn't iterable or it's array with default iterator - use simple case
-    if (iterFn != undefined && !(C == Array && isArrayIter(iterFn))) {
-      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
-        createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
-      }
-    } else {
-      length = toLength(O.length);
-      for (result = new C(length); length > index; index++) {
-        createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
-      }
-    }
-    result.length = index;
-    return result;
-  }
-});
-
-},{"./_create-property":9,"./_ctx":10,"./_export":16,"./_is-array-iter":28,"./_iter-call":32,"./_iter-detect":35,"./_to-length":68,"./_to-object":69,"./core.get-iterator-method":75}],77:[function(require,module,exports){
+},{"./_global":19,"./_shared":54,"./_uid":63}],67:[function(require,module,exports){
 'use strict';
 var addToUnscopables = require('./_add-to-unscopables');
 var step = require('./_iter-step');
@@ -1240,18 +1076,7 @@ addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
 
-},{"./_add-to-unscopables":2,"./_iter-define":34,"./_iter-step":36,"./_iterators":37,"./_to-iobject":67}],78:[function(require,module,exports){
-// 19.1.2.14 Object.keys(O)
-var toObject = require('./_to-object');
-var $keys = require('./_object-keys');
-
-require('./_object-sap')('keys', function () {
-  return function keys(it) {
-    return $keys(toObject(it));
-  };
-});
-
-},{"./_object-keys":49,"./_object-sap":51,"./_to-object":69}],79:[function(require,module,exports){
+},{"./_add-to-unscopables":2,"./_iter-define":30,"./_iter-step":31,"./_iterators":32,"./_to-iobject":59}],68:[function(require,module,exports){
 var global = require('./_global');
 var inheritIfRequired = require('./_inherit-if-required');
 var dP = require('./_object-dp').f;
@@ -1296,7 +1121,7 @@ if (require('./_descriptors') && (!CORRECT_NEW || require('./_fails')(function (
 
 require('./_set-species')('RegExp');
 
-},{"./_descriptors":12,"./_fails":18,"./_flags":20,"./_global":21,"./_inherit-if-required":26,"./_is-regexp":31,"./_object-dp":41,"./_object-gopn":45,"./_redefine":53,"./_set-species":57,"./_wks":74}],80:[function(require,module,exports){
+},{"./_descriptors":11,"./_fails":16,"./_flags":18,"./_global":19,"./_inherit-if-required":24,"./_is-regexp":28,"./_object-dp":36,"./_object-gopn":40,"./_redefine":47,"./_set-species":51,"./_wks":66}],69:[function(require,module,exports){
 'use strict';
 var regexpExec = require('./_regexp-exec');
 require('./_export')({
@@ -1307,7 +1132,7 @@ require('./_export')({
   exec: regexpExec
 });
 
-},{"./_export":16,"./_regexp-exec":55}],81:[function(require,module,exports){
+},{"./_export":15,"./_regexp-exec":49}],70:[function(require,module,exports){
 'use strict';
 
 var anObject = require('./_an-object');
@@ -1349,7 +1174,7 @@ require('./_fix-re-wks')('match', 1, function (defined, MATCH, $match, maybeCall
   ];
 });
 
-},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":19,"./_regexp-exec-abstract":54,"./_to-length":68}],82:[function(require,module,exports){
+},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":17,"./_regexp-exec-abstract":48,"./_to-length":60}],71:[function(require,module,exports){
 'use strict';
 
 var anObject = require('./_an-object');
@@ -1469,7 +1294,7 @@ require('./_fix-re-wks')('replace', 2, function (defined, REPLACE, $replace, may
   }
 });
 
-},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":19,"./_regexp-exec-abstract":54,"./_to-integer":66,"./_to-length":68,"./_to-object":69}],83:[function(require,module,exports){
+},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":17,"./_regexp-exec-abstract":48,"./_to-integer":58,"./_to-length":60,"./_to-object":61}],72:[function(require,module,exports){
 'use strict';
 
 var isRegExp = require('./_is-regexp');
@@ -1601,49 +1426,7 @@ require('./_fix-re-wks')('split', 2, function (defined, SPLIT, $split, maybeCall
   ];
 });
 
-},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":19,"./_is-regexp":31,"./_regexp-exec":55,"./_regexp-exec-abstract":54,"./_species-constructor":61,"./_to-length":68}],84:[function(require,module,exports){
-// 21.1.3.7 String.prototype.includes(searchString, position = 0)
-'use strict';
-var $export = require('./_export');
-var context = require('./_string-context');
-var INCLUDES = 'includes';
-
-$export($export.P + $export.F * require('./_fails-is-regexp')(INCLUDES), 'String', {
-  includes: function includes(searchString /* , position = 0 */) {
-    return !!~context(this, searchString, INCLUDES)
-      .indexOf(searchString, arguments.length > 1 ? arguments[1] : undefined);
-  }
-});
-
-},{"./_export":16,"./_fails-is-regexp":17,"./_string-context":63}],85:[function(require,module,exports){
-'use strict';
-var $at = require('./_string-at')(true);
-
-// 21.1.3.27 String.prototype[@@iterator]()
-require('./_iter-define')(String, 'String', function (iterated) {
-  this._t = String(iterated); // target
-  this._i = 0;                // next index
-// 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var index = this._i;
-  var point;
-  if (index >= O.length) return { value: undefined, done: true };
-  point = $at(O, index);
-  this._i += point.length;
-  return { value: point, done: false };
-});
-
-},{"./_iter-define":34,"./_string-at":62}],86:[function(require,module,exports){
-'use strict';
-// B.2.3.10 String.prototype.link(url)
-require('./_string-html')('link', function (createHTML) {
-  return function link(url) {
-    return createHTML(this, 'a', 'href', url);
-  };
-});
-
-},{"./_string-html":64}],87:[function(require,module,exports){
+},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":17,"./_is-regexp":28,"./_regexp-exec":49,"./_regexp-exec-abstract":48,"./_species-constructor":55,"./_to-length":60}],73:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
 var global = require('./_global');
@@ -1879,24 +1662,10 @@ setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
 
-},{"./_an-object":4,"./_descriptors":12,"./_enum-keys":15,"./_export":16,"./_fails":18,"./_global":21,"./_has":22,"./_hide":23,"./_is-array":29,"./_is-object":30,"./_library":38,"./_meta":39,"./_object-create":40,"./_object-dp":41,"./_object-gopd":43,"./_object-gopn":45,"./_object-gopn-ext":44,"./_object-gops":46,"./_object-keys":49,"./_object-pie":50,"./_property-desc":52,"./_redefine":53,"./_set-to-string-tag":58,"./_shared":60,"./_to-iobject":67,"./_to-primitive":70,"./_uid":71,"./_wks":74,"./_wks-define":72,"./_wks-ext":73}],88:[function(require,module,exports){
-'use strict';
-// https://github.com/tc39/Array.prototype.includes
-var $export = require('./_export');
-var $includes = require('./_array-includes')(true);
-
-$export($export.P, 'Array', {
-  includes: function includes(el /* , fromIndex = 0 */) {
-    return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
-  }
-});
-
-require('./_add-to-unscopables')('includes');
-
-},{"./_add-to-unscopables":2,"./_array-includes":5,"./_export":16}],89:[function(require,module,exports){
+},{"./_an-object":4,"./_descriptors":11,"./_enum-keys":14,"./_export":15,"./_fails":16,"./_global":19,"./_has":20,"./_hide":21,"./_is-array":26,"./_is-object":27,"./_library":33,"./_meta":34,"./_object-create":35,"./_object-dp":36,"./_object-gopd":38,"./_object-gopn":40,"./_object-gopn-ext":39,"./_object-gops":41,"./_object-keys":44,"./_object-pie":45,"./_property-desc":46,"./_redefine":47,"./_set-to-string-tag":52,"./_shared":54,"./_to-iobject":59,"./_to-primitive":62,"./_uid":63,"./_wks":66,"./_wks-define":64,"./_wks-ext":65}],74:[function(require,module,exports){
 require('./_wks-define')('asyncIterator');
 
-},{"./_wks-define":72}],90:[function(require,module,exports){
+},{"./_wks-define":64}],75:[function(require,module,exports){
 var $iterators = require('./es6.array.iterator');
 var getKeys = require('./_object-keys');
 var redefine = require('./_redefine');
@@ -1956,224 +1725,187 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
   }
 }
 
-},{"./_global":21,"./_hide":23,"./_iterators":37,"./_object-keys":49,"./_redefine":53,"./_wks":74,"./es6.array.iterator":77}],91:[function(require,module,exports){
+},{"./_global":19,"./_hide":21,"./_iterators":32,"./_object-keys":44,"./_redefine":47,"./_wks":66,"./es6.array.iterator":67}],76:[function(require,module,exports){
 "use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+const _require = require('./protocol'),
+      Parser = _require.Parser,
+      PROTOCOL_6 = _require.PROTOCOL_6,
+      PROTOCOL_7 = _require.PROTOCOL_7;
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+const VERSION = "2.4.0";
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var _require = require('./protocol'),
-    Parser = _require.Parser,
-    PROTOCOL_6 = _require.PROTOCOL_6,
-    PROTOCOL_7 = _require.PROTOCOL_7;
-
-var VERSION = "2.4.0";
-
-var Connector =
-/*#__PURE__*/
-function () {
-  function Connector(options, WebSocket, Timer, handlers) {
-    var _this = this;
-
-    _classCallCheck(this, Connector);
-
+class Connector {
+  constructor(options, WebSocket, Timer, handlers) {
     this.options = options;
     this.WebSocket = WebSocket;
     this.Timer = Timer;
     this.handlers = handlers;
-    var path = this.options.path ? "".concat(this.options.path) : 'livereload';
-    this._uri = "ws".concat(this.options.https ? 's' : '', "://").concat(this.options.host, ":").concat(this.options.port, "/").concat(path);
+    const path = this.options.path ? `${this.options.path}` : 'livereload';
+    this._uri = `ws${this.options.https ? 's' : ''}://${this.options.host}:${this.options.port}/${path}`;
     this._nextDelay = this.options.mindelay;
     this._connectionDesired = false;
     this.protocol = 0;
     this.protocolParser = new Parser({
-      connected: function connected(protocol) {
-        _this.protocol = protocol;
+      connected: protocol => {
+        this.protocol = protocol;
 
-        _this._handshakeTimeout.stop();
+        this._handshakeTimeout.stop();
 
-        _this._nextDelay = _this.options.mindelay;
-        _this._disconnectionReason = 'broken';
-        return _this.handlers.connected(_this.protocol);
+        this._nextDelay = this.options.mindelay;
+        this._disconnectionReason = 'broken';
+        return this.handlers.connected(this.protocol);
       },
-      error: function error(e) {
-        _this.handlers.error(e);
-
-        return _this._closeOnError();
+      error: e => {
+        this.handlers.error(e);
+        return this._closeOnError();
       },
-      message: function message(_message) {
-        return _this.handlers.message(_message);
+      message: _message => {
+        return this.handlers.message(_message);
       }
     });
-    this._handshakeTimeout = new this.Timer(function () {
-      if (!_this._isSocketConnected()) {
-        return;
-      }
-
-      _this._disconnectionReason = 'handshake-timeout';
-      return _this.socket.close();
-    });
-    this._reconnectTimer = new this.Timer(function () {
-      if (!_this._connectionDesired) {
-        return;
-      } // shouldn't hit this, but just in case
-
-
-      return _this.connect();
-    });
-    this.connect();
-  }
-
-  _createClass(Connector, [{
-    key: "_isSocketConnected",
-    value: function _isSocketConnected() {
-      return this.socket && this.socket.readyState === this.WebSocket.OPEN;
-    }
-  }, {
-    key: "connect",
-    value: function connect() {
-      var _this2 = this;
-
-      this._connectionDesired = true;
-
-      if (this._isSocketConnected()) {
-        return;
-      } // prepare for a new connection
-
-
-      this._reconnectTimer.stop();
-
-      this._disconnectionReason = 'cannot-connect';
-      this.protocolParser.reset();
-      this.handlers.connecting();
-      this.socket = new this.WebSocket(this._uri);
-
-      this.socket.onopen = function (e) {
-        return _this2._onopen(e);
-      };
-
-      this.socket.onclose = function (e) {
-        return _this2._onclose(e);
-      };
-
-      this.socket.onmessage = function (e) {
-        return _this2._onmessage(e);
-      };
-
-      this.socket.onerror = function (e) {
-        return _this2._onerror(e);
-      };
-    }
-  }, {
-    key: "disconnect",
-    value: function disconnect() {
-      this._connectionDesired = false;
-
-      this._reconnectTimer.stop(); // in case it was running
-
-
+    this._handshakeTimeout = new this.Timer(() => {
       if (!this._isSocketConnected()) {
         return;
       }
 
-      this._disconnectionReason = 'manual';
+      this._disconnectionReason = 'handshake-timeout';
       return this.socket.close();
-    }
-  }, {
-    key: "_scheduleReconnection",
-    value: function _scheduleReconnection() {
+    });
+    this._reconnectTimer = new this.Timer(() => {
       if (!this._connectionDesired) {
         return;
-      } // don't reconnect after manual disconnection
+      } // shouldn't hit this, but just in case
 
 
-      if (!this._reconnectTimer.running) {
-        this._reconnectTimer.start(this._nextDelay);
+      return this.connect();
+    });
+    this.connect();
+  }
 
-        this._nextDelay = Math.min(this.options.maxdelay, this._nextDelay * 2);
-      }
+  _isSocketConnected() {
+    return this.socket && this.socket.readyState === this.WebSocket.OPEN;
+  }
+
+  connect() {
+    this._connectionDesired = true;
+
+    if (this._isSocketConnected()) {
+      return;
+    } // prepare for a new connection
+
+
+    this._reconnectTimer.stop();
+
+    this._disconnectionReason = 'cannot-connect';
+    this.protocolParser.reset();
+    this.handlers.connecting();
+    this.socket = new this.WebSocket(this._uri);
+
+    this.socket.onopen = e => this._onopen(e);
+
+    this.socket.onclose = e => this._onclose(e);
+
+    this.socket.onmessage = e => this._onmessage(e);
+
+    this.socket.onerror = e => this._onerror(e);
+  }
+
+  disconnect() {
+    this._connectionDesired = false;
+
+    this._reconnectTimer.stop(); // in case it was running
+
+
+    if (!this._isSocketConnected()) {
+      return;
     }
-  }, {
-    key: "sendCommand",
-    value: function sendCommand(command) {
-      if (!this.protocol) {
-        return;
-      }
 
-      return this._sendCommand(command);
+    this._disconnectionReason = 'manual';
+    return this.socket.close();
+  }
+
+  _scheduleReconnection() {
+    if (!this._connectionDesired) {
+      return;
+    } // don't reconnect after manual disconnection
+
+
+    if (!this._reconnectTimer.running) {
+      this._reconnectTimer.start(this._nextDelay);
+
+      this._nextDelay = Math.min(this.options.maxdelay, this._nextDelay * 2);
     }
-  }, {
-    key: "_sendCommand",
-    value: function _sendCommand(command) {
-      return this.socket.send(JSON.stringify(command));
+  }
+
+  sendCommand(command) {
+    if (!this.protocol) {
+      return;
     }
-  }, {
-    key: "_closeOnError",
-    value: function _closeOnError() {
-      this._handshakeTimeout.stop();
 
-      this._disconnectionReason = 'error';
-      return this.socket.close();
+    return this._sendCommand(command);
+  }
+
+  _sendCommand(command) {
+    return this.socket.send(JSON.stringify(command));
+  }
+
+  _closeOnError() {
+    this._handshakeTimeout.stop();
+
+    this._disconnectionReason = 'error';
+    return this.socket.close();
+  }
+
+  _onopen(e) {
+    this.handlers.socketConnected();
+    this._disconnectionReason = 'handshake-failed'; // start handshake
+
+    const hello = {
+      command: 'hello',
+      protocols: [PROTOCOL_6, PROTOCOL_7]
+    };
+    hello.ver = VERSION;
+
+    if (this.options.ext) {
+      hello.ext = this.options.ext;
     }
-  }, {
-    key: "_onopen",
-    value: function _onopen(e) {
-      this.handlers.socketConnected();
-      this._disconnectionReason = 'handshake-failed'; // start handshake
 
-      var hello = {
-        command: 'hello',
-        protocols: [PROTOCOL_6, PROTOCOL_7]
-      };
-      hello.ver = VERSION;
-
-      if (this.options.ext) {
-        hello.ext = this.options.ext;
-      }
-
-      if (this.options.extver) {
-        hello.extver = this.options.extver;
-      }
-
-      if (this.options.snipver) {
-        hello.snipver = this.options.snipver;
-      }
-
-      this._sendCommand(hello);
-
-      return this._handshakeTimeout.start(this.options.handshake_timeout);
+    if (this.options.extver) {
+      hello.extver = this.options.extver;
     }
-  }, {
-    key: "_onclose",
-    value: function _onclose(e) {
-      this.protocol = 0;
-      this.handlers.disconnected(this._disconnectionReason, this._nextDelay);
-      return this._scheduleReconnection();
-    }
-  }, {
-    key: "_onerror",
-    value: function _onerror(e) {}
-  }, {
-    key: "_onmessage",
-    value: function _onmessage(e) {
-      return this.protocolParser.process(e.data);
-    }
-  }]);
 
-  return Connector;
-}();
+    if (this.options.snipver) {
+      hello.snipver = this.options.snipver;
+    }
+
+    this._sendCommand(hello);
+
+    return this._handshakeTimeout.start(this.options.handshake_timeout);
+  }
+
+  _onclose(e) {
+    this.protocol = 0;
+    this.handlers.disconnected(this._disconnectionReason, this._nextDelay);
+    return this._scheduleReconnection();
+  }
+
+  _onerror(e) {}
+
+  _onmessage(e) {
+    return this.protocolParser.process(e.data);
+  }
+
+}
 
 ;
 exports.Connector = Connector;
 
-},{"./protocol":96}],92:[function(require,module,exports){
+},{"./protocol":81}],77:[function(require,module,exports){
 "use strict";
 
-var CustomEvents = {
-  bind: function bind(element, eventName, handler) {
+const CustomEvents = {
+  bind(element, eventName, handler) {
     if (element.addEventListener) {
       return element.addEventListener(eventName, handler, false);
     } else if (element.attachEvent) {
@@ -2184,12 +1916,13 @@ var CustomEvents = {
         }
       });
     } else {
-      throw new Error("Attempt to attach custom event ".concat(eventName, " to something which isn't a DOMElement"));
+      throw new Error(`Attempt to attach custom event ${eventName} to something which isn't a DOMElement`);
     }
   },
-  fire: function fire(element, eventName) {
+
+  fire(element, eventName) {
     if (element.addEventListener) {
-      var event = document.createEvent('HTMLEvents');
+      const event = document.createEvent('HTMLEvents');
       event.initEvent(eventName, true, true);
       return document.dispatchEvent(event);
     } else if (element.attachEvent) {
@@ -2197,162 +1930,119 @@ var CustomEvents = {
         return element[eventName]++;
       }
     } else {
-      throw new Error("Attempt to fire custom event ".concat(eventName, " on something which isn't a DOMElement"));
+      throw new Error(`Attempt to fire custom event ${eventName} on something which isn't a DOMElement`);
     }
   }
+
 };
 exports.bind = CustomEvents.bind;
 exports.fire = CustomEvents.fire;
 
-},{}],93:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 "use strict";
-
-require("core-js/modules/es6.string.iterator");
-
-require("core-js/modules/es6.array.from");
 
 require("core-js/modules/es6.regexp.match");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var LessPlugin =
-/*#__PURE__*/
-function () {
-  function LessPlugin(window, host) {
-    _classCallCheck(this, LessPlugin);
-
+class LessPlugin {
+  constructor(window, host) {
     this.window = window;
     this.host = host;
   }
 
-  _createClass(LessPlugin, [{
-    key: "reload",
-    value: function reload(path, options) {
-      if (this.window.less && this.window.less.refresh) {
-        if (path.match(/\.less$/i)) {
-          return this.reloadLess(path);
-        }
+  reload(path, options) {
+    if (this.window.less && this.window.less.refresh) {
+      if (path.match(/\.less$/i)) {
+        return this.reloadLess(path);
+      }
 
-        if (options.originalPath.match(/\.less$/i)) {
-          return this.reloadLess(options.originalPath);
+      if (options.originalPath.match(/\.less$/i)) {
+        return this.reloadLess(options.originalPath);
+      }
+    }
+
+    return false;
+  }
+
+  reloadLess(path) {
+    let link;
+
+    const links = (() => {
+      const result = [];
+
+      for (link of Array.from(document.getElementsByTagName('link'))) {
+        if (link.href && link.rel.match(/^stylesheet\/less$/i) || link.rel.match(/stylesheet/i) && link.type.match(/^text\/(x-)?less$/i)) {
+          result.push(link);
         }
       }
 
+      return result;
+    })();
+
+    if (links.length === 0) {
       return false;
     }
-  }, {
-    key: "reloadLess",
-    value: function reloadLess(path) {
-      var link;
 
-      var links = function () {
-        var result = [];
-
-        var _arr = Array.from(document.getElementsByTagName('link'));
-
-        for (var _i = 0; _i < _arr.length; _i++) {
-          link = _arr[_i];
-
-          if (link.href && link.rel.match(/^stylesheet\/less$/i) || link.rel.match(/stylesheet/i) && link.type.match(/^text\/(x-)?less$/i)) {
-            result.push(link);
-          }
-        }
-
-        return result;
-      }();
-
-      if (links.length === 0) {
-        return false;
-      }
-
-      var _arr2 = Array.from(links);
-
-      for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
-        link = _arr2[_i2];
-        link.href = this.host.generateCacheBustUrl(link.href);
-      }
-
-      this.host.console.log('LiveReload is asking LESS to recompile all stylesheets');
-      this.window.less.refresh(true);
-      return true;
+    for (link of Array.from(links)) {
+      link.href = this.host.generateCacheBustUrl(link.href);
     }
-  }, {
-    key: "analyze",
-    value: function analyze() {
-      return {
-        disable: !!(this.window.less && this.window.less.refresh)
-      };
-    }
-  }]);
 
-  return LessPlugin;
-}();
+    this.host.console.log('LiveReload is asking LESS to recompile all stylesheets');
+    this.window.less.refresh(true);
+    return true;
+  }
+
+  analyze() {
+    return {
+      disable: !!(this.window.less && this.window.less.refresh)
+    };
+  }
+
+}
 
 ;
 LessPlugin.identifier = 'less';
 LessPlugin.version = '1.0';
 module.exports = LessPlugin;
 
-},{"core-js/modules/es6.array.from":76,"core-js/modules/es6.regexp.match":81,"core-js/modules/es6.string.iterator":85}],94:[function(require,module,exports){
+},{"core-js/modules/es6.regexp.match":70}],79:[function(require,module,exports){
 "use strict";
-
-require("core-js/modules/es7.symbol.async-iterator");
-
-require("core-js/modules/es6.symbol");
 
 require("core-js/modules/web.dom.iterable");
 
-require("core-js/modules/es6.array.iterator");
-
-require("core-js/modules/es6.object.keys");
-
 require("core-js/modules/es6.regexp.match");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 /* global alert */
-var _require = require('./connector'),
-    Connector = _require.Connector;
+const _require = require('./connector'),
+      Connector = _require.Connector;
 
-var _require2 = require('./timer'),
-    Timer = _require2.Timer;
+const _require2 = require('./timer'),
+      Timer = _require2.Timer;
 
-var _require3 = require('./options'),
-    Options = _require3.Options;
+const _require3 = require('./options'),
+      Options = _require3.Options;
 
-var _require4 = require('./reloader'),
-    Reloader = _require4.Reloader;
+const _require4 = require('./reloader'),
+      Reloader = _require4.Reloader;
 
-var _require5 = require('./protocol'),
-    ProtocolError = _require5.ProtocolError;
+const _require5 = require('./protocol'),
+      ProtocolError = _require5.ProtocolError;
 
-var LiveReload =
-/*#__PURE__*/
-function () {
-  function LiveReload(window) {
-    var _this = this;
-
-    _classCallCheck(this, LiveReload);
-
+class LiveReload {
+  constructor(window) {
     this.window = window;
     this.listeners = {};
     this.plugins = [];
     this.pluginIdentifiers = {}; // i can haz console?
 
     this.console = this.window.console && this.window.console.log && this.window.console.error ? this.window.location.href.match(/LR-verbose/) ? this.window.console : {
-      log: function log() {},
+      log() {},
+
       error: this.window.console.error.bind(this.window.console)
     } : {
-      log: function log() {},
-      error: function error() {}
+      log() {},
+
+      error() {}
+
     }; // i can haz sockets?
 
     if (!(this.WebSocket = this.window.WebSocket || this.window.MozWebSocket)) {
@@ -2364,11 +2054,8 @@ function () {
     if ('LiveReloadOptions' in window) {
       this.options = new Options();
 
-      var _arr = Object.keys(window['LiveReloadOptions'] || {});
-
-      for (var _i = 0; _i < _arr.length; _i++) {
-        var k = _arr[_i];
-        var v = window['LiveReloadOptions'][k];
+      for (let k of Object.keys(window['LiveReloadOptions'] || {})) {
+        const v = window['LiveReloadOptions'][k];
         this.options.set(k, v);
       }
     } else {
@@ -2384,212 +2071,177 @@ function () {
     this.reloader = new Reloader(this.window, this.console, Timer); // i can haz connection?
 
     this.connector = new Connector(this.options, this.WebSocket, Timer, {
-      connecting: function connecting() {},
-      socketConnected: function socketConnected() {},
-      connected: function connected(protocol) {
-        if (typeof _this.listeners.connect === 'function') {
-          _this.listeners.connect();
+      connecting: () => {},
+      socketConnected: () => {},
+      connected: protocol => {
+        if (typeof this.listeners.connect === 'function') {
+          this.listeners.connect();
         }
 
-        _this.log("LiveReload is connected to ".concat(_this.options.host, ":").concat(_this.options.port, " (protocol v").concat(protocol, ")."));
-
-        return _this.analyze();
+        this.log(`LiveReload is connected to ${this.options.host}:${this.options.port} (protocol v${protocol}).`);
+        return this.analyze();
       },
-      error: function error(e) {
+      error: e => {
         if (e instanceof ProtocolError) {
           if (typeof console !== 'undefined' && console !== null) {
-            return console.log("".concat(e.message, "."));
+            return console.log(`${e.message}.`);
           }
         } else {
           if (typeof console !== 'undefined' && console !== null) {
-            return console.log("LiveReload internal error: ".concat(e.message));
+            return console.log(`LiveReload internal error: ${e.message}`);
           }
         }
       },
-      disconnected: function disconnected(reason, nextDelay) {
-        if (typeof _this.listeners.disconnect === 'function') {
-          _this.listeners.disconnect();
+      disconnected: (reason, nextDelay) => {
+        if (typeof this.listeners.disconnect === 'function') {
+          this.listeners.disconnect();
         }
 
         switch (reason) {
           case 'cannot-connect':
-            return _this.log("LiveReload cannot connect to ".concat(_this.options.host, ":").concat(_this.options.port, ", will retry in ").concat(nextDelay, " sec."));
+            return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port}, will retry in ${nextDelay} sec.`);
 
           case 'broken':
-            return _this.log("LiveReload disconnected from ".concat(_this.options.host, ":").concat(_this.options.port, ", reconnecting in ").concat(nextDelay, " sec."));
+            return this.log(`LiveReload disconnected from ${this.options.host}:${this.options.port}, reconnecting in ${nextDelay} sec.`);
 
           case 'handshake-timeout':
-            return _this.log("LiveReload cannot connect to ".concat(_this.options.host, ":").concat(_this.options.port, " (handshake timeout), will retry in ").concat(nextDelay, " sec."));
+            return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port} (handshake timeout), will retry in ${nextDelay} sec.`);
 
           case 'handshake-failed':
-            return _this.log("LiveReload cannot connect to ".concat(_this.options.host, ":").concat(_this.options.port, " (handshake failed), will retry in ").concat(nextDelay, " sec."));
+            return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port} (handshake failed), will retry in ${nextDelay} sec.`);
 
           case 'manual': // nop
 
           case 'error': // nop
 
           default:
-            return _this.log("LiveReload disconnected from ".concat(_this.options.host, ":").concat(_this.options.port, " (").concat(reason, "), reconnecting in ").concat(nextDelay, " sec."));
+            return this.log(`LiveReload disconnected from ${this.options.host}:${this.options.port} (${reason}), reconnecting in ${nextDelay} sec.`);
         }
       },
-      message: function message(_message) {
+      message: _message => {
         switch (_message.command) {
           case 'reload':
-            return _this.performReload(_message);
+            return this.performReload(_message);
 
           case 'alert':
-            return _this.performAlert(_message);
+            return this.performAlert(_message);
         }
       }
     });
     this.initialized = true;
   }
 
-  _createClass(LiveReload, [{
-    key: "on",
-    value: function on(eventName, handler) {
-      this.listeners[eventName] = handler;
+  on(eventName, handler) {
+    this.listeners[eventName] = handler;
+  }
+
+  log(message) {
+    return this.console.log(`${message}`);
+  }
+
+  performReload(message) {
+    this.log(`LiveReload received reload request: ${JSON.stringify(message, null, 2)}`);
+    return this.reloader.reload(message.path, {
+      liveCSS: message.liveCSS != null ? message.liveCSS : true,
+      liveImg: message.liveImg != null ? message.liveImg : true,
+      reloadMissingCSS: message.reloadMissingCSS != null ? message.reloadMissingCSS : true,
+      originalPath: message.originalPath || '',
+      overrideURL: message.overrideURL || '',
+      serverURL: `http://${this.options.host}:${this.options.port}`
+    });
+  }
+
+  performAlert(message) {
+    return alert(message.message);
+  }
+
+  shutDown() {
+    if (!this.initialized) {
+      return;
     }
-  }, {
-    key: "log",
-    value: function log(message) {
-      return this.console.log("".concat(message));
+
+    this.connector.disconnect();
+    this.log('LiveReload disconnected.');
+    return typeof this.listeners.shutdown === 'function' ? this.listeners.shutdown() : undefined;
+  }
+
+  hasPlugin(identifier) {
+    return !!this.pluginIdentifiers[identifier];
+  }
+
+  addPlugin(PluginClass) {
+    if (!this.initialized) {
+      return;
     }
-  }, {
-    key: "performReload",
-    value: function performReload(message) {
-      this.log("LiveReload received reload request: ".concat(JSON.stringify(message, null, 2)));
-      return this.reloader.reload(message.path, {
-        liveCSS: message.liveCSS != null ? message.liveCSS : true,
-        liveImg: message.liveImg != null ? message.liveImg : true,
-        reloadMissingCSS: message.reloadMissingCSS != null ? message.reloadMissingCSS : true,
-        originalPath: message.originalPath || '',
-        overrideURL: message.overrideURL || '',
-        serverURL: "http://".concat(this.options.host, ":").concat(this.options.port)
-      });
+
+    if (this.hasPlugin(PluginClass.identifier)) {
+      return;
     }
-  }, {
-    key: "performAlert",
-    value: function performAlert(message) {
-      return alert(message.message);
+
+    this.pluginIdentifiers[PluginClass.identifier] = true;
+    const plugin = new PluginClass(this.window, {
+      // expose internal objects for those who know what they're doing
+      // (note that these are private APIs and subject to change at any time!)
+      _livereload: this,
+      _reloader: this.reloader,
+      _connector: this.connector,
+      // official API
+      console: this.console,
+      Timer,
+      generateCacheBustUrl: url => this.reloader.generateCacheBustUrl(url)
+    }); // API that PluginClass can/must provide:
+    //
+    // string PluginClass.identifier
+    //   -- required, globally-unique name of this plugin
+    //
+    // string PluginClass.version
+    //   -- required, plugin version number (format %d.%d or %d.%d.%d)
+    //
+    // plugin = new PluginClass(window, officialLiveReloadAPI)
+    //   -- required, plugin constructor
+    //
+    // bool plugin.reload(string path, { bool liveCSS, bool liveImg })
+    //   -- optional, attemp to reload the given path, return true if handled
+    //
+    // object plugin.analyze()
+    //   -- optional, returns plugin-specific information about the current document (to send to the connected server)
+    //      (LiveReload 2 server currently only defines 'disable' key in this object; return {disable:true} to disable server-side
+    //       compilation of a matching plugin's files)
+
+    this.plugins.push(plugin);
+    this.reloader.addPlugin(plugin);
+  }
+
+  analyze() {
+    if (!this.initialized) {
+      return;
     }
-  }, {
-    key: "shutDown",
-    value: function shutDown() {
-      if (!this.initialized) {
-        return;
-      }
 
-      this.connector.disconnect();
-      this.log('LiveReload disconnected.');
-      return typeof this.listeners.shutdown === 'function' ? this.listeners.shutdown() : undefined;
+    if (!(this.connector.protocol >= 7)) {
+      return;
     }
-  }, {
-    key: "hasPlugin",
-    value: function hasPlugin(identifier) {
-      return !!this.pluginIdentifiers[identifier];
+
+    const pluginsData = {};
+
+    for (let plugin of this.plugins) {
+      var pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
+      pluginsData[plugin.constructor.identifier] = pluginData;
+      pluginData.version = plugin.constructor.version;
     }
-  }, {
-    key: "addPlugin",
-    value: function addPlugin(PluginClass) {
-      var _this2 = this;
 
-      if (!this.initialized) {
-        return;
-      }
+    this.connector.sendCommand({
+      command: 'info',
+      plugins: pluginsData,
+      url: this.window.location.href
+    });
+  }
 
-      if (this.hasPlugin(PluginClass.identifier)) {
-        return;
-      }
-
-      this.pluginIdentifiers[PluginClass.identifier] = true;
-      var plugin = new PluginClass(this.window, {
-        // expose internal objects for those who know what they're doing
-        // (note that these are private APIs and subject to change at any time!)
-        _livereload: this,
-        _reloader: this.reloader,
-        _connector: this.connector,
-        // official API
-        console: this.console,
-        Timer: Timer,
-        generateCacheBustUrl: function generateCacheBustUrl(url) {
-          return _this2.reloader.generateCacheBustUrl(url);
-        }
-      }); // API that PluginClass can/must provide:
-      //
-      // string PluginClass.identifier
-      //   -- required, globally-unique name of this plugin
-      //
-      // string PluginClass.version
-      //   -- required, plugin version number (format %d.%d or %d.%d.%d)
-      //
-      // plugin = new PluginClass(window, officialLiveReloadAPI)
-      //   -- required, plugin constructor
-      //
-      // bool plugin.reload(string path, { bool liveCSS, bool liveImg })
-      //   -- optional, attemp to reload the given path, return true if handled
-      //
-      // object plugin.analyze()
-      //   -- optional, returns plugin-specific information about the current document (to send to the connected server)
-      //      (LiveReload 2 server currently only defines 'disable' key in this object; return {disable:true} to disable server-side
-      //       compilation of a matching plugin's files)
-
-      this.plugins.push(plugin);
-      this.reloader.addPlugin(plugin);
-    }
-  }, {
-    key: "analyze",
-    value: function analyze() {
-      if (!this.initialized) {
-        return;
-      }
-
-      if (!(this.connector.protocol >= 7)) {
-        return;
-      }
-
-      var pluginsData = {};
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.plugins[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var plugin = _step.value;
-          var pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
-          pluginsData[plugin.constructor.identifier] = pluginData;
-          pluginData.version = plugin.constructor.version;
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      this.connector.sendCommand({
-        command: 'info',
-        plugins: pluginsData,
-        url: this.window.location.href
-      });
-    }
-  }]);
-
-  return LiveReload;
-}();
+}
 
 ;
 exports.LiveReload = LiveReload;
 
-},{"./connector":91,"./options":95,"./protocol":96,"./reloader":97,"./timer":99,"core-js/modules/es6.array.iterator":77,"core-js/modules/es6.object.keys":78,"core-js/modules/es6.regexp.match":81,"core-js/modules/es6.symbol":87,"core-js/modules/es7.symbol.async-iterator":89,"core-js/modules/web.dom.iterable":90}],95:[function(require,module,exports){
+},{"./connector":76,"./options":80,"./protocol":81,"./reloader":82,"./timer":84,"core-js/modules/es6.regexp.match":70,"core-js/modules/web.dom.iterable":75}],80:[function(require,module,exports){
 "use strict";
 
 require("core-js/modules/es6.regexp.replace");
@@ -2600,22 +2252,8 @@ require("core-js/modules/es6.regexp.constructor");
 
 require("core-js/modules/es6.regexp.match");
 
-require("core-js/modules/es6.string.iterator");
-
-require("core-js/modules/es6.array.from");
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Options =
-/*#__PURE__*/
-function () {
-  function Options() {
-    _classCallCheck(this, Options);
-
+class Options {
+  constructor() {
     this.https = false;
     this.host = null;
     this.port = 35729;
@@ -2627,37 +2265,30 @@ function () {
     this.handshake_timeout = 5000;
   }
 
-  _createClass(Options, [{
-    key: "set",
-    value: function set(name, value) {
-      if (typeof value === 'undefined') {
-        return;
-      }
-
-      if (!isNaN(+value)) {
-        value = +value;
-      }
-
-      this[name] = value;
+  set(name, value) {
+    if (typeof value === 'undefined') {
+      return;
     }
-  }]);
 
-  return Options;
-}();
+    if (!isNaN(+value)) {
+      value = +value;
+    }
+
+    this[name] = value;
+  }
+
+}
 
 Options.extract = function (document) {
-  var _arr = Array.from(document.getElementsByTagName('script'));
-
-  for (var _i = 0; _i < _arr.length; _i++) {
-    var element = _arr[_i];
+  for (let element of Array.from(document.getElementsByTagName('script'))) {
     var m, src;
 
-    if ((src = element.src) && (m = src.match(new RegExp("^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$")))) {
+    if ((src = element.src) && (m = src.match(new RegExp(`^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$`)))) {
       var mm;
-      var options = new Options();
+      const options = new Options();
       options.https = src.indexOf('https') === 0;
 
-      if (mm = m[1].match(new RegExp("^([^/:]+)(?::(\\d+))?(\\/+.*)?$"))) {
+      if (mm = m[1].match(new RegExp(`^([^/:]+)(?::(\\d+))?(\\/+.*)?$`))) {
         options.host = mm[1];
 
         if (mm[2]) {
@@ -2666,10 +2297,7 @@ Options.extract = function (document) {
       }
 
       if (m[2]) {
-        var _arr2 = Array.from(m[2].split('&'));
-
-        for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
-          var pair = _arr2[_i2];
+        for (let pair of Array.from(m[2].split('&'))) {
           var keyAndValue;
 
           if ((keyAndValue = pair.split('=')).length > 1) {
@@ -2687,7 +2315,7 @@ Options.extract = function (document) {
 
 exports.Options = Options;
 
-},{"core-js/modules/es6.array.from":76,"core-js/modules/es6.regexp.constructor":79,"core-js/modules/es6.regexp.match":81,"core-js/modules/es6.regexp.replace":82,"core-js/modules/es6.regexp.split":83,"core-js/modules/es6.string.iterator":85}],96:[function(require,module,exports){
+},{"core-js/modules/es6.regexp.constructor":68,"core-js/modules/es6.regexp.match":70,"core-js/modules/es6.regexp.replace":71,"core-js/modules/es6.regexp.split":72}],81:[function(require,module,exports){
 "use strict";
 
 require("core-js/modules/es7.symbol.async-iterator");
@@ -2695,14 +2323,6 @@ require("core-js/modules/es7.symbol.async-iterator");
 require("core-js/modules/es6.symbol");
 
 require("core-js/modules/web.dom.iterable");
-
-require("core-js/modules/es6.string.iterator");
-
-require("core-js/modules/es6.array.from");
-
-require("core-js/modules/es7.array.includes");
-
-require("core-js/modules/es6.string.includes");
 
 require("core-js/modules/es6.regexp.constructor");
 
@@ -2716,156 +2336,123 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var PROTOCOL_6, PROTOCOL_7;
+let PROTOCOL_6, PROTOCOL_7;
 exports.PROTOCOL_6 = PROTOCOL_6 = 'http://livereload.com/protocols/official-6';
 exports.PROTOCOL_7 = PROTOCOL_7 = 'http://livereload.com/protocols/official-7';
 
-var ProtocolError = function ProtocolError(reason, data) {
-  _classCallCheck(this, ProtocolError);
+class ProtocolError {
+  constructor(reason, data) {
+    this.message = `LiveReload protocol error (${reason}) after receiving data: "${data}".`;
+  }
 
-  this.message = "LiveReload protocol error (".concat(reason, ") after receiving data: \"").concat(data, "\".");
-};
+}
 
 ;
 
-var Parser =
-/*#__PURE__*/
-function () {
-  function Parser(handlers) {
-    _classCallCheck(this, Parser);
-
+class Parser {
+  constructor(handlers) {
     this.handlers = handlers;
     this.reset();
   }
 
-  _createClass(Parser, [{
-    key: "reset",
-    value: function reset() {
-      this.protocol = null;
-    }
-  }, {
-    key: "process",
-    value: function process(data) {
-      try {
-        var message;
+  reset() {
+    this.protocol = null;
+  }
 
-        if (!this.protocol) {
-          if (data.match(new RegExp("^!!ver:([\\d.]+)$"))) {
+  process(data) {
+    try {
+      let message;
+
+      if (!this.protocol) {
+        if (data.match(new RegExp(`^!!ver:([\\d.]+)$`))) {
+          this.protocol = 6;
+        } else if (message = this._parseMessage(data, ['hello'])) {
+          if (!message.protocols.length) {
+            throw new ProtocolError('no protocols specified in handshake message');
+          } else if (Array.from(message.protocols).includes(PROTOCOL_7)) {
+            this.protocol = 7;
+          } else if (Array.from(message.protocols).includes(PROTOCOL_6)) {
             this.protocol = 6;
-          } else if (message = this._parseMessage(data, ['hello'])) {
-            if (!message.protocols.length) {
-              throw new ProtocolError('no protocols specified in handshake message');
-            } else if (Array.from(message.protocols).includes(PROTOCOL_7)) {
-              this.protocol = 7;
-            } else if (Array.from(message.protocols).includes(PROTOCOL_6)) {
-              this.protocol = 6;
-            } else {
-              throw new ProtocolError('no supported protocols found');
-            }
+          } else {
+            throw new ProtocolError('no supported protocols found');
           }
+        }
 
-          return this.handlers.connected(this.protocol);
-        } else if (this.protocol === 6) {
-          message = JSON.parse(data);
+        return this.handlers.connected(this.protocol);
+      } else if (this.protocol === 6) {
+        message = JSON.parse(data);
 
-          if (!message.length) {
-            throw new ProtocolError('protocol 6 messages must be arrays');
-          }
+        if (!message.length) {
+          throw new ProtocolError('protocol 6 messages must be arrays');
+        }
 
-          var _Array$from = Array.from(message),
+        const _Array$from = Array.from(message),
               _Array$from2 = _slicedToArray(_Array$from, 2),
               command = _Array$from2[0],
               options = _Array$from2[1];
 
-          if (command !== 'refresh') {
-            throw new ProtocolError('unknown protocol 6 command');
-          }
+        if (command !== 'refresh') {
+          throw new ProtocolError('unknown protocol 6 command');
+        }
 
-          return this.handlers.message({
-            command: 'reload',
-            path: options.path,
-            liveCSS: options.apply_css_live != null ? options.apply_css_live : true
-          });
-        } else {
-          message = this._parseMessage(data, ['reload', 'alert']);
-          return this.handlers.message(message);
-        }
-      } catch (e) {
-        if (e instanceof ProtocolError) {
-          return this.handlers.error(e);
-        } else {
-          throw e;
-        }
+        return this.handlers.message({
+          command: 'reload',
+          path: options.path,
+          liveCSS: options.apply_css_live != null ? options.apply_css_live : true
+        });
+      } else {
+        message = this._parseMessage(data, ['reload', 'alert']);
+        return this.handlers.message(message);
+      }
+    } catch (e) {
+      if (e instanceof ProtocolError) {
+        return this.handlers.error(e);
+      } else {
+        throw e;
       }
     }
-  }, {
-    key: "_parseMessage",
-    value: function _parseMessage(data, validCommands) {
-      var message;
+  }
 
-      try {
-        message = JSON.parse(data);
-      } catch (e) {
-        throw new ProtocolError('unparsable JSON', data);
-      }
+  _parseMessage(data, validCommands) {
+    let message;
 
-      if (!message.command) {
-        throw new ProtocolError('missing "command" key', data);
-      }
-
-      if (!validCommands.includes(message.command)) {
-        throw new ProtocolError("invalid command '".concat(message.command, "', only valid commands are: ").concat(validCommands.join(', '), ")"), data);
-      }
-
-      return message;
+    try {
+      message = JSON.parse(data);
+    } catch (e) {
+      throw new ProtocolError('unparsable JSON', data);
     }
-  }]);
 
-  return Parser;
-}();
+    if (!message.command) {
+      throw new ProtocolError('missing "command" key', data);
+    }
+
+    if (!validCommands.includes(message.command)) {
+      throw new ProtocolError(`invalid command '${message.command}', only valid commands are: ${validCommands.join(', ')})`, data);
+    }
+
+    return message;
+  }
+
+}
 
 ;
 exports.ProtocolError = ProtocolError;
 exports.Parser = Parser;
 
-},{"core-js/modules/es6.array.from":76,"core-js/modules/es6.regexp.constructor":79,"core-js/modules/es6.regexp.match":81,"core-js/modules/es6.string.includes":84,"core-js/modules/es6.string.iterator":85,"core-js/modules/es6.symbol":87,"core-js/modules/es7.array.includes":88,"core-js/modules/es7.symbol.async-iterator":89,"core-js/modules/web.dom.iterable":90}],97:[function(require,module,exports){
+},{"core-js/modules/es6.regexp.constructor":68,"core-js/modules/es6.regexp.match":70,"core-js/modules/es6.symbol":73,"core-js/modules/es7.symbol.async-iterator":74,"core-js/modules/web.dom.iterable":75}],82:[function(require,module,exports){
 "use strict";
-
-require("core-js/modules/es6.string.link");
-
-require("core-js/modules/es6.string.iterator");
-
-require("core-js/modules/es6.array.from");
 
 require("core-js/modules/es6.regexp.match");
 
 require("core-js/modules/es6.regexp.split");
 
-require("core-js/modules/es7.symbol.async-iterator");
-
-require("core-js/modules/es6.symbol");
-
-require("core-js/modules/web.dom.iterable");
-
 require("core-js/modules/es6.regexp.constructor");
 
 require("core-js/modules/es6.regexp.replace");
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 /* global CSSRule */
-var splitUrl = function splitUrl(url) {
-  var hash, index, params;
+const splitUrl = function splitUrl(url) {
+  let hash, index, params;
 
   if ((index = url.indexOf('#')) >= 0) {
     hash = url.slice(index);
@@ -2875,7 +2462,7 @@ var splitUrl = function splitUrl(url) {
   } // http://your.domain.com/path/to/combo/??file1.css,file2,css
 
 
-  var comboSign = url.indexOf('??');
+  const comboSign = url.indexOf('??');
 
   if (comboSign >= 0) {
     if (comboSign + 1 !== url.lastIndexOf('?')) {
@@ -2893,63 +2480,44 @@ var splitUrl = function splitUrl(url) {
   }
 
   return {
-    url: url,
-    params: params,
-    hash: hash
+    url,
+    params,
+    hash
   };
 };
 
-var pathFromUrl = function pathFromUrl(url) {
-  var path;
+const pathFromUrl = function pathFromUrl(url) {
+  let path;
 
   var _splitUrl = splitUrl(url);
 
   url = _splitUrl.url;
 
   if (url.indexOf('file://') === 0) {
-    path = url.replace(new RegExp("^file://(localhost)?"), '');
+    path = url.replace(new RegExp(`^file://(localhost)?`), '');
   } else {
     //                        http  :   // hostname  :8080  /
-    path = url.replace(new RegExp("^([^:]+:)?//([^:/]+)(:\\d*)?/"), '/');
+    path = url.replace(new RegExp(`^([^:]+:)?//([^:/]+)(:\\d*)?/`), '/');
   } // decodeURI has special handling of stuff like semicolons, so use decodeURIComponent
 
 
   return decodeURIComponent(path);
 };
 
-var pickBestMatch = function pickBestMatch(path, objects, pathFunc) {
-  var score;
-  var bestMatch = {
+const pickBestMatch = function pickBestMatch(path, objects, pathFunc) {
+  let score;
+  let bestMatch = {
     score: 0
   };
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
 
-  try {
-    for (var _iterator = objects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var object = _step.value;
-      score = numberOfMatchingSegments(path, pathFunc(object));
+  for (let object of objects) {
+    score = numberOfMatchingSegments(path, pathFunc(object));
 
-      if (score > bestMatch.score) {
-        bestMatch = {
-          object: object,
-          score: score
-        };
-      }
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
+    if (score > bestMatch.score) {
+      bestMatch = {
+        object,
+        score
+      };
     }
   }
 
@@ -2969,10 +2537,10 @@ var numberOfMatchingSegments = function numberOfMatchingSegments(path1, path2) {
     return 10000;
   }
 
-  var comps1 = path1.split('/').reverse();
-  var comps2 = path2.split('/').reverse();
-  var len = Math.min(comps1.length, comps2.length);
-  var eqCount = 0;
+  const comps1 = path1.split('/').reverse();
+  const comps2 = path2.split('/').reverse();
+  const len = Math.min(comps1.length, comps2.length);
+  let eqCount = 0;
 
   while (eqCount < len && comps1[eqCount] === comps2[eqCount]) {
     ++eqCount;
@@ -2981,11 +2549,9 @@ var numberOfMatchingSegments = function numberOfMatchingSegments(path1, path2) {
   return eqCount;
 };
 
-var pathsMatch = function pathsMatch(path1, path2) {
-  return numberOfMatchingSegments(path1, path2) > 0;
-};
+const pathsMatch = (path1, path2) => numberOfMatchingSegments(path1, path2) > 0;
 
-var IMAGE_STYLES = [{
+const IMAGE_STYLES = [{
   selector: 'background',
   styleNames: ['backgroundImage']
 }, {
@@ -2993,12 +2559,8 @@ var IMAGE_STYLES = [{
   styleNames: ['borderImage', 'webkitBorderImage', 'MozBorderImage']
 }];
 
-var Reloader =
-/*#__PURE__*/
-function () {
-  function Reloader(window, console, Timer) {
-    _classCallCheck(this, Reloader);
-
+class Reloader {
+  constructor(window, console, Timer) {
     this.window = window;
     this.console = console;
     this.Timer = Timer;
@@ -3007,597 +2569,479 @@ function () {
     this.plugins = [];
   }
 
-  _createClass(Reloader, [{
-    key: "addPlugin",
-    value: function addPlugin(plugin) {
-      return this.plugins.push(plugin);
+  addPlugin(plugin) {
+    return this.plugins.push(plugin);
+  }
+
+  analyze(callback) {}
+
+  reload(path, options) {
+    this.options = options; // avoid passing it through all the funcs
+
+    if (!this.options.stylesheetReloadTimeout) {
+      this.options.stylesheetReloadTimeout = 15000;
     }
-  }, {
-    key: "analyze",
-    value: function analyze(callback) {}
-  }, {
-    key: "reload",
-    value: function reload(path, options) {
-      this.options = options; // avoid passing it through all the funcs
 
-      if (!this.options.stylesheetReloadTimeout) {
-        this.options.stylesheetReloadTimeout = 15000;
-      }
-
-      var _arr = Array.from(this.plugins);
-
-      for (var _i = 0; _i < _arr.length; _i++) {
-        var plugin = _arr[_i];
-
-        if (plugin.reload && plugin.reload(path, options)) {
-          return;
-        }
-      }
-
-      if (options.liveCSS && path.match(/\.css(?:\.map)?$/i)) {
-        if (this.reloadStylesheet(path)) {
-          return;
-        }
-      }
-
-      if (options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)) {
-        this.reloadImages(path);
+    for (let plugin of Array.from(this.plugins)) {
+      if (plugin.reload && plugin.reload(path, options)) {
         return;
       }
+    }
 
-      if (options.isChromeExtension) {
-        this.reloadChromeExtension();
+    if (options.liveCSS && path.match(/\.css(?:\.map)?$/i)) {
+      if (this.reloadStylesheet(path)) {
         return;
       }
-
-      return this.reloadPage();
     }
-  }, {
-    key: "reloadPage",
-    value: function reloadPage() {
-      return this.window.document.location.reload();
+
+    if (options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)) {
+      this.reloadImages(path);
+      return;
     }
-  }, {
-    key: "reloadChromeExtension",
-    value: function reloadChromeExtension() {
-      return this.window.chrome.runtime.reload();
+
+    if (options.isChromeExtension) {
+      this.reloadChromeExtension();
+      return;
     }
-  }, {
-    key: "reloadImages",
-    value: function reloadImages(path) {
-      var _this = this;
 
-      var img;
-      var expando = this.generateUniqueString();
+    return this.reloadPage();
+  }
 
-      var _arr2 = Array.from(this.document.images);
+  reloadPage() {
+    return this.window.document.location.reload();
+  }
 
-      for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
-        img = _arr2[_i2];
+  reloadChromeExtension() {
+    return this.window.chrome.runtime.reload();
+  }
 
-        if (pathsMatch(path, pathFromUrl(img.src))) {
-          img.src = this.generateCacheBustUrl(img.src, expando);
+  reloadImages(path) {
+    let img;
+    const expando = this.generateUniqueString();
+
+    for (img of Array.from(this.document.images)) {
+      if (pathsMatch(path, pathFromUrl(img.src))) {
+        img.src = this.generateCacheBustUrl(img.src, expando);
+      }
+    }
+
+    if (this.document.querySelectorAll) {
+      for (let _ref of IMAGE_STYLES) {
+        let selector = _ref.selector;
+        let styleNames = _ref.styleNames;
+
+        for (img of Array.from(this.document.querySelectorAll(`[style*=${selector}]`))) {
+          this.reloadStyleImages(img.style, styleNames, path, expando);
         }
       }
+    }
 
-      if (this.document.querySelectorAll) {
-        for (var _i3 = 0; _i3 < IMAGE_STYLES.length; _i3++) {
-          var _IMAGE_STYLES$_i = IMAGE_STYLES[_i3],
-              selector = _IMAGE_STYLES$_i.selector,
-              styleNames = _IMAGE_STYLES$_i.styleNames;
+    if (this.document.styleSheets) {
+      return Array.from(this.document.styleSheets).map(styleSheet => this.reloadStylesheetImages(styleSheet, path, expando));
+    }
+  }
 
-          var _arr3 = Array.from(this.document.querySelectorAll("[style*=".concat(selector, "]")));
+  reloadStylesheetImages(styleSheet, path, expando) {
+    let rules;
 
-          for (var _i4 = 0; _i4 < _arr3.length; _i4++) {
-            img = _arr3[_i4];
-            this.reloadStyleImages(img.style, styleNames, path, expando);
+    try {
+      rules = (styleSheet || {}).cssRules;
+    } catch (e) {}
+
+    if (!rules) {
+      return;
+    }
+
+    for (let rule of Array.from(rules)) {
+      switch (rule.type) {
+        case CSSRule.IMPORT_RULE:
+          this.reloadStylesheetImages(rule.styleSheet, path, expando);
+          break;
+
+        case CSSRule.STYLE_RULE:
+          for (let _ref2 of IMAGE_STYLES) {
+            let styleNames = _ref2.styleNames;
+            this.reloadStyleImages(rule.style, styleNames, path, expando);
           }
+
+          break;
+
+        case CSSRule.MEDIA_RULE:
+          this.reloadStylesheetImages(rule, path, expando);
+          break;
+      }
+    }
+  }
+
+  reloadStyleImages(style, styleNames, path, expando) {
+    for (let styleName of styleNames) {
+      const value = style[styleName];
+
+      if (typeof value === 'string') {
+        const newValue = value.replace(new RegExp(`\\burl\\s*\\(([^)]*)\\)`), (match, src) => {
+          if (pathsMatch(path, pathFromUrl(src))) {
+            return `url(${this.generateCacheBustUrl(src, expando)})`;
+          } else {
+            return match;
+          }
+        });
+
+        if (newValue !== value) {
+          style[styleName] = newValue;
+        }
+      }
+    }
+  }
+
+  reloadStylesheet(path) {
+    // has to be a real array, because DOMNodeList will be modified
+    let style;
+    let link;
+
+    const links = (() => {
+      const result = [];
+
+      for (link of Array.from(this.document.getElementsByTagName('link'))) {
+        if (link.rel.match(/^stylesheet$/i) && !link.__LiveReload_pendingRemoval) {
+          result.push(link);
         }
       }
 
-      if (this.document.styleSheets) {
-        return Array.from(this.document.styleSheets).map(function (styleSheet) {
-          return _this.reloadStylesheetImages(styleSheet, path, expando);
-        });
+      return result;
+    })(); // find all imported stylesheets
+
+
+    const imported = [];
+
+    for (style of Array.from(this.document.getElementsByTagName('style'))) {
+      if (style.sheet) {
+        this.collectImportedStylesheets(style, style.sheet, imported);
       }
     }
-  }, {
-    key: "reloadStylesheetImages",
-    value: function reloadStylesheetImages(styleSheet, path, expando) {
-      var rules;
 
-      try {
-        rules = (styleSheet || {}).cssRules;
-      } catch (e) {}
+    for (link of Array.from(links)) {
+      this.collectImportedStylesheets(link, link.sheet, imported);
+    } // handle prefixfree
 
-      if (!rules) {
-        return;
+
+    if (this.window.StyleFix && this.document.querySelectorAll) {
+      for (style of Array.from(this.document.querySelectorAll('style[data-href]'))) {
+        links.push(style);
       }
+    }
 
-      var _arr4 = Array.from(rules);
+    this.console.log(`LiveReload found ${links.length} LINKed stylesheets, ${imported.length} @imported stylesheets`);
+    const match = pickBestMatch(path, links.concat(imported), l => pathFromUrl(this.linkHref(l)));
 
-      for (var _i5 = 0; _i5 < _arr4.length; _i5++) {
-        var rule = _arr4[_i5];
+    if (match) {
+      if (match.object.rule) {
+        this.console.log(`LiveReload is reloading imported stylesheet: ${match.object.href}`);
+        this.reattachImportedRule(match.object);
+      } else {
+        this.console.log(`LiveReload is reloading stylesheet: ${this.linkHref(match.object)}`);
+        this.reattachStylesheetLink(match.object);
+      }
+    } else {
+      if (this.options.reloadMissingCSS) {
+        this.console.log(`LiveReload will reload all stylesheets because path '${path}' did not match any specific one. \
+To disable this behavior, set 'options.reloadMissingCSS' to 'false'.`);
+
+        for (link of Array.from(links)) {
+          this.reattachStylesheetLink(link);
+        }
+      } else {
+        this.console.log(`LiveReload will not reload path '${path}' because the stylesheet was not found on the page \
+and 'options.reloadMissingCSS' was set to 'false'.`);
+      }
+    }
+
+    return true;
+  }
+
+  collectImportedStylesheets(link, styleSheet, result) {
+    // in WebKit, styleSheet.cssRules is null for inaccessible stylesheets;
+    // Firefox/Opera may throw exceptions
+    let rules;
+
+    try {
+      rules = (styleSheet || {}).cssRules;
+    } catch (e) {}
+
+    if (rules && rules.length) {
+      for (let index = 0; index < rules.length; index++) {
+        const rule = rules[index];
 
         switch (rule.type) {
+          case CSSRule.CHARSET_RULE:
+            continue;
+          // do nothing
+
           case CSSRule.IMPORT_RULE:
-            this.reloadStylesheetImages(rule.styleSheet, path, expando);
-            break;
-
-          case CSSRule.STYLE_RULE:
-            for (var _i6 = 0; _i6 < IMAGE_STYLES.length; _i6++) {
-              var styleNames = IMAGE_STYLES[_i6].styleNames;
-              this.reloadStyleImages(rule.style, styleNames, path, expando);
-            }
-
-            break;
-
-          case CSSRule.MEDIA_RULE:
-            this.reloadStylesheetImages(rule, path, expando);
-            break;
-        }
-      }
-    }
-  }, {
-    key: "reloadStyleImages",
-    value: function reloadStyleImages(style, styleNames, path, expando) {
-      var _this2 = this;
-
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = styleNames[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var styleName = _step2.value;
-          var value = style[styleName];
-
-          if (typeof value === 'string') {
-            var newValue = value.replace(new RegExp("\\burl\\s*\\(([^)]*)\\)"), function (match, src) {
-              if (pathsMatch(path, pathFromUrl(src))) {
-                return "url(".concat(_this2.generateCacheBustUrl(src, expando), ")");
-              } else {
-                return match;
-              }
+            result.push({
+              link,
+              rule,
+              index,
+              href: rule.href
             });
+            this.collectImportedStylesheets(link, rule.styleSheet, result);
+            break;
 
-            if (newValue !== value) {
-              style[styleName] = newValue;
-            }
-          }
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
+          default:
+            break;
+          // import rules can only be preceded by charset rules
         }
       }
     }
-  }, {
-    key: "reloadStylesheet",
-    value: function reloadStylesheet(path) {
-      var _this3 = this;
+  }
 
-      // has to be a real array, because DOMNodeList will be modified
-      var style;
-      var link;
+  waitUntilCssLoads(clone, func) {
+    let callbackExecuted = false;
 
-      var links = function () {
-        var result = [];
-
-        var _arr5 = Array.from(_this3.document.getElementsByTagName('link'));
-
-        for (var _i7 = 0; _i7 < _arr5.length; _i7++) {
-          link = _arr5[_i7];
-
-          if (link.rel.match(/^stylesheet$/i) && !link.__LiveReload_pendingRemoval) {
-            result.push(link);
-          }
-        }
-
-        return result;
-      }(); // find all imported stylesheets
-
-
-      var imported = [];
-
-      var _arr6 = Array.from(this.document.getElementsByTagName('style'));
-
-      for (var _i8 = 0; _i8 < _arr6.length; _i8++) {
-        style = _arr6[_i8];
-
-        if (style.sheet) {
-          this.collectImportedStylesheets(style, style.sheet, imported);
-        }
-      }
-
-      var _arr7 = Array.from(links);
-
-      for (var _i9 = 0; _i9 < _arr7.length; _i9++) {
-        link = _arr7[_i9];
-        this.collectImportedStylesheets(link, link.sheet, imported);
-      } // handle prefixfree
-
-
-      if (this.window.StyleFix && this.document.querySelectorAll) {
-        var _arr8 = Array.from(this.document.querySelectorAll('style[data-href]'));
-
-        for (var _i10 = 0; _i10 < _arr8.length; _i10++) {
-          style = _arr8[_i10];
-          links.push(style);
-        }
-      }
-
-      this.console.log("LiveReload found ".concat(links.length, " LINKed stylesheets, ").concat(imported.length, " @imported stylesheets"));
-      var match = pickBestMatch(path, links.concat(imported), function (l) {
-        return pathFromUrl(_this3.linkHref(l));
-      });
-
-      if (match) {
-        if (match.object.rule) {
-          this.console.log("LiveReload is reloading imported stylesheet: ".concat(match.object.href));
-          this.reattachImportedRule(match.object);
-        } else {
-          this.console.log("LiveReload is reloading stylesheet: ".concat(this.linkHref(match.object)));
-          this.reattachStylesheetLink(match.object);
-        }
-      } else {
-        if (this.options.reloadMissingCSS) {
-          this.console.log("LiveReload will reload all stylesheets because path '".concat(path, "' did not match any specific one. To disable this behavior, set 'options.reloadMissingCSS' to 'false'."));
-
-          var _arr9 = Array.from(links);
-
-          for (var _i11 = 0; _i11 < _arr9.length; _i11++) {
-            link = _arr9[_i11];
-            this.reattachStylesheetLink(link);
-          }
-        } else {
-          this.console.log("LiveReload will not reload path '".concat(path, "' because the stylesheet was not found on the page and 'options.reloadMissingCSS' was set to 'false'."));
-        }
-      }
-
-      return true;
-    }
-  }, {
-    key: "collectImportedStylesheets",
-    value: function collectImportedStylesheets(link, styleSheet, result) {
-      // in WebKit, styleSheet.cssRules is null for inaccessible stylesheets;
-      // Firefox/Opera may throw exceptions
-      var rules;
-
-      try {
-        rules = (styleSheet || {}).cssRules;
-      } catch (e) {}
-
-      if (rules && rules.length) {
-        for (var index = 0; index < rules.length; index++) {
-          var rule = rules[index];
-
-          switch (rule.type) {
-            case CSSRule.CHARSET_RULE:
-              continue;
-            // do nothing
-
-            case CSSRule.IMPORT_RULE:
-              result.push({
-                link: link,
-                rule: rule,
-                index: index,
-                href: rule.href
-              });
-              this.collectImportedStylesheets(link, rule.styleSheet, result);
-              break;
-
-            default:
-              break;
-            // import rules can only be preceded by charset rules
-          }
-        }
-      }
-    }
-  }, {
-    key: "waitUntilCssLoads",
-    value: function waitUntilCssLoads(clone, func) {
-      var _this4 = this;
-
-      var callbackExecuted = false;
-
-      var executeCallback = function executeCallback() {
-        if (callbackExecuted) {
-          return;
-        }
-
-        callbackExecuted = true;
-        return func();
-      }; // supported by Chrome 19+, Safari 5.2+, Firefox 9+, Opera 9+, IE6+
-      // http://www.zachleat.com/web/load-css-dynamically/
-      // http://pieisgood.org/test/script-link-events/
-
-
-      clone.onload = function () {
-        _this4.console.log('LiveReload: the new stylesheet has finished loading');
-
-        _this4.knownToSupportCssOnLoad = true;
-        return executeCallback();
-      };
-
-      if (!this.knownToSupportCssOnLoad) {
-        // polling
-        var _poll;
-
-        (_poll = function poll() {
-          if (clone.sheet) {
-            _this4.console.log('LiveReload is polling until the new CSS finishes loading...');
-
-            return executeCallback();
-          } else {
-            return _this4.Timer.start(50, _poll);
-          }
-        })();
-      } // fail safe
-
-
-      return this.Timer.start(this.options.stylesheetReloadTimeout, executeCallback);
-    }
-  }, {
-    key: "linkHref",
-    value: function linkHref(link) {
-      // prefixfree uses data-href when it turns LINK into STYLE
-      return link.href || link.getAttribute('data-href');
-    }
-  }, {
-    key: "reattachStylesheetLink",
-    value: function reattachStylesheetLink(link) {
-      var _this5 = this;
-
-      // ignore LINKs that will be removed by LR soon
-      var clone;
-
-      if (link.__LiveReload_pendingRemoval) {
+    const executeCallback = () => {
+      if (callbackExecuted) {
         return;
       }
 
-      link.__LiveReload_pendingRemoval = true;
+      callbackExecuted = true;
+      return func();
+    }; // supported by Chrome 19+, Safari 5.2+, Firefox 9+, Opera 9+, IE6+
+    // http://www.zachleat.com/web/load-css-dynamically/
+    // http://pieisgood.org/test/script-link-events/
 
-      if (link.tagName === 'STYLE') {
-        // prefixfree
-        clone = this.document.createElement('link');
-        clone.rel = 'stylesheet';
-        clone.media = link.media;
-        clone.disabled = link.disabled;
-      } else {
-        clone = link.cloneNode(false);
-      }
 
-      clone.href = this.generateCacheBustUrl(this.linkHref(link)); // insert the new LINK before the old one
+    clone.onload = () => {
+      this.console.log('LiveReload: the new stylesheet has finished loading');
+      this.knownToSupportCssOnLoad = true;
+      return executeCallback();
+    };
 
-      var parent = link.parentNode;
-
-      if (parent.lastChild === link) {
-        parent.appendChild(clone);
-      } else {
-        parent.insertBefore(clone, link.nextSibling);
-      }
-
-      return this.waitUntilCssLoads(clone, function () {
-        var additionalWaitingTime;
-
-        if (/AppleWebKit/.test(navigator.userAgent)) {
-          additionalWaitingTime = 5;
+    if (!this.knownToSupportCssOnLoad) {
+      // polling
+      let poll;
+      (poll = () => {
+        if (clone.sheet) {
+          this.console.log('LiveReload is polling until the new CSS finishes loading...');
+          return executeCallback();
         } else {
-          additionalWaitingTime = 200;
+          return this.Timer.start(50, poll);
+        }
+      })();
+    } // fail safe
+
+
+    return this.Timer.start(this.options.stylesheetReloadTimeout, executeCallback);
+  }
+
+  linkHref(link) {
+    // prefixfree uses data-href when it turns LINK into STYLE
+    return link.href || link.getAttribute('data-href');
+  }
+
+  reattachStylesheetLink(link) {
+    // ignore LINKs that will be removed by LR soon
+    let clone;
+
+    if (link.__LiveReload_pendingRemoval) {
+      return;
+    }
+
+    link.__LiveReload_pendingRemoval = true;
+
+    if (link.tagName === 'STYLE') {
+      // prefixfree
+      clone = this.document.createElement('link');
+      clone.rel = 'stylesheet';
+      clone.media = link.media;
+      clone.disabled = link.disabled;
+    } else {
+      clone = link.cloneNode(false);
+    }
+
+    clone.href = this.generateCacheBustUrl(this.linkHref(link)); // insert the new LINK before the old one
+
+    const parent = link.parentNode;
+
+    if (parent.lastChild === link) {
+      parent.appendChild(clone);
+    } else {
+      parent.insertBefore(clone, link.nextSibling);
+    }
+
+    return this.waitUntilCssLoads(clone, () => {
+      let additionalWaitingTime;
+
+      if (/AppleWebKit/.test(navigator.userAgent)) {
+        additionalWaitingTime = 5;
+      } else {
+        additionalWaitingTime = 200;
+      }
+
+      return this.Timer.start(additionalWaitingTime, () => {
+        if (!link.parentNode) {
+          return;
         }
 
-        return _this5.Timer.start(additionalWaitingTime, function () {
-          if (!link.parentNode) {
-            return;
-          }
+        link.parentNode.removeChild(link);
+        clone.onreadystatechange = null;
+        return this.window.StyleFix ? this.window.StyleFix.link(clone) : undefined;
+      });
+    }); // prefixfree
+  }
 
-          link.parentNode.removeChild(link);
-          clone.onreadystatechange = null;
-          return _this5.window.StyleFix ? _this5.window.StyleFix.link(clone) : undefined;
-        });
-      }); // prefixfree
-    }
-  }, {
-    key: "reattachImportedRule",
-    value: function reattachImportedRule(_ref) {
-      var _this6 = this;
+  reattachImportedRule(_ref3) {
+    let rule = _ref3.rule,
+        index = _ref3.index,
+        link = _ref3.link;
+    const parent = rule.parentStyleSheet;
+    const href = this.generateCacheBustUrl(rule.href);
+    const media = rule.media.length ? [].join.call(rule.media, ', ') : '';
+    const newRule = `@import url("${href}") ${media};`; // used to detect if reattachImportedRule has been called again on the same rule
 
-      var rule = _ref.rule,
-          index = _ref.index,
-          link = _ref.link;
-      var parent = rule.parentStyleSheet;
-      var href = this.generateCacheBustUrl(rule.href);
-      var media = rule.media.length ? [].join.call(rule.media, ', ') : '';
-      var newRule = "@import url(\"".concat(href, "\") ").concat(media, ";"); // used to detect if reattachImportedRule has been called again on the same rule
+    rule.__LiveReload_newHref = href; // WORKAROUND FOR WEBKIT BUG: WebKit resets all styles if we add @import'ed
+    // stylesheet that hasn't been cached yet. Workaround is to pre-cache the
+    // stylesheet by temporarily adding it as a LINK tag.
 
-      rule.__LiveReload_newHref = href; // WORKAROUND FOR WEBKIT BUG: WebKit resets all styles if we add @import'ed
-      // stylesheet that hasn't been cached yet. Workaround is to pre-cache the
-      // stylesheet by temporarily adding it as a LINK tag.
+    const tempLink = this.document.createElement('link');
+    tempLink.rel = 'stylesheet';
+    tempLink.href = href;
+    tempLink.__LiveReload_pendingRemoval = true; // exclude from path matching
 
-      var tempLink = this.document.createElement('link');
-      tempLink.rel = 'stylesheet';
-      tempLink.href = href;
-      tempLink.__LiveReload_pendingRemoval = true; // exclude from path matching
-
-      if (link.parentNode) {
-        link.parentNode.insertBefore(tempLink, link);
-      } // wait for it to load
+    if (link.parentNode) {
+      link.parentNode.insertBefore(tempLink, link);
+    } // wait for it to load
 
 
-      return this.Timer.start(this.importCacheWaitPeriod, function () {
-        if (tempLink.parentNode) {
-          tempLink.parentNode.removeChild(tempLink);
-        } // if another reattachImportedRule call is in progress, abandon this one
+    return this.Timer.start(this.importCacheWaitPeriod, () => {
+      if (tempLink.parentNode) {
+        tempLink.parentNode.removeChild(tempLink);
+      } // if another reattachImportedRule call is in progress, abandon this one
 
 
+      if (rule.__LiveReload_newHref !== href) {
+        return;
+      }
+
+      parent.insertRule(newRule, index);
+      parent.deleteRule(index + 1); // save the new rule, so that we can detect another reattachImportedRule call
+
+      rule = parent.cssRules[index];
+      rule.__LiveReload_newHref = href; // repeat again for good measure
+
+      return this.Timer.start(this.importCacheWaitPeriod, () => {
+        // if another reattachImportedRule call is in progress, abandon this one
         if (rule.__LiveReload_newHref !== href) {
           return;
         }
 
         parent.insertRule(newRule, index);
-        parent.deleteRule(index + 1); // save the new rule, so that we can detect another reattachImportedRule call
-
-        rule = parent.cssRules[index];
-        rule.__LiveReload_newHref = href; // repeat again for good measure
-
-        return _this6.Timer.start(_this6.importCacheWaitPeriod, function () {
-          // if another reattachImportedRule call is in progress, abandon this one
-          if (rule.__LiveReload_newHref !== href) {
-            return;
-          }
-
-          parent.insertRule(newRule, index);
-          return parent.deleteRule(index + 1);
-        });
+        return parent.deleteRule(index + 1);
       });
+    });
+  }
+
+  generateUniqueString() {
+    return `livereload=${Date.now()}`;
+  }
+
+  generateCacheBustUrl(url, expando) {
+    let hash, oldParams;
+
+    if (!expando) {
+      expando = this.generateUniqueString();
     }
-  }, {
-    key: "generateUniqueString",
-    value: function generateUniqueString() {
-      return "livereload=".concat(Date.now());
+
+    var _splitUrl2 = splitUrl(url);
+
+    url = _splitUrl2.url;
+    hash = _splitUrl2.hash;
+    oldParams = _splitUrl2.params;
+
+    if (this.options.overrideURL) {
+      if (url.indexOf(this.options.serverURL) < 0) {
+        const originalUrl = url;
+        url = this.options.serverURL + this.options.overrideURL + '?url=' + encodeURIComponent(url);
+        this.console.log(`LiveReload is overriding source URL ${originalUrl} with ${url}`);
+      }
     }
-  }, {
-    key: "generateCacheBustUrl",
-    value: function generateCacheBustUrl(url, expando) {
-      var hash, oldParams;
 
-      if (!expando) {
-        expando = this.generateUniqueString();
+    let params = oldParams.replace(/(\?|&)livereload=(\d+)/, (match, sep) => `${sep}${expando}`);
+
+    if (params === oldParams) {
+      if (oldParams.length === 0) {
+        params = `?${expando}`;
+      } else {
+        params = `${oldParams}&${expando}`;
       }
-
-      var _splitUrl2 = splitUrl(url);
-
-      url = _splitUrl2.url;
-      hash = _splitUrl2.hash;
-      oldParams = _splitUrl2.params;
-
-      if (this.options.overrideURL) {
-        if (url.indexOf(this.options.serverURL) < 0) {
-          var originalUrl = url;
-          url = this.options.serverURL + this.options.overrideURL + '?url=' + encodeURIComponent(url);
-          this.console.log("LiveReload is overriding source URL ".concat(originalUrl, " with ").concat(url));
-        }
-      }
-
-      var params = oldParams.replace(/(\?|&)livereload=(\d+)/, function (match, sep) {
-        return "".concat(sep).concat(expando);
-      });
-
-      if (params === oldParams) {
-        if (oldParams.length === 0) {
-          params = "?".concat(expando);
-        } else {
-          params = "".concat(oldParams, "&").concat(expando);
-        }
-      }
-
-      return url + params + hash;
     }
-  }]);
 
-  return Reloader;
-}();
+    return url + params + hash;
+  }
+
+}
 
 ;
 exports.Reloader = Reloader;
 
-},{"core-js/modules/es6.array.from":76,"core-js/modules/es6.regexp.constructor":79,"core-js/modules/es6.regexp.match":81,"core-js/modules/es6.regexp.replace":82,"core-js/modules/es6.regexp.split":83,"core-js/modules/es6.string.iterator":85,"core-js/modules/es6.string.link":86,"core-js/modules/es6.symbol":87,"core-js/modules/es7.symbol.async-iterator":89,"core-js/modules/web.dom.iterable":90}],98:[function(require,module,exports){
+},{"core-js/modules/es6.regexp.constructor":68,"core-js/modules/es6.regexp.match":70,"core-js/modules/es6.regexp.replace":71,"core-js/modules/es6.regexp.split":72}],83:[function(require,module,exports){
 "use strict";
 
 require("core-js/modules/es6.regexp.match");
 
-var CustomEvents = require('./customevents');
+const CustomEvents = require('./customevents');
 
-var LiveReload = window.LiveReload = new (require('./livereload').LiveReload)(window);
+const LiveReload = window.LiveReload = new (require('./livereload').LiveReload)(window);
 
-for (var k in window) {
+for (let k in window) {
   if (k.match(/^LiveReloadPlugin/)) {
     LiveReload.addPlugin(window[k]);
   }
 }
 
 LiveReload.addPlugin(require('./less'));
-LiveReload.on('shutdown', function () {
-  return delete window.LiveReload;
-});
-LiveReload.on('connect', function () {
-  return CustomEvents.fire(document, 'LiveReloadConnect');
-});
-LiveReload.on('disconnect', function () {
-  return CustomEvents.fire(document, 'LiveReloadDisconnect');
-});
-CustomEvents.bind(document, 'LiveReloadShutDown', function () {
-  return LiveReload.shutDown();
-});
+LiveReload.on('shutdown', () => delete window.LiveReload);
+LiveReload.on('connect', () => CustomEvents.fire(document, 'LiveReloadConnect'));
+LiveReload.on('disconnect', () => CustomEvents.fire(document, 'LiveReloadDisconnect'));
+CustomEvents.bind(document, 'LiveReloadShutDown', () => LiveReload.shutDown());
 
-},{"./customevents":92,"./less":93,"./livereload":94,"core-js/modules/es6.regexp.match":81}],99:[function(require,module,exports){
+},{"./customevents":77,"./less":78,"./livereload":79,"core-js/modules/es6.regexp.match":70}],84:[function(require,module,exports){
 "use strict";
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Timer =
-/*#__PURE__*/
-function () {
-  function Timer(func) {
-    var _this = this;
-
-    _classCallCheck(this, Timer);
-
+class Timer {
+  constructor(func) {
     this.func = func;
     this.running = false;
     this.id = null;
 
-    this._handler = function () {
-      _this.running = false;
-      _this.id = null;
-      return _this.func();
+    this._handler = () => {
+      this.running = false;
+      this.id = null;
+      return this.func();
     };
   }
 
-  _createClass(Timer, [{
-    key: "start",
-    value: function start(timeout) {
-      if (this.running) {
-        clearTimeout(this.id);
-      }
-
-      this.id = setTimeout(this._handler, timeout);
-      this.running = true;
+  start(timeout) {
+    if (this.running) {
+      clearTimeout(this.id);
     }
-  }, {
-    key: "stop",
-    value: function stop() {
-      if (this.running) {
-        clearTimeout(this.id);
-        this.running = false;
-        this.id = null;
-      }
-    }
-  }]);
 
-  return Timer;
-}();
+    this.id = setTimeout(this._handler, timeout);
+    this.running = true;
+  }
+
+  stop() {
+    if (this.running) {
+      clearTimeout(this.id);
+      this.running = false;
+      this.id = null;
+    }
+  }
+
+}
 
 ;
 
-Timer.start = function (timeout, func) {
-  return setTimeout(func, timeout);
-};
+Timer.start = (timeout, func) => setTimeout(func, timeout);
 
 exports.Timer = Timer;
 
-},{}]},{},[98]);
+},{}]},{},[83]);
