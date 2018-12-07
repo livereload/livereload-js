@@ -1,11 +1,4 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let Options;
-exports.Options = (Options = class Options {
+class Options {
   constructor () {
     this.https = false;
     this.host = null;
@@ -31,7 +24,7 @@ exports.Options = (Options = class Options {
 
     this[name] = value;
   }
-});
+}
 
 Options.extract = function (document) {
   for (let element of Array.from(document.getElementsByTagName('script'))) {
@@ -61,3 +54,5 @@ Options.extract = function (document) {
 
   return null;
 };
+
+exports.Options = Options;

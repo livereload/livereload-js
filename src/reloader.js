@@ -1,12 +1,4 @@
 /* global CSSRule */
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const splitUrl = function (url) {
   let hash, index, params;
   if ((index = url.indexOf('#')) >= 0) {
@@ -52,14 +44,18 @@ const pathFromUrl = function (url) {
 const pickBestMatch = function (path, objects, pathFunc) {
   let score;
   let bestMatch = { score: 0 };
-  for (let object of Array.from(objects)) {
+  for (let object of objects) {
     score = numberOfMatchingSegments(path, pathFunc(object));
     if (score > bestMatch.score) {
       bestMatch = { object, score };
     }
   }
 
-  if (bestMatch.score > 0) { return bestMatch; } else { return null; }
+  if (bestMatch.score === 0) {
+    return null;
+  }
+
+  return bestMatch;
 };
 
 var numberOfMatchingSegments = function (path1, path2) {
@@ -67,7 +63,9 @@ var numberOfMatchingSegments = function (path1, path2) {
   path1 = path1.replace(/^\/+/, '').toLowerCase();
   path2 = path2.replace(/^\/+/, '').toLowerCase();
 
-  if (path1 === path2) { return 10000; }
+  if (path1 === path2) {
+    return 10000;
+  }
 
   const comps1 = path1.split('/').reverse();
   const comps2 = path2.split('/').reverse();
@@ -88,7 +86,7 @@ const IMAGE_STYLES = [
   { selector: 'border', styleNames: ['borderImage', 'webkitBorderImage', 'MozBorderImage'] }
 ];
 
-exports.Reloader = class Reloader {
+class Reloader {
   constructor (window, console, Timer) {
     this.window = window;
     this.console = console;
@@ -107,14 +105,18 @@ exports.Reloader = class Reloader {
 
   reload (path, options) {
     this.options = options; // avoid passing it through all the funcs
-    if (this.options.stylesheetReloadTimeout == null) { this.options.stylesheetReloadTimeout = 15000; }
+    if (!this.options.stylesheetReloadTimeout) {
+      this.options.stylesheetReloadTimeout = 15000;
+    }
     for (let plugin of Array.from(this.plugins)) {
       if (plugin.reload && plugin.reload(path, options)) {
         return;
       }
     }
     if (options.liveCSS && path.match(/\.css(?:\.map)?$/i)) {
-      if (this.reloadStylesheet(path)) { return; }
+      if (this.reloadStylesheet(path)) {
+        return;
+      }
     }
     if (options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)) {
       this.reloadImages(path);
@@ -146,7 +148,7 @@ exports.Reloader = class Reloader {
     }
 
     if (this.document.querySelectorAll) {
-      for (let { selector, styleNames } of Array.from(IMAGE_STYLES)) {
+      for (let { selector, styleNames } of IMAGE_STYLES) {
         for (img of Array.from(this.document.querySelectorAll(`[style*=${selector}]`))) {
           this.reloadStyleImages(img.style, styleNames, path, expando);
         }
@@ -154,18 +156,21 @@ exports.Reloader = class Reloader {
     }
 
     if (this.document.styleSheets) {
-      return Array.from(this.document.styleSheets).map((styleSheet) =>
-        this.reloadStylesheetImages(styleSheet, path, expando));
+      return Array.from(this.document.styleSheets).map(styleSheet =>
+        this.reloadStylesheetImages(styleSheet, path, expando)
+      );
     }
   }
 
   reloadStylesheetImages (styleSheet, path, expando) {
     let rules;
     try {
-      rules = styleSheet != null ? styleSheet.cssRules : undefined;
+      rules = (styleSheet || {}).cssRules;
     } catch (e) {}
-    //
-    if (!rules) { return; }
+
+    if (!rules) {
+      return;
+    }
 
     for (let rule of Array.from(rules)) {
       switch (rule.type) {
@@ -173,7 +178,7 @@ exports.Reloader = class Reloader {
           this.reloadStylesheetImages(rule.styleSheet, path, expando);
           break;
         case CSSRule.STYLE_RULE:
-          for (let { styleNames } of Array.from(IMAGE_STYLES)) {
+          for (let { styleNames } of IMAGE_STYLES) {
             this.reloadStyleImages(rule.style, styleNames, path, expando);
           }
           break;
@@ -185,7 +190,7 @@ exports.Reloader = class Reloader {
   }
 
   reloadStyleImages (style, styleNames, path, expando) {
-    for (let styleName of Array.from(styleNames)) {
+    for (let styleName of styleNames) {
       const value = style[styleName];
       if (typeof value === 'string') {
         const newValue = value.replace(new RegExp(`\\burl\\s*\\(([^)]*)\\)`), (match, src) => {
@@ -268,9 +273,9 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     // Firefox/Opera may throw exceptions
     let rules;
     try {
-      rules = styleSheet != null ? styleSheet.cssRules : undefined;
+      rules = (styleSheet || {}).cssRules;
     } catch (e) {}
-    //
+
     if (rules && rules.length) {
       for (let index = 0; index < rules.length; index++) {
         const rule = rules[index];
@@ -367,7 +372,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
         link.parentNode.removeChild(link);
         clone.onreadystatechange = null;
 
-        return (this.window.StyleFix != null ? this.window.StyleFix.link(clone) : undefined);
+        return (this.window.StyleFix ? this.window.StyleFix.link(clone) : undefined);
       });
     }); // prefixfree
   }
@@ -423,7 +428,9 @@ and 'options.reloadMissingCSS' was set to 'false'.`
 
   generateCacheBustUrl (url, expando) {
     let hash, oldParams;
-    if (expando == null) { expando = this.generateUniqueString(); }
+    if (!expando) {
+      expando = this.generateUniqueString();
+    }
     ({ url, hash, params: oldParams } = splitUrl(url));
 
     if (this.options.overrideURL) {
@@ -446,3 +453,5 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     return url + params + hash;
   }
 };
+
+exports.Reloader = Reloader;

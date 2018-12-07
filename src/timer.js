@@ -1,10 +1,4 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-let Timer;
-exports.Timer = (Timer = class Timer {
+class Timer {
   constructor (func) {
     this.func = func;
     this.running = false; this.id = null;
@@ -27,6 +21,8 @@ exports.Timer = (Timer = class Timer {
       this.id = null;
     }
   }
-});
+};
 
 Timer.start = (timeout, func) => setTimeout(func, timeout);
+
+exports.Timer = Timer;

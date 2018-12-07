@@ -1,22 +1,14 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-
-let PROTOCOL_6, PROTOCOL_7, ProtocolError;
+let PROTOCOL_6, PROTOCOL_7;
 exports.PROTOCOL_6 = (PROTOCOL_6 = 'http://livereload.com/protocols/official-6');
 exports.PROTOCOL_7 = (PROTOCOL_7 = 'http://livereload.com/protocols/official-7');
 
-exports.ProtocolError = (ProtocolError = class ProtocolError {
+class ProtocolError {
   constructor (reason, data) {
     this.message = `LiveReload protocol error (${reason}) after receiving data: "${data}".`;
   }
-});
+};
 
-exports.Parser = class Parser {
+class Parser {
   constructor (handlers) {
     this.handlers = handlers;
     this.reset();
@@ -29,7 +21,7 @@ exports.Parser = class Parser {
   process (data) {
     try {
       let message;
-      if ((this.protocol == null)) {
+      if (!this.protocol) {
         if (data.match(new RegExp(`^!!ver:([\\d.]+)$`))) {
           this.protocol = 6;
         } else if ((message = this._parseMessage(data, ['hello']))) {
@@ -54,7 +46,11 @@ exports.Parser = class Parser {
           throw new ProtocolError('unknown protocol 6 command');
         }
 
-        return this.handlers.message({ command: 'reload', path: options.path, liveCSS: options.apply_css_live != null ? options.apply_css_live : true });
+        return this.handlers.message({
+          command: 'reload',
+          path: options.path,
+          liveCSS: options.apply_css_live != null ? options.apply_css_live : true
+        });
       } else {
         message = this._parseMessage(data, ['reload', 'alert']);
         return this.handlers.message(message);
@@ -78,9 +74,12 @@ exports.Parser = class Parser {
     if (!message.command) {
       throw new ProtocolError('missing "command" key', data);
     }
-    if (!Array.from(validCommands).includes(message.command)) {
+    if (!validCommands.includes(message.command)) {
       throw new ProtocolError(`invalid command '${message.command}', only valid commands are: ${validCommands.join(', ')})`, data);
     }
     return message;
   }
 };
+
+exports.ProtocolError = ProtocolError;
+exports.Parser = Parser;

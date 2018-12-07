@@ -1,8 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const CustomEvents = {
   bind (element, eventName, handler) {
     if (element.addEventListener) {
@@ -18,7 +13,6 @@ const CustomEvents = {
       throw new Error(`Attempt to attach custom event ${eventName} to something which isn't a DOMElement`);
     }
   },
-
   fire (element, eventName) {
     if (element.addEventListener) {
       const event = document.createEvent('HTMLEvents');

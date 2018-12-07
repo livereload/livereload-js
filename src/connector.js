@@ -1,14 +1,8 @@
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const { Parser, PROTOCOL_6, PROTOCOL_7 } = require('./protocol');
 
-const Version = process.env.npm_package_version;
+const VERSION = process.env.npm_package_version;
 
-exports.Connector = class Connector {
+class Connector {
   constructor (options, WebSocket, Timer, handlers) {
     this.options = options;
     this.WebSocket = WebSocket;
@@ -91,7 +85,7 @@ exports.Connector = class Connector {
   }
 
   sendCommand (command) {
-    if (this.protocol == null) { return; }
+    if (!this.protocol) { return; }
     return this._sendCommand(command);
   }
 
@@ -111,7 +105,7 @@ exports.Connector = class Connector {
 
     // start handshake
     const hello = { command: 'hello', protocols: [PROTOCOL_6, PROTOCOL_7] };
-    hello.ver = Version;
+    hello.ver = VERSION;
     if (this.options.ext) { hello.ext = this.options.ext; }
     if (this.options.extver) { hello.extver = this.options.extver; }
     if (this.options.snipver) { hello.snipver = this.options.snipver; }
@@ -131,3 +125,5 @@ exports.Connector = class Connector {
     return this.protocolParser.process(e.data);
   }
 };
+
+exports.Connector = Connector;

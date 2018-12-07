@@ -1,19 +1,11 @@
 /* global alert */
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS203: Remove `|| {}` from converted for-own loops
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
 const { Connector } = require('./connector');
 const { Timer } = require('./timer');
 const { Options } = require('./options');
 const { Reloader } = require('./reloader');
 const { ProtocolError } = require('./protocol');
 
-exports.LiveReload = class LiveReload {
+class LiveReload {
   constructor (window) {
     this.window = window;
     this.listeners = {};
@@ -167,15 +159,15 @@ exports.LiveReload = class LiveReload {
     }
     );
 
-    // API that pluginClass can/must provide:
+    // API that PluginClass can/must provide:
     //
-    // string pluginClass.identifier
+    // string PluginClass.identifier
     //   -- required, globally-unique name of this plugin
     //
-    // string pluginClass.version
+    // string PluginClass.version
     //   -- required, plugin version number (format %d.%d or %d.%d.%d)
     //
-    // plugin = new pluginClass(window, officialLiveReloadAPI)
+    // plugin = new PluginClass(window, officialLiveReloadAPI)
     //   -- required, plugin constructor
     //
     // bool plugin.reload(string path, { bool liveCSS, bool liveImg })
@@ -195,12 +187,14 @@ exports.LiveReload = class LiveReload {
     if (!(this.connector.protocol >= 7)) { return; }
 
     const pluginsData = {};
-    for (let plugin of Array.from(this.plugins)) {
-      var pluginData;
-      pluginsData[plugin.constructor.identifier] = (pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {});
+    for (let plugin of this.plugins) {
+      var pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
+      pluginsData[plugin.constructor.identifier] = pluginData;
       pluginData.version = plugin.constructor.version;
     }
 
     this.connector.sendCommand({ command: 'info', plugins: pluginsData, url: this.window.location.href });
   }
 };
+
+exports.LiveReload = LiveReload;
