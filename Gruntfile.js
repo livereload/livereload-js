@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         options: {
-          transform: ['envify']
+          transform: ['envify', 'babelify']
         },
         src: ['src/startup.js'],
         dest: 'dist/livereload.js'

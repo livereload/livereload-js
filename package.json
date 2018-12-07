@@ -7,6 +7,10 @@
     "test": "test"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "babelify": "^10.0.0",
+    "core-js": "^2.6.0",
     "envify": "^4.1.0",
     "eslint": "^5.9.0",
     "eslint-config-standard": "^12.0.0",
@@ -27,6 +31,7 @@
     "build": "grunt build",
     "postversion": "npm run build"
   },
+  "browserslist": "> 0.25%, not dead",
   "repository": {
     "type": "git",
     "url": "git://github.com/livereload/livereload-js.git"
