@@ -29,7 +29,8 @@
     "lint": "eslint src test Gruntfile.js",
     "test": "grunt test",
     "build": "grunt build",
-    "postversion": "npm run build"
+    "preversion": "npm run lint && npm test",
+    "postversion": "npm run build && git add dist && git commit -m 'build' && git push && git push --tags"
   },
   "browserslist": [
     "last 1 version",
