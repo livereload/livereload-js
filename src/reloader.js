@@ -7,7 +7,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 let Reloader;
-const splitUrl = function(url) {
+const splitUrl = function (url) {
   let hash, index, params;
   if ((index = url.indexOf('#')) >= 0) {
     hash = url.slice(index);
@@ -35,7 +35,7 @@ const splitUrl = function(url) {
   return { url, params, hash };
 };
 
-const pathFromUrl = function(url) {
+const pathFromUrl = function (url) {
   let path;
   ({ url } = splitUrl(url));
   if (url.indexOf('file://') === 0) {
@@ -49,7 +49,7 @@ const pathFromUrl = function(url) {
   return decodeURIComponent(path);
 };
 
-const pickBestMatch = function(path, objects, pathFunc) {
+const pickBestMatch = function (path, objects, pathFunc) {
   let score;
   let bestMatch = { score: 0 };
   for (let object of Array.from(objects)) {
@@ -62,7 +62,7 @@ const pickBestMatch = function(path, objects, pathFunc) {
   if (bestMatch.score > 0) { return bestMatch; } else { return null; }
 };
 
-var numberOfMatchingSegments = function(path1, path2) {
+var numberOfMatchingSegments = function (path1, path2) {
   // get rid of leading slashes and normalize to lower case
   path1 = path1.replace(/^\/+/, '').toLowerCase();
   path2 = path2.replace(/^\/+/, '').toLowerCase();
@@ -83,16 +83,13 @@ var numberOfMatchingSegments = function(path1, path2) {
 
 const pathsMatch = (path1, path2) => numberOfMatchingSegments(path1, path2) > 0;
 
-
 const IMAGE_STYLES = [
   { selector: 'background', styleNames: ['backgroundImage'] },
   { selector: 'border', styleNames: ['borderImage', 'webkitBorderImage', 'MozBorderImage'] }
 ];
 
-
 exports.Reloader = (Reloader = class Reloader {
-
-  constructor(window, console, Timer) {
+  constructor (window, console, Timer) {
     this.window = window;
     this.console = console;
     this.Timer = Timer;
@@ -101,19 +98,16 @@ exports.Reloader = (Reloader = class Reloader {
     this.plugins = [];
   }
 
-
-  addPlugin(plugin) {
+  addPlugin (plugin) {
     return this.plugins.push(plugin);
   }
 
-
-  analyze(callback) {
+  analyze (callback) {
     return results;
   }
 
-
-  reload(path, options) {
-    this.options = options;  // avoid passing it through all the funcs
+  reload (path, options) {
+    this.options = options; // avoid passing it through all the funcs
     if (this.options.stylesheetReloadTimeout == null) { this.options.stylesheetReloadTimeout = 15000; }
     for (let plugin of Array.from(this.plugins)) {
       if (plugin.reload && plugin.reload(path, options)) {
@@ -134,16 +128,15 @@ exports.Reloader = (Reloader = class Reloader {
     return this.reloadPage();
   }
 
-
-  reloadPage() {
+  reloadPage () {
     return this.window.document.location.reload();
   }
 
-  reloadChromeExtension() {
+  reloadChromeExtension () {
     return this.window.chrome.runtime.reload();
   }
 
-  reloadImages(path) {
+  reloadImages (path) {
     let img;
     const expando = this.generateUniqueString();
 
@@ -167,13 +160,12 @@ exports.Reloader = (Reloader = class Reloader {
     }
   }
 
-
-  reloadStylesheetImages(styleSheet, path, expando) {
+  reloadStylesheetImages (styleSheet, path, expando) {
     let rules;
     try {
       rules = styleSheet != null ? styleSheet.cssRules : undefined;
     } catch (e) {}
-      //
+    //
     if (!rules) { return; }
 
     for (let rule of Array.from(rules)) {
@@ -191,11 +183,9 @@ exports.Reloader = (Reloader = class Reloader {
           break;
       }
     }
-
   }
 
-
-  reloadStyleImages(style, styleNames, path, expando) {
+  reloadStyleImages (style, styleNames, path, expando) {
     for (let styleName of Array.from(styleNames)) {
       const value = style[styleName];
       if (typeof value === 'string') {
@@ -213,14 +203,14 @@ exports.Reloader = (Reloader = class Reloader {
     }
   }
 
-
-  reloadStylesheet(path) {
+  reloadStylesheet (path) {
     // has to be a real array, because DOMNodeList will be modified
     let style;
     let link;
     const links = ((() => {
       const result = [];
-      for (link of Array.from(this.document.getElementsByTagName('link'))) {         if (link.rel.match(/^stylesheet$/i) && !link.__LiveReload_pendingRemoval) {
+      for (link of Array.from(this.document.getElementsByTagName('link'))) {
+        if (link.rel.match(/^stylesheet$/i) && !link.__LiveReload_pendingRemoval) {
           result.push(link);
         }
       }
@@ -274,15 +264,14 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     return true;
   }
 
-
-  collectImportedStylesheets(link, styleSheet, result) {
+  collectImportedStylesheets (link, styleSheet, result) {
     // in WebKit, styleSheet.cssRules is null for inaccessible stylesheets;
     // Firefox/Opera may throw exceptions
     let rules;
     try {
       rules = styleSheet != null ? styleSheet.cssRules : undefined;
     } catch (e) {}
-      //
+    //
     if (rules && rules.length) {
       for (let index = 0; index < rules.length; index++) {
         const rule = rules[index];
@@ -295,14 +284,13 @@ and 'options.reloadMissingCSS' was set to 'false'.`
             this.collectImportedStylesheets(link, rule.styleSheet, result);
             break;
           default:
-            break;  // import rules can only be preceded by charset rules
+            break; // import rules can only be preceded by charset rules
         }
       }
     }
   }
 
-
-  waitUntilCssLoads(clone, func) {
+  waitUntilCssLoads (clone, func) {
     let callbackExecuted = false;
 
     const executeCallback = () => {
@@ -315,7 +303,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     // http://www.zachleat.com/web/load-css-dynamically/
     // http://pieisgood.org/test/script-link-events/
     clone.onload = () => {
-      this.console.log("LiveReload: the new stylesheet has finished loading");
+      this.console.log('LiveReload: the new stylesheet has finished loading');
       this.knownToSupportCssOnLoad = true;
       return executeCallback();
     };
@@ -325,7 +313,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
       let poll;
       (poll = () => {
         if (clone.sheet) {
-          this.console.log("LiveReload is polling until the new CSS finishes loading...");
+          this.console.log('LiveReload is polling until the new CSS finishes loading...');
           return executeCallback();
         } else {
           return this.Timer.start(50, poll);
@@ -337,14 +325,12 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     return this.Timer.start(this.options.stylesheetReloadTimeout, executeCallback);
   }
 
-
-  linkHref(link) {
+  linkHref (link) {
     // prefixfree uses data-href when it turns LINK into STYLE
     return link.href || link.getAttribute('data-href');
   }
 
-
-  reattachStylesheetLink(link) {
+  reattachStylesheetLink (link) {
     // ignore LINKs that will be removed by LR soon
     let clone;
     if (link.__LiveReload_pendingRemoval) { return; }
@@ -353,8 +339,8 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     if (link.tagName === 'STYLE') {
       // prefixfree
       clone = this.document.createElement('link');
-      clone.rel      = 'stylesheet';
-      clone.media    = link.media;
+      clone.rel = 'stylesheet';
+      clone.media = link.media;
       clone.disabled = link.disabled;
     } else {
       clone = link.cloneNode(false);
@@ -365,10 +351,10 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     // insert the new LINK before the old one
     const parent = link.parentNode;
     if (parent.lastChild === link) {
-        parent.appendChild(clone);
+      parent.appendChild(clone);
     } else {
-        parent.insertBefore(clone, link.nextSibling);
-      }
+      parent.insertBefore(clone, link.nextSibling);
+    }
 
     return this.waitUntilCssLoads(clone, () => {
       let additionalWaitingTime;
@@ -388,11 +374,10 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     }); // prefixfree
   }
 
-
-  reattachImportedRule({ rule, index, link }) {
-    const parent  = rule.parentStyleSheet;
-    const href    = this.generateCacheBustUrl(rule.href);
-    const media   = rule.media.length ? [].join.call(rule.media, ', ') : '';
+  reattachImportedRule ({ rule, index, link }) {
+    const parent = rule.parentStyleSheet;
+    const href = this.generateCacheBustUrl(rule.href);
+    const media = rule.media.length ? [].join.call(rule.media, ', ') : '';
     const newRule = `@import url("${href}") ${media};`;
 
     // used to detect if reattachImportedRule has been called again on the same rule
@@ -401,10 +386,10 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     // WORKAROUND FOR WEBKIT BUG: WebKit resets all styles if we add @import'ed
     // stylesheet that hasn't been cached yet. Workaround is to pre-cache the
     // stylesheet by temporarily adding it as a LINK tag.
-    const tempLink = this.document.createElement("link");
+    const tempLink = this.document.createElement('link');
     tempLink.rel = 'stylesheet';
     tempLink.href = href;
-    tempLink.__LiveReload_pendingRemoval = true;  // exclude from path matching
+    tempLink.__LiveReload_pendingRemoval = true; // exclude from path matching
     if (link.parentNode) {
       link.parentNode.insertBefore(tempLink, link);
     }
@@ -417,7 +402,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
       if (rule.__LiveReload_newHref !== href) { return; }
 
       parent.insertRule(newRule, index);
-      parent.deleteRule(index+1);
+      parent.deleteRule(index + 1);
 
       // save the new rule, so that we can detect another reattachImportedRule call
       rule = parent.cssRules[index];
@@ -429,18 +414,16 @@ and 'options.reloadMissingCSS' was set to 'false'.`
         if (rule.__LiveReload_newHref !== href) { return; }
 
         parent.insertRule(newRule, index);
-        return parent.deleteRule(index+1);
+        return parent.deleteRule(index + 1);
       });
     });
   }
 
-
-  generateUniqueString() {
+  generateUniqueString () {
     return `livereload=${Date.now()}`;
   }
 
-
-  generateCacheBustUrl(url, expando) {
+  generateCacheBustUrl (url, expando) {
     let hash, oldParams;
     if (expando == null) { expando = this.generateUniqueString(); }
     ({ url, hash, params: oldParams } = splitUrl(url));
@@ -448,7 +431,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     if (this.options.overrideURL) {
       if (url.indexOf(this.options.serverURL) < 0) {
         const originalUrl = url;
-        url = this.options.serverURL + this.options.overrideURL + "?url=" + encodeURIComponent(url);
+        url = this.options.serverURL + this.options.overrideURL + '?url=' + encodeURIComponent(url);
         this.console.log(`LiveReload is overriding source URL ${originalUrl} with ${url}`);
       }
     }

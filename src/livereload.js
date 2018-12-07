@@ -8,14 +8,13 @@
  */
 let LiveReload;
 const { Connector } = require('./connector');
-const { Timer }     = require('./timer');
-const { Options }   = require('./options');
-const { Reloader }  = require('./reloader');
-const { ProtocolError }  = require('./protocol');
+const { Timer } = require('./timer');
+const { Options } = require('./options');
+const { Reloader } = require('./reloader');
+const { ProtocolError } = require('./protocol');
 
 exports.LiveReload = (LiveReload = class LiveReload {
-
-  constructor(window) {
+  constructor (window) {
     this.window = window;
     this.listeners = {};
     this.plugins = [];
@@ -23,21 +22,21 @@ exports.LiveReload = (LiveReload = class LiveReload {
 
     // i can haz console?
     this.console =
-      this.window.console && this.window.console.log && this.window.console.error ?
-        this.window.location.href.match(/LR-verbose/) ?
-          this.window.console
-        :{
-          log() {},
-          error: this.window.console.error.bind(this.window.console)
-        }
-      :{
-        log() {},
-        error() {}
-      };
+      this.window.console && this.window.console.log && this.window.console.error
+        ? this.window.location.href.match(/LR-verbose/)
+          ? this.window.console
+          : {
+            log () {},
+            error: this.window.console.error.bind(this.window.console)
+          }
+        : {
+          log () {},
+          error () {}
+        };
 
     // i can haz sockets?
     if (!(this.WebSocket = this.window.WebSocket || this.window.MozWebSocket)) {
-      this.console.error("LiveReload disabled because the browser does not seem to support web sockets");
+      this.console.error('LiveReload disabled because the browser does not seem to support web sockets');
       return;
     }
 
@@ -51,7 +50,7 @@ exports.LiveReload = (LiveReload = class LiveReload {
     } else {
       this.options = Options.extract(this.window.document);
       if (!this.options) {
-        this.console.error("LiveReload disabled because it could not find its own <SCRIPT> tag");
+        this.console.error('LiveReload disabled because it could not find its own <SCRIPT> tag');
         return;
       }
     }
@@ -94,8 +93,8 @@ exports.LiveReload = (LiveReload = class LiveReload {
             return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port} (handshake timeout), will retry in ${nextDelay} sec.`);
           case 'handshake-failed':
             return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port} (handshake failed), will retry in ${nextDelay} sec.`);
-          case 'manual': //nop
-          case 'error': //nop
+          case 'manual': // nop
+          case 'error': // nop
           default:
             return this.log(`LiveReload disconnected from ${this.options.host}:${this.options.port} (${reason}), reconnecting in ${nextDelay} sec.`);
         }
@@ -104,7 +103,7 @@ exports.LiveReload = (LiveReload = class LiveReload {
       message: message => {
         switch (message.command) {
           case 'reload': return this.performReload(message);
-          case 'alert':  return this.performAlert(message);
+          case 'alert': return this.performAlert(message);
         }
       }
     }
@@ -113,15 +112,15 @@ exports.LiveReload = (LiveReload = class LiveReload {
     this.initialized = true;
   }
 
-  on(eventName, handler) {
+  on (eventName, handler) {
     return this.listeners[eventName] = handler;
   }
 
-  log(message) {
+  log (message) {
     return this.console.log(`${message}`);
   }
 
-  performReload(message) {
+  performReload (message) {
     this.log(`LiveReload received reload request: ${JSON.stringify(message, null, 2)}`);
     return this.reloader.reload(message.path, {
       liveCSS: message.liveCSS != null ? message.liveCSS : true,
@@ -134,20 +133,20 @@ exports.LiveReload = (LiveReload = class LiveReload {
     );
   }
 
-  performAlert(message) {
+  performAlert (message) {
     return alert(message.message);
   }
 
-  shutDown() {
+  shutDown () {
     if (!this.initialized) { return; }
     this.connector.disconnect();
-    this.log("LiveReload disconnected.");
+    this.log('LiveReload disconnected.');
     return (typeof this.listeners.shutdown === 'function' ? this.listeners.shutdown() : undefined);
   }
 
-  hasPlugin(identifier) { return !!this.pluginIdentifiers[identifier]; }
+  hasPlugin (identifier) { return !!this.pluginIdentifiers[identifier]; }
 
-  addPlugin(pluginClass) {
+  addPlugin (pluginClass) {
     if (!this.initialized) { return; }
 
     if (this.hasPlugin(pluginClass.identifier)) { return; }
@@ -158,8 +157,8 @@ exports.LiveReload = (LiveReload = class LiveReload {
       // expose internal objects for those who know what they're doing
       // (note that these are private APIs and subject to change at any time!)
       _livereload: this,
-      _reloader:   this.reloader,
-      _connector:  this.connector,
+      _reloader: this.reloader,
+      _connector: this.connector,
 
       // official API
       console: this.console,
@@ -191,7 +190,7 @@ exports.LiveReload = (LiveReload = class LiveReload {
     this.reloader.addPlugin(plugin);
   }
 
-  analyze() {
+  analyze () {
     if (!this.initialized) { return; }
     if (!(this.connector.protocol >= 7)) { return; }
 

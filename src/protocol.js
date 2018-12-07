@@ -11,22 +11,22 @@ exports.PROTOCOL_6 = (PROTOCOL_6 = 'http://livereload.com/protocols/official-6')
 exports.PROTOCOL_7 = (PROTOCOL_7 = 'http://livereload.com/protocols/official-7');
 
 exports.ProtocolError = (ProtocolError = class ProtocolError {
-  constructor(reason, data) {
+  constructor (reason, data) {
     this.message = `LiveReload protocol error (${reason}) after receiving data: \"${data}\".`;
   }
 });
 
 exports.Parser = (Parser = class Parser {
-  constructor(handlers) {
+  constructor (handlers) {
     this.handlers = handlers;
     this.reset();
   }
 
-  reset() {
+  reset () {
     return this.protocol = null;
   }
 
-  process(data) {
+  process (data) {
     try {
       let message;
       if ((this.protocol == null)) {
@@ -34,27 +34,27 @@ exports.Parser = (Parser = class Parser {
           this.protocol = 6;
         } else if (message = this._parseMessage(data, ['hello'])) {
           if (!message.protocols.length) {
-            throw new ProtocolError("no protocols specified in handshake message");
+            throw new ProtocolError('no protocols specified in handshake message');
           } else if (Array.from(message.protocols).includes(PROTOCOL_7)) {
             this.protocol = 7;
           } else if (Array.from(message.protocols).includes(PROTOCOL_6)) {
             this.protocol = 6;
           } else {
-            throw new ProtocolError("no supported protocols found");
+            throw new ProtocolError('no supported protocols found');
           }
         }
         return this.handlers.connected(this.protocol);
       } else if (this.protocol === 6) {
         message = JSON.parse(data);
         if (!message.length) {
-          throw new ProtocolError("protocol 6 messages must be arrays");
+          throw new ProtocolError('protocol 6 messages must be arrays');
         }
         const [command, options] = Array.from(message);
         if (command !== 'refresh') {
-          throw new ProtocolError("unknown protocol 6 command");
+          throw new ProtocolError('unknown protocol 6 command');
         }
 
-        return this.handlers.message({command: 'reload', path: options.path, liveCSS: options.apply_css_live != null ? options.apply_css_live : true});
+        return this.handlers.message({ command: 'reload', path: options.path, liveCSS: options.apply_css_live != null ? options.apply_css_live : true });
       } else {
         message = this._parseMessage(data, ['reload', 'alert']);
         return this.handlers.message(message);
@@ -68,7 +68,7 @@ exports.Parser = (Parser = class Parser {
     }
   }
 
-  _parseMessage(data, validCommands) {
+  _parseMessage (data, validCommands) {
     let message;
     try {
       message = JSON.parse(data);

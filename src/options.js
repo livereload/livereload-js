@@ -6,21 +6,21 @@
  */
 let Options;
 exports.Options = (Options = class Options {
-  constructor() {
-    this.https   = false;
-    this.host    = null;
-    this.port    = 35729;
+  constructor () {
+    this.https = false;
+    this.host = null;
+    this.port = 35729;
 
     this.snipver = null;
-    this.ext     = null;
-    this.extver  = null;
+    this.ext = null;
+    this.extver = null;
 
     this.mindelay = 1000;
     this.maxdelay = 60000;
     this.handshake_timeout = 5000;
   }
 
-  set(name, value) {
+  set (name, value) {
     if (typeof value === 'undefined') {
       return;
     }
@@ -33,13 +33,13 @@ exports.Options = (Options = class Options {
   }
 });
 
-Options.extract = function(document) {
+Options.extract = function (document) {
   for (let element of Array.from(document.getElementsByTagName('script'))) {
     var m, src;
     if ((src = element.src) && (m = src.match(new RegExp(`^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$`)))) {
       var mm;
       const options = new Options();
-      options.https = src.indexOf("https") === 0;
+      options.https = src.indexOf('https') === 0;
       if (mm = m[1].match(new RegExp(`^([^/:]+)(?::(\\d+))?(\\/+.*)?$`))) {
         options.host = mm[1];
         if (mm[2]) {

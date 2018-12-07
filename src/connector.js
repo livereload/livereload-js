@@ -10,14 +10,13 @@ const { Parser, PROTOCOL_6, PROTOCOL_7 } = require('./protocol');
 const Version = process.env.npm_package_version;
 
 exports.Connector = (Connector = class Connector {
-
-  constructor(options, WebSocket, Timer, handlers) {
+  constructor (options, WebSocket, Timer, handlers) {
     this.options = options;
     this.WebSocket = WebSocket;
     this.Timer = Timer;
     this.handlers = handlers;
-    const path = this.options.path ? `${this.options.path}` : "livereload";
-    this._uri = `ws${this.options.https ? "s" : ""}://${this.options.host}:${this.options.port}/${path}`;
+    const path = this.options.path ? `${this.options.path}` : 'livereload';
+    this._uri = `ws${this.options.https ? 's' : ''}://${this.options.host}:${this.options.port}/${path}`;
 
     this._nextDelay = this.options.mindelay;
     this._connectionDesired = false;
@@ -47,19 +46,18 @@ exports.Connector = (Connector = class Connector {
     });
 
     this._reconnectTimer = new this.Timer(() => {
-      if (!this._connectionDesired) { return; }  // shouldn't hit this, but just in case
+      if (!this._connectionDesired) { return; } // shouldn't hit this, but just in case
       return this.connect();
     });
 
     this.connect();
   }
 
-
-  _isSocketConnected() {
+  _isSocketConnected () {
     return this.socket && (this.socket.readyState === this.WebSocket.OPEN);
   }
 
-  connect() {
+  connect () {
     this._connectionDesired = true;
     if (this._isSocketConnected()) { return; }
 
@@ -71,67 +69,66 @@ exports.Connector = (Connector = class Connector {
     this.handlers.connecting();
 
     this.socket = new this.WebSocket(this._uri);
-    this.socket.onopen    = e => this._onopen(e);
-    this.socket.onclose   = e => this._onclose(e);
+    this.socket.onopen = e => this._onopen(e);
+    this.socket.onclose = e => this._onclose(e);
     this.socket.onmessage = e => this._onmessage(e);
-    return this.socket.onerror   = e => this._onerror(e);
+    return this.socket.onerror = e => this._onerror(e);
   }
 
-  disconnect() {
+  disconnect () {
     this._connectionDesired = false;
-    this._reconnectTimer.stop();   // in case it was running
+    this._reconnectTimer.stop(); // in case it was running
     if (!this._isSocketConnected()) { return; }
     this._disconnectionReason = 'manual';
     return this.socket.close();
   }
 
-
-  _scheduleReconnection() {
-    if (!this._connectionDesired) { return; }  // don't reconnect after manual disconnection
+  _scheduleReconnection () {
+    if (!this._connectionDesired) { return; } // don't reconnect after manual disconnection
     if (!this._reconnectTimer.running) {
       this._reconnectTimer.start(this._nextDelay);
       return this._nextDelay = Math.min(this.options.maxdelay, this._nextDelay * 2);
     }
   }
 
-  sendCommand(command) {
+  sendCommand (command) {
     if (this.protocol == null) { return; }
     return this._sendCommand(command);
   }
 
-  _sendCommand(command) {
+  _sendCommand (command) {
     return this.socket.send(JSON.stringify(command));
   }
 
-  _closeOnError() {
+  _closeOnError () {
     this._handshakeTimeout.stop();
     this._disconnectionReason = 'error';
     return this.socket.close();
   }
 
-  _onopen(e) {
+  _onopen (e) {
     this.handlers.socketConnected();
     this._disconnectionReason = 'handshake-failed';
 
     // start handshake
     const hello = { command: 'hello', protocols: [PROTOCOL_6, PROTOCOL_7] };
-    hello.ver     = Version;
-    if (this.options.ext) { hello.ext     = this.options.ext; }
-    if (this.options.extver) { hello.extver  = this.options.extver; }
+    hello.ver = Version;
+    if (this.options.ext) { hello.ext = this.options.ext; }
+    if (this.options.extver) { hello.extver = this.options.extver; }
     if (this.options.snipver) { hello.snipver = this.options.snipver; }
     this._sendCommand(hello);
     return this._handshakeTimeout.start(this.options.handshake_timeout);
   }
 
-  _onclose(e) {
+  _onclose (e) {
     this.protocol = 0;
     this.handlers.disconnected(this._disconnectionReason, this._nextDelay);
     return this._scheduleReconnection();
   }
 
-  _onerror(e) {}
+  _onerror (e) {}
 
-  _onmessage(e) {
+  _onmessage (e) {
     return this.protocolParser.process(e.data);
   }
 });

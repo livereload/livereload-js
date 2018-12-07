@@ -4,12 +4,12 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const CustomEvents = {
-  bind(element, eventName, handler) {
+  bind (element, eventName, handler) {
     if (element.addEventListener) {
       return element.addEventListener(eventName, handler, false);
     } else if (element.attachEvent) {
       element[eventName] = 1;
-      return element.attachEvent('onpropertychange', function(event) {
+      return element.attachEvent('onpropertychange', function (event) {
         if (event.propertyName === eventName) {
           return handler();
         }
@@ -19,7 +19,7 @@ const CustomEvents = {
     }
   },
 
-  fire(element, eventName) {
+  fire (element, eventName) {
     if (element.addEventListener) {
       const event = document.createEvent('HTMLEvents');
       event.initEvent(eventName, true, true);

@@ -8,19 +8,19 @@
  */
 
 let LessPlugin;
-module.exports = (LessPlugin = (function() {
+module.exports = (LessPlugin = (function () {
   LessPlugin = class LessPlugin {
-    static initClass() {
+    static initClass () {
       this.identifier = 'less';
       this.version = '1.0';
     }
 
-    constructor(window, host) {
+    constructor (window, host) {
       this.window = window;
       this.host = host;
     }
 
-    reload(path, options) {
+    reload (path, options) {
       if (this.window.less && this.window.less.refresh) {
         if (path.match(/\.less$/i)) {
           return this.reloadLess(path);
@@ -32,11 +32,12 @@ module.exports = (LessPlugin = (function() {
       return false;
     }
 
-    reloadLess(path) {
+    reloadLess (path) {
       let link;
       const links = ((() => {
         const result = [];
-        for (link of Array.from(document.getElementsByTagName('link'))) {           if ((link.href && link.rel.match(/^stylesheet\/less$/i)) || (link.rel.match(/stylesheet/i) && link.type.match(/^text\/(x-)?less$/i))) {
+        for (link of Array.from(document.getElementsByTagName('link'))) {
+          if ((link.href && link.rel.match(/^stylesheet\/less$/i)) || (link.rel.match(/stylesheet/i) && link.type.match(/^text\/(x-)?less$/i))) {
             result.push(link);
           }
         }
@@ -49,13 +50,12 @@ module.exports = (LessPlugin = (function() {
         link.href = this.host.generateCacheBustUrl(link.href);
       }
 
-      this.host.console.log("LiveReload is asking LESS to recompile all stylesheets");
+      this.host.console.log('LiveReload is asking LESS to recompile all stylesheets');
       this.window.less.refresh(true);
       return true;
     }
 
-
-    analyze() {
+    analyze () {
       return { disable: !!(this.window.less && this.window.less.refresh) };
     }
   };
