@@ -7,14 +7,8 @@ module.exports = function (grunt) {
         },
         src: ['src/startup.js'],
         dest: 'dist/livereload.js'
-      },
-
-      test: {
-        src: ['test/html/browserified/main.js'],
-        dest: 'test/html/browserified/bundle.js'
       }
     },
-
     mochaTest: {
       test: {
         options: {
