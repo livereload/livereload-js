@@ -5,24 +5,13 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
 const assert = require('assert');
-const {JSDOM} = require('jsdom');
+const { JSDOM } = require('jsdom');
 
 const { Options } = require('../src/options');
 
-
-describe("Options", function() {
-  it("should extract host and port from a SCRIPT tag", function() {
-    const dom = new JSDOM("<script src=\"http://somewhere.com:9876/livereload.js\"></script>");
-
-    const options = Options.extract(dom.window.document);
-    assert.ok(options != null);
-    assert.equal('somewhere.com', options.host);
-    return assert.equal(9876, options.port);
-  });
-
-
-  it("should recognize zlivereload.js as a valid SCRIPT tag for dev testing purposes", function() {
-    const dom = new JSDOM("<script src=\"http://somewhere.com:9876/zlivereload.js\"></script>");
+describe('Options', function () {
+  it('should extract host and port from a SCRIPT tag', function () {
+    const dom = new JSDOM('<script src="http://somewhere.com:9876/livereload.js"></script>');
 
     const options = Options.extract(dom.window.document);
     assert.ok(options != null);
@@ -30,9 +19,8 @@ describe("Options", function() {
     return assert.equal(9876, options.port);
   });
 
-
-  it("should pick the correct SCRIPT tag", function() {
-    const dom = new JSDOM("<script src=\"http://elsewhere.com:1234/livesomething.js\"></script> <script src=\"http://somewhere.com:9876/livereload.js\"></script> <script src=\"http://elsewhere.com:1234/dontreload.js\"></script>");
+  it('should recognize zlivereload.js as a valid SCRIPT tag for dev testing purposes', function () {
+    const dom = new JSDOM('<script src="http://somewhere.com:9876/zlivereload.js"></script>');
 
     const options = Options.extract(dom.window.document);
     assert.ok(options != null);
@@ -40,9 +28,17 @@ describe("Options", function() {
     return assert.equal(9876, options.port);
   });
 
+  it('should pick the correct SCRIPT tag', function () {
+    const dom = new JSDOM('<script src="http://elsewhere.com:1234/livesomething.js"></script> <script src="http://somewhere.com:9876/livereload.js"></script> <script src="http://elsewhere.com:1234/dontreload.js"></script>');
 
-  it("should extract additional options", function() {
-    const dom = new JSDOM("<script src=\"http://somewhere.com:9876/livereload.js?snipver=1&ext=Safari&extver=2.0\"></script>");
+    const options = Options.extract(dom.window.document);
+    assert.ok(options != null);
+    assert.equal('somewhere.com', options.host);
+    return assert.equal(9876, options.port);
+  });
+
+  it('should extract additional options', function () {
+    const dom = new JSDOM('<script src="http://somewhere.com:9876/livereload.js?snipver=1&ext=Safari&extver=2.0"></script>');
 
     const options = Options.extract(dom.window.document);
     assert.equal('1', options.snipver);
@@ -50,24 +46,23 @@ describe("Options", function() {
     return assert.equal('2.0', options.extver);
   });
 
-
-  it("should be cool with a strange URL", function() {
-    const dom = new JSDOM("<script src=\"safari-ext://132324324/23243443/4343/livereload.js?host=somewhere.com\"></script>");
+  it('should be cool with a strange URL', function () {
+    const dom = new JSDOM('<script src="safari-ext://132324324/23243443/4343/livereload.js?host=somewhere.com"></script>');
 
     const options = Options.extract(dom.window.document);
     assert.equal('somewhere.com', options.host);
     return assert.equal(35729, options.port);
   });
 
-  it("should accept when livereload is not being served domain root", function() {
-    const dom = new JSDOM("<script src=\"http://somewhere.com:9876/132324324/23243443/4343/livereload.js\"></script>");
+  it('should accept when livereload is not being served domain root', function () {
+    const dom = new JSDOM('<script src="http://somewhere.com:9876/132324324/23243443/4343/livereload.js"></script>');
     const options = Options.extract(dom.window.document);
     assert.equal('somewhere.com', options.host);
     return assert.equal(9876, options.port);
   });
 
-  return it("should set https when using an https URL ", function() {
-    const dom = new JSDOM("<script src=\"https://somewhere.com:9876/livereload.js\"></script>");
+  return it('should set https when using an https URL ', function () {
+    const dom = new JSDOM('<script src="https://somewhere.com:9876/livereload.js"></script>');
 
     const options = Options.extract(dom.window.document);
     assert.ok(options != null);
