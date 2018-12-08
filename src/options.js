@@ -32,7 +32,9 @@ Options.extract = function (document) {
     if ((src = element.src) && (m = src.match(new RegExp(`^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$`)))) {
       var mm;
       const options = new Options();
+
       options.https = src.indexOf('https') === 0;
+
       if ((mm = m[1].match(new RegExp(`^([^/:]+)(?::(\\d+))?(\\/+.*)?$`)))) {
         options.host = mm[1];
         if (mm[2]) {
@@ -41,13 +43,15 @@ Options.extract = function (document) {
       }
 
       if (m[2]) {
-        for (let pair of Array.from(m[2].split('&'))) {
+        for (let pair of m[2].split('&')) {
           var keyAndValue;
+
           if ((keyAndValue = pair.split('=')).length > 1) {
             options.set(keyAndValue[0].replace(/-/g, '_'), keyAndValue.slice(1).join('='));
           }
         }
       }
+
       return options;
     }
   }
