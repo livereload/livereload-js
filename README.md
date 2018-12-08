@@ -210,8 +210,6 @@ Releasing a new version
 
 1. Run `npm version` with the applicable identifier (`major`/`minor`/`patch`/...).
 
-1. Update the version in `bower.json`.
-
 1. Do some manual testing.
 
 1. Create a release on GitHub.

@@ -26,12 +26,13 @@
     "watchify": "^3.11.0"
   },
   "scripts": {
-    "lint": "eslint src test Gruntfile.js",
+    "lint": "eslint src test version-bower.js",
     "test": "mocha --require @babel/register test/*_test.js",
     "test-manual": "NODE_ENV=production watchify -v -t envify -t babelify -o test/html/browserified/bundle.js test/html/browserified/main.js",
     "build": "NODE_ENV=production browserify -t envify -t babelify -o dist/livereload.js src/startup.js",
+    "version-bower": "node version-bower.js",
     "preversion": "npm run lint && npm test",
-    "postversion": "npm run build && git add dist && git commit -m 'build' && git push && git push --tags"
+    "postversion": "npm run version-bower && npm run build && git add dist && git commit -m 'build' && git push && git push --tags"
   },
   "browserslist": [
     "last 2 Chrome versions",
