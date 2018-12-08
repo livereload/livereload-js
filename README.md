@@ -202,7 +202,7 @@ To run tests:
 
 Manual testing: open files in `test/html/*` in various browsers, make some changes and make sure they are applied.
 
-Testing the Browserify usage scenario: `grunt browserify:test`, then perform manual testing of `test/html/browserified/`.
+Testing the Browserify usage scenario: `npm run test-manual`, then perform manual testing of `test/html/browserified/`.
 
 
 Releasing a new version
