@@ -34,7 +34,8 @@
     "minify": "NODE_ENV=production terser -c -m -- dist/livereload.js > dist/livereload.min.js",
     "version-bower": "node version-bower.js",
     "preversion": "npm run lint && npm test",
-    "postversion": "npm run version-bower && npm run build && npm run minify && git add dist && git commit -m \"build\" && git push && git push --tags"
+    "version": "npm run version-bower && npm run build && npm run minify && git add -A dist",
+    "postversion": "git push && git push --tags"
   },
   "browserslist": [
     "last 2 Chrome versions",
