@@ -187,7 +187,6 @@ Hacking on LiveReload.js
 Requirements:
 
 * Node.js with npm
-* Grunt (`npm install grunt-cli`)
 
 To install additional prerequisites:
 
@@ -195,31 +194,27 @@ To install additional prerequisites:
 
 To build:
 
-    grunt build
+    npm run build
 
 To run tests:
 
-    grunt
+    npm test
 
 Manual testing: open files in `test/html/*` in various browsers, make some changes and make sure they are applied.
 
-Testing the Browserify usage scenario: `grunt browserify:test`, then perform manual testing of `test/html/browserified/`.
+Testing the Browserify usage scenario: `npm run test-manual`, then perform manual testing of `test/html/browserified/`.
 
 
 Releasing a new version
 -----------------------
 
-1. Update the version number in `package.json`.
-
-1. Run `rake version` to update the version numbers in all other files, using the one from `package.json`.
-
-1. Run `grunt`.
+1. Run `npm version` with the applicable identifier (`major`/`minor`/`patch`/...).
 
 1. Do some manual testing.
 
-1. Tag the version in Git: `rake tag` then `git push --tags`.
+1. Create a release on GitHub.
 
-1. `npm publish`
+1. Run `npm publish`.
 
 
 License

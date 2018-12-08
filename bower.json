@@ -14,9 +14,6 @@
   ],
   "license": "MIT",
   "ignore": [
-    "Rakefile",
-    "lib",
-    "lib-cov",
     "src",
     "test",
     "**/.*",
