@@ -27,7 +27,7 @@
     "watchify": "^3.11.0"
   },
   "scripts": {
-    "lint": "eslint src test version-bower.js",
+    "lint": "eslint src test/*_test.js version-bower.js",
     "test": "mocha --require @babel/register test/*_test.js",
     "test-manual": "NODE_ENV=production watchify -v -t envify -t babelify -o test/html/browserified/bundle.js test/html/browserified/main.js",
     "build": "NODE_ENV=production browserify -t envify -t babelify src/startup.js > dist/livereload.js",
