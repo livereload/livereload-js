@@ -1,3 +1,5 @@
-/src/
 /test/
 /bower.json
+/version-bower.json
+/.eslintrc.json
+/.babelrc
