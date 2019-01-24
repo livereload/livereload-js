@@ -272,6 +272,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     // in WebKit, styleSheet.cssRules is null for inaccessible stylesheets;
     // Firefox/Opera may throw exceptions
     let rules;
+
     try {
       rules = (styleSheet || {}).cssRules;
     } catch (e) {}
@@ -279,6 +280,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     if (rules && rules.length) {
       for (let index = 0; index < rules.length; index++) {
         const rule = rules[index];
+
         switch (rule.type) {
           case CSSRule.CHARSET_RULE:
             continue; // do nothing
@@ -297,8 +299,12 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     let callbackExecuted = false;
 
     const executeCallback = () => {
-      if (callbackExecuted) { return; }
+      if (callbackExecuted) {
+        return;
+      }
+
       callbackExecuted = true;
+
       return func();
     };
 
@@ -308,6 +314,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     clone.onload = () => {
       this.console.log('LiveReload: the new stylesheet has finished loading');
       this.knownToSupportCssOnLoad = true;
+
       return executeCallback();
     };
 
@@ -317,6 +324,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
       (poll = () => {
         if (clone.sheet) {
           this.console.log('LiveReload is polling until the new CSS finishes loading...');
+
           return executeCallback();
         } else {
           return this.Timer.start(50, poll);
@@ -361,6 +369,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
 
     return this.waitUntilCssLoads(clone, () => {
       let additionalWaitingTime;
+
       if (/AppleWebKit/.test(navigator.userAgent)) {
         additionalWaitingTime = 5;
       } else {
@@ -368,7 +377,10 @@ and 'options.reloadMissingCSS' was set to 'false'.`
       }
 
       return this.Timer.start(additionalWaitingTime, () => {
-        if (!link.parentNode) { return; }
+        if (!link.parentNode) {
+          return;
+        }
+
         link.parentNode.removeChild(link);
         clone.onreadystatechange = null;
 
@@ -393,16 +405,21 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     tempLink.rel = 'stylesheet';
     tempLink.href = href;
     tempLink.__LiveReload_pendingRemoval = true; // exclude from path matching
+
     if (link.parentNode) {
       link.parentNode.insertBefore(tempLink, link);
     }
 
     // wait for it to load
     return this.Timer.start(this.importCacheWaitPeriod, () => {
-      if (tempLink.parentNode) { tempLink.parentNode.removeChild(tempLink); }
+      if (tempLink.parentNode) {
+        tempLink.parentNode.removeChild(tempLink);
+      }
 
       // if another reattachImportedRule call is in progress, abandon this one
-      if (rule.__LiveReload_newHref !== href) { return; }
+      if (rule.__LiveReload_newHref !== href) {
+        return;
+      }
 
       parent.insertRule(newRule, index);
       parent.deleteRule(index + 1);
@@ -414,9 +431,12 @@ and 'options.reloadMissingCSS' was set to 'false'.`
       // repeat again for good measure
       return this.Timer.start(this.importCacheWaitPeriod, () => {
         // if another reattachImportedRule call is in progress, abandon this one
-        if (rule.__LiveReload_newHref !== href) { return; }
+        if (rule.__LiveReload_newHref !== href) {
+          return;
+        }
 
         parent.insertRule(newRule, index);
+
         return parent.deleteRule(index + 1);
       });
     });
@@ -428,6 +448,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
 
   generateCacheBustUrl (url, expando) {
     let hash, oldParams;
+
     if (!expando) {
       expando = this.generateUniqueString();
     }
@@ -442,6 +463,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     }
 
     let params = oldParams.replace(/(\?|&)livereload=(\d+)/, (match, sep) => `${sep}${expando}`);
+
     if (params === oldParams) {
       if (oldParams.length === 0) {
         params = `?${expando}`;

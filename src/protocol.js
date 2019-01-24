@@ -35,6 +35,7 @@ class Parser {
             throw new ProtocolError('no supported protocols found');
           }
         }
+
         return this.handlers.connected(this.protocol);
       } else if (this.protocol === 6) {
         message = JSON.parse(data);
@@ -53,6 +54,7 @@ class Parser {
         });
       } else {
         message = this._parseMessage(data, ['reload', 'alert']);
+
         return this.handlers.message(message);
       }
     } catch (e) {
@@ -66,17 +68,21 @@ class Parser {
 
   _parseMessage (data, validCommands) {
     let message;
+
     try {
       message = JSON.parse(data);
     } catch (e) {
       throw new ProtocolError('unparsable JSON', data);
     }
+
     if (!message.command) {
       throw new ProtocolError('missing "command" key', data);
     }
+
     if (!validCommands.includes(message.command)) {
       throw new ProtocolError(`invalid command '${message.command}', only valid commands are: ${validCommands.join(', ')})`, data);
     }
+
     return message;
   }
 };

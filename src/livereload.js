@@ -60,15 +60,21 @@ class LiveReload {
         if (typeof this.listeners.connect === 'function') {
           this.listeners.connect();
         }
+
         this.log(`LiveReload is connected to ${this.options.host}:${this.options.port} (protocol v${protocol}).`);
+
         return this.analyze();
       },
 
       error: e => {
         if (e instanceof ProtocolError) {
-          if (typeof console !== 'undefined' && console !== null) { return console.log(`${e.message}.`); }
+          if (typeof console !== 'undefined' && console !== null) {
+            return console.log(`${e.message}.`);
+          }
         } else {
-          if (typeof console !== 'undefined' && console !== null) { return console.log(`LiveReload internal error: ${e.message}`); }
+          if (typeof console !== 'undefined' && console !== null) {
+            return console.log(`LiveReload internal error: ${e.message}`);
+          }
         }
       },
 
@@ -94,12 +100,13 @@ class LiveReload {
 
       message: message => {
         switch (message.command) {
-          case 'reload': return this.performReload(message);
-          case 'alert': return this.performAlert(message);
+          case 'reload':
+            return this.performReload(message);
+          case 'alert':
+            return this.performAlert(message);
         }
       }
-    }
-    );
+    });
 
     this.initialized = true;
   }
@@ -114,6 +121,7 @@ class LiveReload {
 
   performReload (message) {
     this.log(`LiveReload received reload request: ${JSON.stringify(message, null, 2)}`);
+
     return this.reloader.reload(message.path, {
       liveCSS: message.liveCSS != null ? message.liveCSS : true,
       liveImg: message.liveImg != null ? message.liveImg : true,
@@ -121,8 +129,7 @@ class LiveReload {
       originalPath: message.originalPath || '',
       overrideURL: message.overrideURL || '',
       serverURL: `http://${this.options.host}:${this.options.port}`
-    }
-    );
+    });
   }
 
   performAlert (message) {
@@ -130,18 +137,28 @@ class LiveReload {
   }
 
   shutDown () {
-    if (!this.initialized) { return; }
+    if (!this.initialized) {
+      return;
+    }
+
     this.connector.disconnect();
     this.log('LiveReload disconnected.');
     return (typeof this.listeners.shutdown === 'function' ? this.listeners.shutdown() : undefined);
   }
 
-  hasPlugin (identifier) { return !!this.pluginIdentifiers[identifier]; }
+  hasPlugin (identifier) {
+    return !!this.pluginIdentifiers[identifier];
+  }
 
   addPlugin (PluginClass) {
-    if (!this.initialized) { return; }
+    if (!this.initialized) {
+      return;
+    }
 
-    if (this.hasPlugin(PluginClass.identifier)) { return; }
+    if (this.hasPlugin(PluginClass.identifier)) {
+      return;
+    }
+
     this.pluginIdentifiers[PluginClass.identifier] = true;
 
     const plugin = new PluginClass(this.window, {
@@ -183,17 +200,27 @@ class LiveReload {
   }
 
   analyze () {
-    if (!this.initialized) { return; }
-    if (!(this.connector.protocol >= 7)) { return; }
+    if (!this.initialized) {
+      return;
+    }
+
+    if (!(this.connector.protocol >= 7)) {
+      return;
+    }
 
     const pluginsData = {};
+
     for (let plugin of this.plugins) {
       var pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
       pluginsData[plugin.constructor.identifier] = pluginData;
       pluginData.version = plugin.constructor.version;
     }
 
-    this.connector.sendCommand({ command: 'info', plugins: pluginsData, url: this.window.location.href });
+    this.connector.sendCommand({
+      command: 'info',
+      plugins: pluginsData,
+      url: this.window.location.href
+    });
   }
 };
 

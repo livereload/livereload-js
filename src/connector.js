@@ -21,10 +21,12 @@ class Connector {
         this._handshakeTimeout.stop();
         this._nextDelay = this.options.mindelay;
         this._disconnectionReason = 'broken';
+
         return this.handlers.connected(this.protocol);
       },
       error: e => {
         this.handlers.error(e);
+
         return this._closeOnError();
       },
       message: message => {
@@ -33,13 +35,21 @@ class Connector {
     });
 
     this._handshakeTimeout = new this.Timer(() => {
-      if (!this._isSocketConnected()) { return; }
+      if (!this._isSocketConnected()) {
+        return;
+      }
+
       this._disconnectionReason = 'handshake-timeout';
+
       return this.socket.close();
     });
 
     this._reconnectTimer = new this.Timer(() => {
-      if (!this._connectionDesired) { return; } // shouldn't hit this, but just in case
+      if (!this._connectionDesired) {
+        // shouldn't hit this, but just in case
+        return;
+      }
+
       return this.connect();
     });
 
@@ -52,7 +62,10 @@ class Connector {
 
   connect () {
     this._connectionDesired = true;
-    if (this._isSocketConnected()) { return; }
+
+    if (this._isSocketConnected()) {
+      return;
+    }
 
     // prepare for a new connection
     this._reconnectTimer.stop();
@@ -71,13 +84,22 @@ class Connector {
   disconnect () {
     this._connectionDesired = false;
     this._reconnectTimer.stop(); // in case it was running
-    if (!this._isSocketConnected()) { return; }
+
+    if (!this._isSocketConnected()) {
+      return;
+    }
+
     this._disconnectionReason = 'manual';
+
     return this.socket.close();
   }
 
   _scheduleReconnection () {
-    if (!this._connectionDesired) { return; } // don't reconnect after manual disconnection
+    if (!this._connectionDesired) {
+      // don't reconnect after manual disconnection
+      return;
+    }
+
     if (!this._reconnectTimer.running) {
       this._reconnectTimer.start(this._nextDelay);
       this._nextDelay = Math.min(this.options.maxdelay, this._nextDelay * 2);
@@ -85,7 +107,10 @@ class Connector {
   }
 
   sendCommand (command) {
-    if (!this.protocol) { return; }
+    if (!this.protocol) {
+      return;
+    }
+
     return this._sendCommand(command);
   }
 
@@ -106,16 +131,28 @@ class Connector {
     // start handshake
     const hello = { command: 'hello', protocols: [PROTOCOL_6, PROTOCOL_7] };
     hello.ver = VERSION;
-    if (this.options.ext) { hello.ext = this.options.ext; }
-    if (this.options.extver) { hello.extver = this.options.extver; }
-    if (this.options.snipver) { hello.snipver = this.options.snipver; }
+
+    if (this.options.ext) {
+      hello.ext = this.options.ext;
+    }
+
+    if (this.options.extver) {
+      hello.extver = this.options.extver;
+    }
+
+    if (this.options.snipver) {
+      hello.snipver = this.options.snipver;
+    }
+
     this._sendCommand(hello);
+
     return this._handshakeTimeout.start(this.options.handshake_timeout);
   }
 
   _onclose (e) {
     this.protocol = 0;
     this.handlers.disconnected(this._disconnectionReason, this._nextDelay);
+
     return this._scheduleReconnection();
   }
 
