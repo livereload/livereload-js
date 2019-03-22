@@ -13,14 +13,14 @@ module.exports = function (key) {
   ArrayProto[UNSCOPABLES][key] = true;
 };
 
-},{"./_hide":16,"./_wks":44}],3:[function(require,module,exports){
+},{"./_hide":17,"./_wks":45}],3:[function(require,module,exports){
 var isObject = require('./_is-object');
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-},{"./_is-object":20}],4:[function(require,module,exports){
+},{"./_is-object":21}],4:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = require('./_to-iobject');
@@ -45,7 +45,7 @@ module.exports = function (IS_INCLUDES) {
   };
 };
 
-},{"./_to-absolute-index":37,"./_to-iobject":39,"./_to-length":40}],5:[function(require,module,exports){
+},{"./_to-absolute-index":38,"./_to-iobject":40,"./_to-length":41}],5:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = function (it) {
@@ -53,7 +53,7 @@ module.exports = function (it) {
 };
 
 },{}],6:[function(require,module,exports){
-var core = module.exports = { version: '2.6.0' };
+var core = module.exports = { version: '2.6.5' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 },{}],7:[function(require,module,exports){
@@ -100,7 +100,7 @@ module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
 
-},{"./_global":14,"./_is-object":20}],11:[function(require,module,exports){
+},{"./_global":15,"./_is-object":21}],11:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
@@ -151,7 +151,7 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 module.exports = $export;
 
-},{"./_core":6,"./_ctx":7,"./_global":14,"./_hide":16,"./_redefine":33}],13:[function(require,module,exports){
+},{"./_core":6,"./_ctx":7,"./_global":15,"./_hide":17,"./_redefine":34}],13:[function(require,module,exports){
 module.exports = function (exec) {
   try {
     return !!exec();
@@ -161,6 +161,9 @@ module.exports = function (exec) {
 };
 
 },{}],14:[function(require,module,exports){
+module.exports = require('./_shared')('native-function-to-string', Function.toString);
+
+},{"./_shared":37}],15:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self
@@ -168,13 +171,13 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
   : Function('return this')();
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
 module.exports = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var dP = require('./_object-dp');
 var createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function (object, key, value) {
@@ -184,16 +187,16 @@ module.exports = require('./_descriptors') ? function (object, key, value) {
   return object;
 };
 
-},{"./_descriptors":9,"./_object-dp":27,"./_property-desc":32}],17:[function(require,module,exports){
+},{"./_descriptors":9,"./_object-dp":28,"./_property-desc":33}],18:[function(require,module,exports){
 var document = require('./_global').document;
 module.exports = document && document.documentElement;
 
-},{"./_global":14}],18:[function(require,module,exports){
+},{"./_global":15}],19:[function(require,module,exports){
 module.exports = !require('./_descriptors') && !require('./_fails')(function () {
   return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_descriptors":9,"./_dom-create":10,"./_fails":13}],19:[function(require,module,exports){
+},{"./_descriptors":9,"./_dom-create":10,"./_fails":13}],20:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
 // eslint-disable-next-line no-prototype-builtins
@@ -201,12 +204,12 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
 
-},{"./_cof":5}],20:[function(require,module,exports){
+},{"./_cof":5}],21:[function(require,module,exports){
 module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 var create = require('./_object-create');
 var descriptor = require('./_property-desc');
@@ -221,7 +224,7 @@ module.exports = function (Constructor, NAME, next) {
   setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-},{"./_hide":16,"./_object-create":26,"./_property-desc":32,"./_set-to-string-tag":34,"./_wks":44}],22:[function(require,module,exports){
+},{"./_hide":17,"./_object-create":27,"./_property-desc":33,"./_set-to-string-tag":35,"./_wks":45}],23:[function(require,module,exports){
 'use strict';
 var LIBRARY = require('./_library');
 var $export = require('./_export');
@@ -292,18 +295,18 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
   return methods;
 };
 
-},{"./_export":12,"./_hide":16,"./_iter-create":21,"./_iterators":24,"./_library":25,"./_object-gpo":29,"./_redefine":33,"./_set-to-string-tag":34,"./_wks":44}],23:[function(require,module,exports){
+},{"./_export":12,"./_hide":17,"./_iter-create":22,"./_iterators":25,"./_library":26,"./_object-gpo":30,"./_redefine":34,"./_set-to-string-tag":35,"./_wks":45}],24:[function(require,module,exports){
 module.exports = function (done, value) {
   return { value: value, done: !!done };
 };
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = {};
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = false;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = require('./_an-object');
 var dPs = require('./_object-dps');
@@ -346,7 +349,7 @@ module.exports = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":3,"./_dom-create":10,"./_enum-bug-keys":11,"./_html":17,"./_object-dps":28,"./_shared-key":35}],27:[function(require,module,exports){
+},{"./_an-object":3,"./_dom-create":10,"./_enum-bug-keys":11,"./_html":18,"./_object-dps":29,"./_shared-key":36}],28:[function(require,module,exports){
 var anObject = require('./_an-object');
 var IE8_DOM_DEFINE = require('./_ie8-dom-define');
 var toPrimitive = require('./_to-primitive');
@@ -364,7 +367,7 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   return O;
 };
 
-},{"./_an-object":3,"./_descriptors":9,"./_ie8-dom-define":18,"./_to-primitive":42}],28:[function(require,module,exports){
+},{"./_an-object":3,"./_descriptors":9,"./_ie8-dom-define":19,"./_to-primitive":43}],29:[function(require,module,exports){
 var dP = require('./_object-dp');
 var anObject = require('./_an-object');
 var getKeys = require('./_object-keys');
@@ -379,7 +382,7 @@ module.exports = require('./_descriptors') ? Object.defineProperties : function 
   return O;
 };
 
-},{"./_an-object":3,"./_descriptors":9,"./_object-dp":27,"./_object-keys":31}],29:[function(require,module,exports){
+},{"./_an-object":3,"./_descriptors":9,"./_object-dp":28,"./_object-keys":32}],30:[function(require,module,exports){
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = require('./_has');
 var toObject = require('./_to-object');
@@ -394,7 +397,7 @@ module.exports = Object.getPrototypeOf || function (O) {
   } return O instanceof Object ? ObjectProto : null;
 };
 
-},{"./_has":15,"./_shared-key":35,"./_to-object":41}],30:[function(require,module,exports){
+},{"./_has":16,"./_shared-key":36,"./_to-object":42}],31:[function(require,module,exports){
 var has = require('./_has');
 var toIObject = require('./_to-iobject');
 var arrayIndexOf = require('./_array-includes')(false);
@@ -413,7 +416,7 @@ module.exports = function (object, names) {
   return result;
 };
 
-},{"./_array-includes":4,"./_has":15,"./_shared-key":35,"./_to-iobject":39}],31:[function(require,module,exports){
+},{"./_array-includes":4,"./_has":16,"./_shared-key":36,"./_to-iobject":40}],32:[function(require,module,exports){
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys = require('./_object-keys-internal');
 var enumBugKeys = require('./_enum-bug-keys');
@@ -422,7 +425,7 @@ module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
 };
 
-},{"./_enum-bug-keys":11,"./_object-keys-internal":30}],32:[function(require,module,exports){
+},{"./_enum-bug-keys":11,"./_object-keys-internal":31}],33:[function(require,module,exports){
 module.exports = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
@@ -432,13 +435,13 @@ module.exports = function (bitmap, value) {
   };
 };
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var global = require('./_global');
 var hide = require('./_hide');
 var has = require('./_has');
 var SRC = require('./_uid')('src');
+var $toString = require('./_function-to-string');
 var TO_STRING = 'toString';
-var $toString = Function[TO_STRING];
 var TPL = ('' + $toString).split(TO_STRING);
 
 require('./_core').inspectSource = function (it) {
@@ -465,7 +468,7 @@ require('./_core').inspectSource = function (it) {
   return typeof this == 'function' && this[SRC] || $toString.call(this);
 });
 
-},{"./_core":6,"./_global":14,"./_has":15,"./_hide":16,"./_uid":43}],34:[function(require,module,exports){
+},{"./_core":6,"./_function-to-string":14,"./_global":15,"./_has":16,"./_hide":17,"./_uid":44}],35:[function(require,module,exports){
 var def = require('./_object-dp').f;
 var has = require('./_has');
 var TAG = require('./_wks')('toStringTag');
@@ -474,14 +477,14 @@ module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
-},{"./_has":15,"./_object-dp":27,"./_wks":44}],35:[function(require,module,exports){
+},{"./_has":16,"./_object-dp":28,"./_wks":45}],36:[function(require,module,exports){
 var shared = require('./_shared')('keys');
 var uid = require('./_uid');
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
-},{"./_shared":36,"./_uid":43}],36:[function(require,module,exports){
+},{"./_shared":37,"./_uid":44}],37:[function(require,module,exports){
 var core = require('./_core');
 var global = require('./_global');
 var SHARED = '__core-js_shared__';
@@ -492,10 +495,10 @@ var store = global[SHARED] || (global[SHARED] = {});
 })('versions', []).push({
   version: core.version,
   mode: require('./_library') ? 'pure' : 'global',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
 
-},{"./_core":6,"./_global":14,"./_library":25}],37:[function(require,module,exports){
+},{"./_core":6,"./_global":15,"./_library":26}],38:[function(require,module,exports){
 var toInteger = require('./_to-integer');
 var max = Math.max;
 var min = Math.min;
@@ -504,7 +507,7 @@ module.exports = function (index, length) {
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
 
-},{"./_to-integer":38}],38:[function(require,module,exports){
+},{"./_to-integer":39}],39:[function(require,module,exports){
 // 7.1.4 ToInteger
 var ceil = Math.ceil;
 var floor = Math.floor;
@@ -512,7 +515,7 @@ module.exports = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = require('./_iobject');
 var defined = require('./_defined');
@@ -520,7 +523,7 @@ module.exports = function (it) {
   return IObject(defined(it));
 };
 
-},{"./_defined":8,"./_iobject":19}],40:[function(require,module,exports){
+},{"./_defined":8,"./_iobject":20}],41:[function(require,module,exports){
 // 7.1.15 ToLength
 var toInteger = require('./_to-integer');
 var min = Math.min;
@@ -528,14 +531,14 @@ module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
 
-},{"./_to-integer":38}],41:[function(require,module,exports){
+},{"./_to-integer":39}],42:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
 module.exports = function (it) {
   return Object(defined(it));
 };
 
-},{"./_defined":8}],42:[function(require,module,exports){
+},{"./_defined":8}],43:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -549,14 +552,14 @@ module.exports = function (it, S) {
   throw TypeError("Can't convert object to primitive value");
 };
 
-},{"./_is-object":20}],43:[function(require,module,exports){
+},{"./_is-object":21}],44:[function(require,module,exports){
 var id = 0;
 var px = Math.random();
 module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 var store = require('./_shared')('wks');
 var uid = require('./_uid');
 var Symbol = require('./_global').Symbol;
@@ -569,7 +572,7 @@ var $exports = module.exports = function (name) {
 
 $exports.store = store;
 
-},{"./_global":14,"./_shared":36,"./_uid":43}],45:[function(require,module,exports){
+},{"./_global":15,"./_shared":37,"./_uid":44}],46:[function(require,module,exports){
 'use strict';
 var addToUnscopables = require('./_add-to-unscopables');
 var step = require('./_iter-step');
@@ -605,7 +608,7 @@ addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
 
-},{"./_add-to-unscopables":2,"./_iter-define":22,"./_iter-step":23,"./_iterators":24,"./_to-iobject":39}],46:[function(require,module,exports){
+},{"./_add-to-unscopables":2,"./_iter-define":23,"./_iter-step":24,"./_iterators":25,"./_to-iobject":40}],47:[function(require,module,exports){
 var $iterators = require('./es6.array.iterator');
 var getKeys = require('./_object-keys');
 var redefine = require('./_redefine');
@@ -665,7 +668,7 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
   }
 }
 
-},{"./_global":14,"./_hide":16,"./_iterators":24,"./_object-keys":31,"./_redefine":33,"./_wks":44,"./es6.array.iterator":45}],47:[function(require,module,exports){
+},{"./_global":15,"./_hide":17,"./_iterators":25,"./_object-keys":32,"./_redefine":34,"./_wks":45,"./es6.array.iterator":46}],48:[function(require,module,exports){
 "use strict";
 
 const {
@@ -674,7 +677,7 @@ const {
   PROTOCOL_7
 } = require('./protocol');
 
-const VERSION = "3.0.0-alpha.1";
+const VERSION = "3.0.0-alpha.2";
 
 class Connector {
   constructor(options, WebSocket, Timer, handlers) {
@@ -682,8 +685,8 @@ class Connector {
     this.WebSocket = WebSocket;
     this.Timer = Timer;
     this.handlers = handlers;
-    const path = this.options.path ? `${this.options.path}` : 'livereload';
-    this._uri = `ws${this.options.https ? 's' : ''}://${this.options.host}:${this.options.port}/${path}`;
+    const path = this.options.path ? "".concat(this.options.path) : 'livereload';
+    this._uri = "ws".concat(this.options.https ? 's' : '', "://").concat(this.options.host, ":").concat(this.options.port, "/").concat(path);
     this._nextDelay = this.options.mindelay;
     this._connectionDesired = false;
     this.protocol = 0;
@@ -715,9 +718,9 @@ class Connector {
     });
     this._reconnectTimer = new this.Timer(() => {
       if (!this._connectionDesired) {
+        // shouldn't hit this, but just in case
         return;
-      } // shouldn't hit this, but just in case
-
+      }
 
       return this.connect();
     });
@@ -768,9 +771,9 @@ class Connector {
 
   _scheduleReconnection() {
     if (!this._connectionDesired) {
+      // don't reconnect after manual disconnection
       return;
-    } // don't reconnect after manual disconnection
-
+    }
 
     if (!this._reconnectTimer.running) {
       this._reconnectTimer.start(this._nextDelay);
@@ -842,7 +845,7 @@ class Connector {
 ;
 exports.Connector = Connector;
 
-},{"./protocol":52}],48:[function(require,module,exports){
+},{"./protocol":53}],49:[function(require,module,exports){
 "use strict";
 
 const CustomEvents = {
@@ -857,7 +860,7 @@ const CustomEvents = {
         }
       });
     } else {
-      throw new Error(`Attempt to attach custom event ${eventName} to something which isn't a DOMElement`);
+      throw new Error("Attempt to attach custom event ".concat(eventName, " to something which isn't a DOMElement"));
     }
   },
 
@@ -871,7 +874,7 @@ const CustomEvents = {
         return element[eventName]++;
       }
     } else {
-      throw new Error(`Attempt to fire custom event ${eventName} on something which isn't a DOMElement`);
+      throw new Error("Attempt to fire custom event ".concat(eventName, " on something which isn't a DOMElement"));
     }
   }
 
@@ -879,7 +882,7 @@ const CustomEvents = {
 exports.bind = CustomEvents.bind;
 exports.fire = CustomEvents.fire;
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 "use strict";
 
 class LessPlugin {
@@ -943,7 +946,7 @@ LessPlugin.identifier = 'less';
 LessPlugin.version = '1.0';
 module.exports = LessPlugin;
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 "use strict";
 
 require("core-js/modules/web.dom.iterable");
@@ -1020,17 +1023,17 @@ class LiveReload {
           this.listeners.connect();
         }
 
-        this.log(`LiveReload is connected to ${this.options.host}:${this.options.port} (protocol v${protocol}).`);
+        this.log("LiveReload is connected to ".concat(this.options.host, ":").concat(this.options.port, " (protocol v").concat(protocol, ")."));
         return this.analyze();
       },
       error: e => {
         if (e instanceof ProtocolError) {
           if (typeof console !== 'undefined' && console !== null) {
-            return console.log(`${e.message}.`);
+            return console.log("".concat(e.message, "."));
           }
         } else {
           if (typeof console !== 'undefined' && console !== null) {
-            return console.log(`LiveReload internal error: ${e.message}`);
+            return console.log("LiveReload internal error: ".concat(e.message));
           }
         }
       },
@@ -1041,23 +1044,23 @@ class LiveReload {
 
         switch (reason) {
           case 'cannot-connect':
-            return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port}, will retry in ${nextDelay} sec.`);
+            return this.log("LiveReload cannot connect to ".concat(this.options.host, ":").concat(this.options.port, ", will retry in ").concat(nextDelay, " sec."));
 
           case 'broken':
-            return this.log(`LiveReload disconnected from ${this.options.host}:${this.options.port}, reconnecting in ${nextDelay} sec.`);
+            return this.log("LiveReload disconnected from ".concat(this.options.host, ":").concat(this.options.port, ", reconnecting in ").concat(nextDelay, " sec."));
 
           case 'handshake-timeout':
-            return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port} (handshake timeout), will retry in ${nextDelay} sec.`);
+            return this.log("LiveReload cannot connect to ".concat(this.options.host, ":").concat(this.options.port, " (handshake timeout), will retry in ").concat(nextDelay, " sec."));
 
           case 'handshake-failed':
-            return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port} (handshake failed), will retry in ${nextDelay} sec.`);
+            return this.log("LiveReload cannot connect to ".concat(this.options.host, ":").concat(this.options.port, " (handshake failed), will retry in ").concat(nextDelay, " sec."));
 
           case 'manual': // nop
 
           case 'error': // nop
 
           default:
-            return this.log(`LiveReload disconnected from ${this.options.host}:${this.options.port} (${reason}), reconnecting in ${nextDelay} sec.`);
+            return this.log("LiveReload disconnected from ".concat(this.options.host, ":").concat(this.options.port, " (").concat(reason, "), reconnecting in ").concat(nextDelay, " sec."));
         }
       },
       message: message => {
@@ -1078,18 +1081,18 @@ class LiveReload {
   }
 
   log(message) {
-    return this.console.log(`${message}`);
+    return this.console.log("".concat(message));
   }
 
   performReload(message) {
-    this.log(`LiveReload received reload request: ${JSON.stringify(message, null, 2)}`);
+    this.log("LiveReload received reload request: ".concat(JSON.stringify(message, null, 2)));
     return this.reloader.reload(message.path, {
       liveCSS: message.liveCSS != null ? message.liveCSS : true,
       liveImg: message.liveImg != null ? message.liveImg : true,
       reloadMissingCSS: message.reloadMissingCSS != null ? message.reloadMissingCSS : true,
       originalPath: message.originalPath || '',
       overrideURL: message.overrideURL || '',
-      serverURL: `http://${this.options.host}:${this.options.port}`
+      serverURL: "http://".concat(this.options.host, ":").concat(this.options.port)
     });
   }
 
@@ -1183,7 +1186,7 @@ class LiveReload {
 ;
 exports.LiveReload = LiveReload;
 
-},{"./connector":47,"./options":51,"./protocol":52,"./reloader":53,"./timer":55,"core-js/modules/web.dom.iterable":46}],51:[function(require,module,exports){
+},{"./connector":48,"./options":52,"./protocol":53,"./reloader":54,"./timer":56,"core-js/modules/web.dom.iterable":47}],52:[function(require,module,exports){
 "use strict";
 
 class Options {
@@ -1217,12 +1220,12 @@ Options.extract = function (document) {
   for (let element of Array.from(document.getElementsByTagName('script'))) {
     var m, src;
 
-    if ((src = element.src) && (m = src.match(new RegExp(`^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$`)))) {
+    if ((src = element.src) && (m = src.match(new RegExp("^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$")))) {
       var mm;
       const options = new Options();
       options.https = src.indexOf('https') === 0;
 
-      if (mm = m[1].match(new RegExp(`^([^/:]+)(?::(\\d+))?(\\/+.*)?$`))) {
+      if (mm = m[1].match(new RegExp("^([^/:]+)(?::(\\d+))?(\\/+.*)?$"))) {
         options.host = mm[1];
 
         if (mm[2]) {
@@ -1249,7 +1252,7 @@ Options.extract = function (document) {
 
 exports.Options = Options;
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 "use strict";
 
 let PROTOCOL_6, PROTOCOL_7;
@@ -1258,7 +1261,7 @@ exports.PROTOCOL_7 = PROTOCOL_7 = 'http://livereload.com/protocols/official-7';
 
 class ProtocolError {
   constructor(reason, data) {
-    this.message = `LiveReload protocol error (${reason}) after receiving data: "${data}".`;
+    this.message = "LiveReload protocol error (".concat(reason, ") after receiving data: \"").concat(data, "\".");
   }
 
 }
@@ -1280,7 +1283,7 @@ class Parser {
       let message;
 
       if (!this.protocol) {
-        if (data.match(new RegExp(`^!!ver:([\\d.]+)$`))) {
+        if (data.match(new RegExp("^!!ver:([\\d.]+)$"))) {
           this.protocol = 6;
         } else if (message = this._parseMessage(data, ['hello'])) {
           if (!message.protocols.length) {
@@ -1340,7 +1343,7 @@ class Parser {
     }
 
     if (!validCommands.includes(message.command)) {
-      throw new ProtocolError(`invalid command '${message.command}', only valid commands are: ${validCommands.join(', ')})`, data);
+      throw new ProtocolError("invalid command '".concat(message.command, "', only valid commands are: ").concat(validCommands.join(', '), ")"), data);
     }
 
     return message;
@@ -1352,7 +1355,7 @@ class Parser {
 exports.ProtocolError = ProtocolError;
 exports.Parser = Parser;
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 "use strict";
 
 /* global CSSRule */
@@ -1398,10 +1401,10 @@ const pathFromUrl = function (url) {
   } = splitUrl(url));
 
   if (url.indexOf('file://') === 0) {
-    path = url.replace(new RegExp(`^file://(localhost)?`), '');
+    path = url.replace(new RegExp("^file://(localhost)?"), '');
   } else {
     //                        http  :   // hostname  :8080  /
-    path = url.replace(new RegExp(`^([^:]+:)?//([^:/]+)(:\\d*)?/`), '/');
+    path = url.replace(new RegExp("^([^:]+:)?//([^:/]+)(:\\d*)?/"), '/');
   } // decodeURI has special handling of stuff like semicolons, so use decodeURIComponent
 
 
@@ -1534,7 +1537,7 @@ class Reloader {
         selector,
         styleNames
       } of IMAGE_STYLES) {
-        for (img of Array.from(this.document.querySelectorAll(`[style*=${selector}]`))) {
+        for (img of Array.from(this.document.querySelectorAll("[style*=".concat(selector, "]")))) {
           this.reloadStyleImages(img.style, styleNames, path, expando);
         }
       }
@@ -1583,9 +1586,9 @@ class Reloader {
       const value = style[styleName];
 
       if (typeof value === 'string') {
-        const newValue = value.replace(new RegExp(`\\burl\\s*\\(([^)]*)\\)`), (match, src) => {
+        const newValue = value.replace(new RegExp("\\burl\\s*\\(([^)]*)\\)"), (match, src) => {
           if (pathsMatch(path, pathFromUrl(src))) {
-            return `url(${this.generateCacheBustUrl(src, expando)})`;
+            return "url(".concat(this.generateCacheBustUrl(src, expando), ")");
           } else {
             return match;
           }
@@ -1635,28 +1638,26 @@ class Reloader {
       }
     }
 
-    this.console.log(`LiveReload found ${links.length} LINKed stylesheets, ${imported.length} @imported stylesheets`);
+    this.console.log("LiveReload found ".concat(links.length, " LINKed stylesheets, ").concat(imported.length, " @imported stylesheets"));
     const match = pickBestMatch(path, links.concat(imported), l => pathFromUrl(this.linkHref(l)));
 
     if (match) {
       if (match.object.rule) {
-        this.console.log(`LiveReload is reloading imported stylesheet: ${match.object.href}`);
+        this.console.log("LiveReload is reloading imported stylesheet: ".concat(match.object.href));
         this.reattachImportedRule(match.object);
       } else {
-        this.console.log(`LiveReload is reloading stylesheet: ${this.linkHref(match.object)}`);
+        this.console.log("LiveReload is reloading stylesheet: ".concat(this.linkHref(match.object)));
         this.reattachStylesheetLink(match.object);
       }
     } else {
       if (this.options.reloadMissingCSS) {
-        this.console.log(`LiveReload will reload all stylesheets because path '${path}' did not match any specific one. \
-To disable this behavior, set 'options.reloadMissingCSS' to 'false'.`);
+        this.console.log("LiveReload will reload all stylesheets because path '".concat(path, "' did not match any specific one. To disable this behavior, set 'options.reloadMissingCSS' to 'false'."));
 
         for (link of Array.from(links)) {
           this.reattachStylesheetLink(link);
         }
       } else {
-        this.console.log(`LiveReload will not reload path '${path}' because the stylesheet was not found on the page \
-and 'options.reloadMissingCSS' was set to 'false'.`);
+        this.console.log("LiveReload will not reload path '".concat(path, "' because the stylesheet was not found on the page and 'options.reloadMissingCSS' was set to 'false'."));
       }
     }
 
@@ -1801,7 +1802,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`);
     const parent = rule.parentStyleSheet;
     const href = this.generateCacheBustUrl(rule.href);
     const media = rule.media.length ? [].join.call(rule.media, ', ') : '';
-    const newRule = `@import url("${href}") ${media};`; // used to detect if reattachImportedRule has been called again on the same rule
+    const newRule = "@import url(\"".concat(href, "\") ").concat(media, ";"); // used to detect if reattachImportedRule has been called again on the same rule
 
     rule.__LiveReload_newHref = href; // WORKAROUND FOR WEBKIT BUG: WebKit resets all styles if we add @import'ed
     // stylesheet that hasn't been cached yet. Workaround is to pre-cache the
@@ -1846,7 +1847,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`);
   }
 
   generateUniqueString() {
-    return `livereload=${Date.now()}`;
+    return "livereload=".concat(Date.now());
   }
 
   generateCacheBustUrl(url, expando) {
@@ -1866,17 +1867,17 @@ and 'options.reloadMissingCSS' was set to 'false'.`);
       if (url.indexOf(this.options.serverURL) < 0) {
         const originalUrl = url;
         url = this.options.serverURL + this.options.overrideURL + '?url=' + encodeURIComponent(url);
-        this.console.log(`LiveReload is overriding source URL ${originalUrl} with ${url}`);
+        this.console.log("LiveReload is overriding source URL ".concat(originalUrl, " with ").concat(url));
       }
     }
 
-    let params = oldParams.replace(/(\?|&)livereload=(\d+)/, (match, sep) => `${sep}${expando}`);
+    let params = oldParams.replace(/(\?|&)livereload=(\d+)/, (match, sep) => "".concat(sep).concat(expando));
 
     if (params === oldParams) {
       if (oldParams.length === 0) {
-        params = `?${expando}`;
+        params = "?".concat(expando);
       } else {
-        params = `${oldParams}&${expando}`;
+        params = "".concat(oldParams, "&").concat(expando);
       }
     }
 
@@ -1888,7 +1889,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`);
 ;
 exports.Reloader = Reloader;
 
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 "use strict";
 
 const CustomEvents = require('./customevents');
@@ -1907,7 +1908,7 @@ LiveReload.on('connect', () => CustomEvents.fire(document, 'LiveReloadConnect'))
 LiveReload.on('disconnect', () => CustomEvents.fire(document, 'LiveReloadDisconnect'));
 CustomEvents.bind(document, 'LiveReloadShutDown', () => LiveReload.shutDown());
 
-},{"./customevents":48,"./less":49,"./livereload":50}],55:[function(require,module,exports){
+},{"./customevents":49,"./less":50,"./livereload":51}],56:[function(require,module,exports){
 "use strict";
 
 class Timer {
@@ -1948,4 +1949,4 @@ Timer.start = (timeout, func) => setTimeout(func, timeout);
 
 exports.Timer = Timer;
 
-},{}]},{},[54]);
+},{}]},{},[55]);
