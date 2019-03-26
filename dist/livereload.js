@@ -677,7 +677,7 @@ const {
   PROTOCOL_7
 } = require('./protocol');
 
-const VERSION = "3.0.0-alpha.2";
+const VERSION = "3.0.0";
 
 class Connector {
   constructor(options, WebSocket, Timer, handlers) {
