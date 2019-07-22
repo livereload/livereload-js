@@ -28,6 +28,9 @@ const splitUrl = function (url) {
 };
 
 const pathFromUrl = function (url) {
+  if (!url) {
+    return "";
+  }
   let path;
   ({ url } = splitUrl(url));
   if (url.indexOf('file://') === 0) {
@@ -338,7 +341,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
 
   linkHref (link) {
     // prefixfree uses data-href when it turns LINK into STYLE
-    return link.href || link.getAttribute('data-href');
+    return link.href || (link.getAttribute && link.getAttribute('data-href'));
   }
 
   reattachStylesheetLink (link) {
