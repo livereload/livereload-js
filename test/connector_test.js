@@ -12,12 +12,17 @@ class MockHandlers {
   }
 
   obtainLog () { const result = this._log.join('\n'); this._log = []; return result; }
+
   log (message) { return this._log.push(message); }
 
   connecting () { return this.log('connecting'); }
+
   socketConnected () {}
+
   connected (protocol) { return this.log(`connected(${protocol})`); }
+
   disconnected (reason) { return this.log(`disconnected(${reason})`); }
+
   message (message) { return this.log(`message(${message.command})`); }
 }
 
@@ -49,7 +54,7 @@ const newMockTimer = function () {
     MockTimer.now += period;
     return (() => {
       const result = [];
-      for (let timer of MockTimer.timers) {
+      for (const timer of MockTimer.timers) {
         if (timer.time && timer.time <= MockTimer.now) {
           result.push(timer.fire());
         } else {
@@ -72,6 +77,7 @@ const newMockWebSocket = function () {
     }
 
     obtainSent () { const result = this.sent; this.sent = []; return result; }
+
     log (message) { return this._log.push(message); }
 
     send (message) { return this.sent.push(message); }
@@ -111,12 +117,12 @@ const newMockWebSocket = function () {
       }
       keys.sort();
 
-      for (let payload of this.sent) {
+      for (const payload of this.sent) {
         message = JSON.parse(payload);
         actual.push(((() => {
           const result = [];
           for (key of keys) {
-            if (message.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(message, key)) {
               result.push(`${key} = ${JSON.stringify(message[key])}`);
             }
           }
@@ -127,7 +133,7 @@ const newMockWebSocket = function () {
         expected.push(((() => {
           const result1 = [];
           for (key of keys) {
-            if (message.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(message, key)) {
               result1.push(`${key} = ${JSON.stringify(message[key])}`);
             }
           }
@@ -160,7 +166,7 @@ const shouldReconnect = function (handlers, timer, failed, code) {
   }
   return (() => {
     const result = [];
-    for (let delay of delays) {
+    for (const delay of delays) {
       timer.advance(delay - 100);
       assert.strictEqual('', handlers.obtainLog());
 

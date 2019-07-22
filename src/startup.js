@@ -1,7 +1,7 @@
 const CustomEvents = require('./customevents');
 const LiveReload = (window.LiveReload = new (require('./livereload').LiveReload)(window));
 
-for (let k in window) {
+for (const k in window) {
   if (k.match(/^LiveReloadPlugin/)) {
     LiveReload.addPlugin(window[k]);
   }

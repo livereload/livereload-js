@@ -8,11 +8,13 @@ class MockHandler {
   }
 
   obtainLog () { const result = this._log.join('\n'); this._log = []; return result; }
+
   log (message) { return this._log.push(message); }
 
   connected (protocol) {
     this.protocol = protocol;
   }
+
   error (error) {
     this.error = error;
     this.gotError = true;

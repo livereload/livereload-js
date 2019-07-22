@@ -35,7 +35,7 @@ class LiveReload {
     // i can haz options?
     if ('LiveReloadOptions' in window) {
       this.options = new Options();
-      for (let k of Object.keys(window['LiveReloadOptions'] || {})) {
+      for (const k of Object.keys(window['LiveReloadOptions'] || {})) {
         const v = window['LiveReloadOptions'][k];
         this.options.set(k, v);
       }
@@ -210,7 +210,7 @@ class LiveReload {
 
     const pluginsData = {};
 
-    for (let plugin of this.plugins) {
+    for (const plugin of this.plugins) {
       var pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
       pluginsData[plugin.constructor.identifier] = pluginData;
       pluginData.version = plugin.constructor.version;

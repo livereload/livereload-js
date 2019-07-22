@@ -44,7 +44,7 @@ const pathFromUrl = function (url) {
 const pickBestMatch = function (path, objects, pathFunc) {
   let score;
   let bestMatch = { score: 0 };
-  for (let object of objects) {
+  for (const object of objects) {
     score = numberOfMatchingSegments(path, pathFunc(object));
     if (score > bestMatch.score) {
       bestMatch = { object, score };
@@ -108,7 +108,7 @@ class Reloader {
     if (!this.options.stylesheetReloadTimeout) {
       this.options.stylesheetReloadTimeout = 15000;
     }
-    for (let plugin of Array.from(this.plugins)) {
+    for (const plugin of Array.from(this.plugins)) {
       if (plugin.reload && plugin.reload(path, options)) {
         return;
       }
@@ -148,7 +148,7 @@ class Reloader {
     }
 
     if (this.document.querySelectorAll) {
-      for (let { selector, styleNames } of IMAGE_STYLES) {
+      for (const { selector, styleNames } of IMAGE_STYLES) {
         for (img of Array.from(this.document.querySelectorAll(`[style*=${selector}]`))) {
           this.reloadStyleImages(img.style, styleNames, path, expando);
         }
@@ -172,13 +172,13 @@ class Reloader {
       return;
     }
 
-    for (let rule of Array.from(rules)) {
+    for (const rule of Array.from(rules)) {
       switch (rule.type) {
         case CSSRule.IMPORT_RULE:
           this.reloadStylesheetImages(rule.styleSheet, path, expando);
           break;
         case CSSRule.STYLE_RULE:
-          for (let { styleNames } of IMAGE_STYLES) {
+          for (const { styleNames } of IMAGE_STYLES) {
             this.reloadStyleImages(rule.style, styleNames, path, expando);
           }
           break;
@@ -190,7 +190,7 @@ class Reloader {
   }
 
   reloadStyleImages (style, styleNames, path, expando) {
-    for (let styleName of styleNames) {
+    for (const styleName of styleNames) {
       const value = style[styleName];
       if (typeof value === 'string') {
         const newValue = value.replace(new RegExp(`\\burl\\s*\\(([^)]*)\\)`), (match, src) => {

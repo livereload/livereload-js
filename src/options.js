@@ -27,7 +27,7 @@ class Options {
 }
 
 Options.extract = function (document) {
-  for (let element of Array.from(document.getElementsByTagName('script'))) {
+  for (const element of Array.from(document.getElementsByTagName('script'))) {
     var m, src;
     if ((src = element.src) && (m = src.match(new RegExp(`^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$`)))) {
       var mm;
@@ -43,7 +43,7 @@ Options.extract = function (document) {
       }
 
       if (m[2]) {
-        for (let pair of m[2].split('&')) {
+        for (const pair of m[2].split('&')) {
           var keyAndValue;
 
           if ((keyAndValue = pair.split('=')).length > 1) {
