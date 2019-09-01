@@ -53,7 +53,7 @@ module.exports = function (it) {
 };
 
 },{}],6:[function(require,module,exports){
-var core = module.exports = { version: '2.6.5' };
+var core = module.exports = { version: '2.6.9' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 },{}],7:[function(require,module,exports){
@@ -677,7 +677,7 @@ const {
   PROTOCOL_7
 } = require('./protocol');
 
-const VERSION = "3.0.0";
+const VERSION = "3.0.1";
 
 class Connector {
   constructor(options, WebSocket, Timer, handlers) {
@@ -999,8 +999,8 @@ class LiveReload {
     if ('LiveReloadOptions' in window) {
       this.options = new Options();
 
-      for (let k of Object.keys(window['LiveReloadOptions'] || {})) {
-        const v = window['LiveReloadOptions'][k];
+      for (const k of Object.keys(window.LiveReloadOptions || {})) {
+        const v = window.LiveReloadOptions[k];
         this.options.set(k, v);
       }
     } else {
@@ -1168,7 +1168,7 @@ class LiveReload {
 
     const pluginsData = {};
 
-    for (let plugin of this.plugins) {
+    for (const plugin of this.plugins) {
       var pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
       pluginsData[plugin.constructor.identifier] = pluginData;
       pluginData.version = plugin.constructor.version;
@@ -1217,15 +1217,15 @@ class Options {
 }
 
 Options.extract = function (document) {
-  for (let element of Array.from(document.getElementsByTagName('script'))) {
+  for (const element of Array.from(document.getElementsByTagName('script'))) {
     var m, src;
 
-    if ((src = element.src) && (m = src.match(new RegExp("^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$")))) {
+    if ((src = element.getAttribute('src')) && (m = src.match(new RegExp('^(?:[^:]+:)?//(.*)/z?livereload\\.js(?:\\?(.*))?$')))) {
       var mm;
       const options = new Options();
-      options.https = src.indexOf('https') === 0;
+      options.https = element.src.indexOf('https') === 0;
 
-      if (mm = m[1].match(new RegExp("^([^/:]+)(?::(\\d+))?(\\/+.*)?$"))) {
+      if (mm = m[1].match(new RegExp('^([^/:]+)(?::(\\d+))?(\\/+.*)?$'))) {
         options.host = mm[1];
 
         if (mm[2]) {
@@ -1234,7 +1234,7 @@ Options.extract = function (document) {
       }
 
       if (m[2]) {
-        for (let pair of m[2].split('&')) {
+        for (const pair of m[2].split('&')) {
           var keyAndValue;
 
           if ((keyAndValue = pair.split('=')).length > 1) {
@@ -1283,7 +1283,7 @@ class Parser {
       let message;
 
       if (!this.protocol) {
-        if (data.match(new RegExp("^!!ver:([\\d.]+)$"))) {
+        if (data.match(new RegExp('^!!ver:([\\d.]+)$'))) {
           this.protocol = 6;
         } else if (message = this._parseMessage(data, ['hello'])) {
           if (!message.protocols.length) {
@@ -1401,10 +1401,10 @@ const pathFromUrl = function (url) {
   } = splitUrl(url));
 
   if (url.indexOf('file://') === 0) {
-    path = url.replace(new RegExp("^file://(localhost)?"), '');
+    path = url.replace(new RegExp('^file://(localhost)?'), '');
   } else {
     //                        http  :   // hostname  :8080  /
-    path = url.replace(new RegExp("^([^:]+:)?//([^:/]+)(:\\d*)?/"), '/');
+    path = url.replace(new RegExp('^([^:]+:)?//([^:/]+)(:\\d*)?/'), '/');
   } // decodeURI has special handling of stuff like semicolons, so use decodeURIComponent
 
 
@@ -1417,7 +1417,7 @@ const pickBestMatch = function (path, objects, pathFunc) {
     score: 0
   };
 
-  for (let object of objects) {
+  for (const object of objects) {
     score = numberOfMatchingSegments(path, pathFunc(object));
 
     if (score > bestMatch.score) {
@@ -1489,7 +1489,7 @@ class Reloader {
       this.options.stylesheetReloadTimeout = 15000;
     }
 
-    for (let plugin of Array.from(this.plugins)) {
+    for (const plugin of Array.from(this.plugins)) {
       if (plugin.reload && plugin.reload(path, options)) {
         return;
       }
@@ -1533,7 +1533,7 @@ class Reloader {
     }
 
     if (this.document.querySelectorAll) {
-      for (let {
+      for (const {
         selector,
         styleNames
       } of IMAGE_STYLES) {
@@ -1559,14 +1559,14 @@ class Reloader {
       return;
     }
 
-    for (let rule of Array.from(rules)) {
+    for (const rule of Array.from(rules)) {
       switch (rule.type) {
         case CSSRule.IMPORT_RULE:
           this.reloadStylesheetImages(rule.styleSheet, path, expando);
           break;
 
         case CSSRule.STYLE_RULE:
-          for (let {
+          for (const {
             styleNames
           } of IMAGE_STYLES) {
             this.reloadStyleImages(rule.style, styleNames, path, expando);
@@ -1582,11 +1582,11 @@ class Reloader {
   }
 
   reloadStyleImages(style, styleNames, path, expando) {
-    for (let styleName of styleNames) {
+    for (const styleName of styleNames) {
       const value = style[styleName];
 
       if (typeof value === 'string') {
-        const newValue = value.replace(new RegExp("\\burl\\s*\\(([^)]*)\\)"), (match, src) => {
+        const newValue = value.replace(new RegExp('\\burl\\s*\\(([^)]*)\\)'), (match, src) => {
           if (pathsMatch(path, pathFromUrl(src))) {
             return "url(".concat(this.generateCacheBustUrl(src, expando), ")");
           } else {
@@ -1896,7 +1896,7 @@ const CustomEvents = require('./customevents');
 
 const LiveReload = window.LiveReload = new (require('./livereload').LiveReload)(window);
 
-for (let k in window) {
+for (const k in window) {
   if (k.match(/^LiveReloadPlugin/)) {
     LiveReload.addPlugin(window[k]);
   }
