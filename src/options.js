@@ -29,11 +29,11 @@ class Options {
 Options.extract = function (document) {
   for (const element of Array.from(document.getElementsByTagName('script'))) {
     var m, src;
-    if ((src = element.src) && (m = src.match(new RegExp(`^[^:]+://(.*)/z?livereload\\.js(?:\\?(.*))?$`)))) {
+    if ((src = element.getAttribute('src')) && (m = src.match(new RegExp('^(?:[^:]+:)?//(.*)/z?livereload\\.js(?:\\?(.*))?$')))) {
       var mm;
       const options = new Options();
 
-      options.https = src.indexOf('https') === 0;
+      options.https = element.src.indexOf('https') === 0;
 
       if ((mm = m[1].match(new RegExp(`^([^/:]+)(?::(\\d+))?(\\/+.*)?$`)))) {
         options.host = mm[1];
