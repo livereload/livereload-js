@@ -69,9 +69,18 @@ describe('Options', function () {
     return assert.strictEqual(80, options.port);
   });
 
-  return it('should set https when using an https URL ', function () {
+  it('should set https when using an https URL', function () {
     const dom = new JSDOM('<script src="https://somewhere.com:9876/livereload.js"></script>');
 
+    const options = Options.extract(dom.window.document);
+    assert.ok(options);
+    return assert.strictEqual(true, options.https);
+  });
+
+  return it('should recognize protocol-relative https URL', function () {
+    const dom = new JSDOM('<script src="//somewhere.com/132324324/23243443/4343/livereload.js"></script>', {
+      url: 'https://somewhere.org/'
+    });
     const options = Options.extract(dom.window.document);
     assert.ok(options);
     return assert.strictEqual(true, options.https);
