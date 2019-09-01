@@ -31,10 +31,10 @@ const pathFromUrl = function (url) {
   let path;
   ({ url } = splitUrl(url));
   if (url.indexOf('file://') === 0) {
-    path = url.replace(new RegExp(`^file://(localhost)?`), '');
+    path = url.replace(new RegExp('^file://(localhost)?'), '');
   } else {
     //                        http  :   // hostname  :8080  /
-    path = url.replace(new RegExp(`^([^:]+:)?//([^:/]+)(:\\d*)?/`), '/');
+    path = url.replace(new RegExp('^([^:]+:)?//([^:/]+)(:\\d*)?/'), '/');
   }
 
   // decodeURI has special handling of stuff like semicolons, so use decodeURIComponent
@@ -193,7 +193,7 @@ class Reloader {
     for (const styleName of styleNames) {
       const value = style[styleName];
       if (typeof value === 'string') {
-        const newValue = value.replace(new RegExp(`\\burl\\s*\\(([^)]*)\\)`), (match, src) => {
+        const newValue = value.replace(new RegExp('\\burl\\s*\\(([^)]*)\\)'), (match, src) => {
           if (pathsMatch(path, pathFromUrl(src))) {
             return `url(${this.generateCacheBustUrl(src, expando)})`;
           } else {

@@ -35,7 +35,7 @@ Options.extract = function (document) {
 
       options.https = element.src.indexOf('https') === 0;
 
-      if ((mm = m[1].match(new RegExp(`^([^/:]+)(?::(\\d+))?(\\/+.*)?$`)))) {
+      if ((mm = m[1].match(new RegExp('^([^/:]+)(?::(\\d+))?(\\/+.*)?$')))) {
         options.host = mm[1];
         if (mm[2]) {
           options.port = parseInt(mm[2], 10);

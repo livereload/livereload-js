@@ -35,8 +35,8 @@ class LiveReload {
     // i can haz options?
     if ('LiveReloadOptions' in window) {
       this.options = new Options();
-      for (const k of Object.keys(window['LiveReloadOptions'] || {})) {
-        const v = window['LiveReloadOptions'][k];
+      for (const k of Object.keys(window.LiveReloadOptions || {})) {
+        const v = window.LiveReloadOptions[k];
         this.options.set(k, v);
       }
     } else {

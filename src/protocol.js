@@ -22,7 +22,7 @@ class Parser {
     try {
       let message;
       if (!this.protocol) {
-        if (data.match(new RegExp(`^!!ver:([\\d.]+)$`))) {
+        if (data.match(new RegExp('^!!ver:([\\d.]+)$'))) {
           this.protocol = 6;
         } else if ((message = this._parseMessage(data, ['hello']))) {
           if (!message.protocols.length) {
