@@ -77,6 +77,15 @@ describe('Options', function () {
     return assert.strictEqual(true, options.https);
   });
 
+  it('should recognize same site URL', function () {
+    const dom = new JSDOM('<script src="/somewhere.com/132324324/23243443/4343/livereload.js"></script>', {
+      url: 'https://somewhere.org/'
+    });
+    const options = Options.extract(dom.window.document);
+    assert.ok(options);
+    return assert.strictEqual('somewhere.org', options.host);
+  });
+
   return it('should recognize protocol-relative https URL', function () {
     const dom = new JSDOM('<script src="//somewhere.com/132324324/23243443/4343/livereload.js"></script>', {
       url: 'https://somewhere.org/'
@@ -85,4 +94,5 @@ describe('Options', function () {
     assert.ok(options);
     return assert.strictEqual(true, options.https);
   });
+
 });
