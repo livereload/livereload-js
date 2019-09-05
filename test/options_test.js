@@ -77,11 +77,25 @@ describe('Options', function () {
     return assert.strictEqual(true, options.https);
   });
 
-  it('should recognize same site URL', function () {
-    const dom = new JSDOM('<script src="/somewhere.com/132324324/23243443/4343/livereload.js"></script>', {
+  it('should recognize same site URLs', function () {
+    let dom = new JSDOM('<script src="/somewhere.com/132324324/23243443/4343/livereload.js"></script>', {
       url: 'https://somewhere.org/'
     });
-    const options = Options.extract(dom.window.document);
+    let options = Options.extract(dom.window.document);
+    assert.ok(options);
+    assert.strictEqual('somewhere.org', options.host);
+    
+    dom = new JSDOM('<script src="livereload.js"></script>', {
+      url: 'https://somewhere.org/'
+    });
+    options = Options.extract(dom.window.document);
+    assert.ok(options);
+    assert.strictEqual('somewhere.org', options.host);
+    
+    dom = new JSDOM('<script src="../livereload.js"></script>', {
+      url: 'https://somewhere.org/'
+    });
+    options = Options.extract(dom.window.document);
     assert.ok(options);
     return assert.strictEqual('somewhere.org', options.host);
   });
