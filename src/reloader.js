@@ -108,6 +108,12 @@ class Reloader {
     if (!this.options.stylesheetReloadTimeout) {
       this.options.stylesheetReloadTimeout = 15000;
     }
+
+    if (this.options.pluginOrder && this.options.pluginOrder.length) {
+      this.runPluginsByOrder(path, options);
+      return;
+    }
+
     for (const plugin of Array.from(this.plugins)) {
       if (plugin.reload && plugin.reload(path, options)) {
         return;
@@ -127,6 +133,42 @@ class Reloader {
       return;
     }
     return this.reloadPage();
+  }
+
+  runPluginsByOrder (path, options) {
+    options.pluginOrder.forEach (pluginId => {
+      
+      if (pluginId === 'css') {
+        if (options.liveCSS && path.match(/\.css(?:\.map)?$/i)) {
+          if (this.reloadStylesheet(path)) {
+            return;
+          }
+        }
+      }
+      if (pluginId === 'img') {
+        if (options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)) {
+          this.reloadImages(path);
+          return;
+        }
+      }
+      if (pluginId === 'extension') {
+        if (options.isChromeExtension) {
+          this.reloadChromeExtension();
+          return;
+        }
+      }
+      if (pluginId === 'others') {
+        return this.reloadPage();
+      }
+
+      this.plugins.filter (
+        plugin => plugin.constructor.identifier === pluginId
+      ).forEach (plugin => {
+        if (plugin.reload && plugin.reload(path, options)) {
+          return;
+        }
+      })
+    });
   }
 
   reloadPage () {

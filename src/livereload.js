@@ -128,7 +128,8 @@ class LiveReload {
       reloadMissingCSS: message.reloadMissingCSS != null ? message.reloadMissingCSS : true,
       originalPath: message.originalPath || '',
       overrideURL: message.overrideURL || '',
-      serverURL: `http://${this.options.host}:${this.options.port}`
+      serverURL: `http://${this.options.host}:${this.options.port}`,
+      pluginOrder: message.pluginOrder
     });
   }
 

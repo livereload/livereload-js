@@ -147,4 +147,74 @@ describe('Reloader', () => {
       }, 100);
     });
   });
+  describe('reload() with plugin order', () => {
+    it('should reload with same plugin order', (done) => {
+      const reloader = new Reloader(
+        { document: { location: { reload: done } } },
+        console,
+        Timer
+      );
+
+      const message = {
+        path: '/abc'
+      };
+
+      reloader.reload(message.path, {
+        liveCSS: true,
+        liveImg: true,
+        reloadMissingCSS: true,
+        originalPath: '',
+        overrideURL: '',
+        serverURL: 'http://localhost:9876',
+        pluginOrder: 'css img extension others'.split(' ')
+      });
+    });
+
+    it('should not reload with unknown url and no `others` plugin', (done) => {
+      const reloader = new Reloader(
+        { document: { location: { reload() {
+          throw "Shall not reload!"
+        } } } },
+        console,
+        Timer
+      );
+
+      const message = {
+        path: '/abc'
+      };
+
+      reloader.reload(message.path, {
+        liveCSS: true,
+        liveImg: true,
+        reloadMissingCSS: true,
+        originalPath: '',
+        overrideURL: '',
+        serverURL: 'http://localhost:9876',
+        pluginOrder: 'css img extension'.split(' ')
+      });
+
+      setTimeout(() => {
+        done(); // no reload after 100ms
+      }, 100);
+
+    });
+
+    it('should reload anyway', (done) => {
+      const reloader = new Reloader(
+        { document: { location: { reload: done } } },
+        console,
+        Timer
+      );
+
+      const message = {
+        path: '/abc.css'
+      };
+
+      reloader.reload(message.path, {
+        liveCSS: true,
+        reloadMissingCSS: true,
+        pluginOrder: 'others css'.split(' ')
+      });
+    });
+  });
 });
