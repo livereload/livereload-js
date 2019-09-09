@@ -677,7 +677,7 @@ const {
   PROTOCOL_7
 } = require('./protocol');
 
-const VERSION = "3.0.1";
+const VERSION = "3.0.2";
 
 class Connector {
   constructor(options, WebSocket, Timer, handlers) {
@@ -1218,23 +1218,22 @@ class Options {
 
 Options.extract = function (document) {
   for (const element of Array.from(document.getElementsByTagName('script'))) {
-    var m, src;
+    var m;
+    var mm;
+    var src = element.src;
+    var srcAttr = element.getAttribute('src');
+    var lrUrlRegexp = /^([^:]+:\/\/([^/:]+)(?::(\d+))?\/|\/\/|\/)?([^/].*\/)?z?livereload\.js(?:\?(.*))?$/; //                   ^proto:// ^host       ^port     ^//  ^/   ^folder
 
-    if ((src = element.getAttribute('src')) && (m = src.match(new RegExp('^(?:[^:]+:)?//(.*)/z?livereload\\.js(?:\\?(.*))?$')))) {
-      var mm;
+    if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexp))) {
+      const [,, host, port,, params] = m;
+      const [,,, portFromAttr] = mm;
       const options = new Options();
       options.https = element.src.indexOf('https') === 0;
+      options.host = host;
+      options.port = port ? parseInt(port, 10) : portFromAttr ? parseInt(portFromAttr, 10) : options.port;
 
-      if (mm = m[1].match(new RegExp('^([^/:]+)(?::(\\d+))?(\\/+.*)?$'))) {
-        options.host = mm[1];
-
-        if (mm[2]) {
-          options.port = parseInt(mm[2], 10);
-        }
-      }
-
-      if (m[2]) {
-        for (const pair of m[2].split('&')) {
+      if (params) {
+        for (const pair of params.split('&')) {
           var keyAndValue;
 
           if ((keyAndValue = pair.split('=')).length > 1) {
