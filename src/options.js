@@ -28,10 +28,10 @@ class Options {
 
 Options.extract = function (document) {
   for (const element of Array.from(document.getElementsByTagName('script'))) {
-    var m, mm,
-      src = element.src, srcAttr = element.getAttribute('src');
-    var lrUrlRegexp = /^([^:]+:\/\/([^\/:]+)(?::(\d+))?\/|\/\/|\/)?([^\/].*\/)?z?livereload\.js(?:\?(.*))?$/;
-    //                   ^proto:// ^host        ^port     ^//  ^/   ^folder
+    var m; var mm;
+    var src = element.src; var srcAttr = element.getAttribute('src');
+    var lrUrlRegexp = /^([^:]+:\/\/([^/:]+)(?::(\d+))?\/|\/\/|\/)?([^/].*\/)?z?livereload\.js(?:\?(.*))?$/;
+    //                   ^proto:// ^host       ^port     ^//  ^/   ^folder
     if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexp))) {
       const [, , host, port, , params] = m;
       const [, , , portFromAttr] = mm;

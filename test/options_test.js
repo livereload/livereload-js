@@ -84,14 +84,14 @@ describe('Options', function () {
     let options = Options.extract(dom.window.document);
     assert.ok(options);
     assert.strictEqual('somewhere.org', options.host);
-    
+
     dom = new JSDOM('<script src="livereload.js"></script>', {
       url: 'https://somewhere.org/'
     });
     options = Options.extract(dom.window.document);
     assert.ok(options);
     assert.strictEqual('somewhere.org', options.host);
-    
+
     dom = new JSDOM('<script src="../livereload.js"></script>', {
       url: 'https://somewhere.org/'
     });
@@ -108,5 +108,4 @@ describe('Options', function () {
     assert.ok(options);
     return assert.strictEqual(true, options.https);
   });
-
 });
