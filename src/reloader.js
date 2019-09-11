@@ -136,38 +136,38 @@ class Reloader {
   }
 
   runPluginsByOrder (path, options) {
-    options.pluginOrder.forEach (pluginId => {
-      
+    options.pluginOrder.some(pluginId => {
       if (pluginId === 'css') {
         if (options.liveCSS && path.match(/\.css(?:\.map)?$/i)) {
           if (this.reloadStylesheet(path)) {
-            return;
+            return true;
           }
         }
       }
       if (pluginId === 'img') {
         if (options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)) {
           this.reloadImages(path);
-          return;
+          return true;
         }
       }
       if (pluginId === 'extension') {
         if (options.isChromeExtension) {
           this.reloadChromeExtension();
-          return;
+          return true;
         }
       }
       if (pluginId === 'others') {
-        return this.reloadPage();
+        this.reloadPage();
+        return true;
       }
 
-      this.plugins.filter (
+      return this.plugins.filter(
         plugin => plugin.constructor.identifier === pluginId
-      ).forEach (plugin => {
+      ).some(plugin => {
         if (plugin.reload && plugin.reload(path, options)) {
-          return;
+          return true;
         }
-      })
+      });
     });
   }
 
