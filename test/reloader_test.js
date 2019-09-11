@@ -216,5 +216,36 @@ describe('Reloader', () => {
         pluginOrder: 'others css'.split(' ')
       });
     });
+
+    it('should not reload the page with liveCSS and css file updated', (done) => {
+      const reloader = new Reloader(
+        {
+          document: {
+            location: {
+              reload () {
+                throw new Error('Shall not reload!');
+              }
+            },
+            getElementsByTagName () { return []; }
+          }
+        },
+        console,
+        Timer
+      );
+
+      const message = {
+        path: '/abc.css'
+      };
+
+      reloader.reload(message.path, {
+        liveCSS: true,
+        reloadMissingCSS: false,
+        pluginOrder: 'css others'.split(' ')
+      });
+
+      setTimeout(() => {
+        done(); // no reload after 100ms
+      }, 100);
+    });
   });
 });
