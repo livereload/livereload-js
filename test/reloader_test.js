@@ -12,14 +12,13 @@ ThisDocPlugin.identifier = 'this-doc';
 ThisDocPlugin.version = '1.0';
 
 ThisDocPlugin.prototype.reload = function (path, options) {
-
   if (
     path !== this.window.location.pathname &&
     path !== this.window.location.pathname + 'index.html'
   ) {
     return true;
   }
-}
+};
 
 ThisDocPlugin.prototype.analyze = function () {
   return {
@@ -59,10 +58,9 @@ describe('Reloader', () => {
     });
 
     it('should reload when doc at the same location changed', (done) => {
-      const window = { document: { location: {
-        pathname: '/1.html',
-        reload: done
-      } } };
+      const window = {
+        document: { location: { pathname: '/1.html', reload: done } }
+      };
       window.location = window.document.location;
       const reloader = new Reloader(
         window,
@@ -70,7 +68,7 @@ describe('Reloader', () => {
         Timer
       );
 
-      reloader.addPlugin (new ThisDocPlugin (window));
+      reloader.addPlugin(new ThisDocPlugin(window));
 
       const message = {
         path: '/1.html'
@@ -82,17 +80,21 @@ describe('Reloader', () => {
         reloadMissingCSS: true,
         originalPath: '',
         overrideURL: '',
-        serverURL: 'http://localhost:9876',
+        serverURL: 'http://localhost:9876'
       });
     });
 
     it('should not reload when different html changed', (done) => {
-      const window = { document: { location: {
-        pathname: '/1.html',
-        reload() {
-          throw "Shall not reload!"
+      const window = {
+        document: {
+          location: {
+            pathname: '/1.html',
+            reload () {
+              throw new Error('Shall not reload!');
+            }
+          }
         }
-      } } };
+      };
       window.location = window.document.location;
       const reloader = new Reloader(
         window,
@@ -100,7 +102,7 @@ describe('Reloader', () => {
         Timer
       );
 
-      reloader.addPlugin (new ThisDocPlugin (window));
+      reloader.addPlugin(new ThisDocPlugin(window));
 
       const message = {
         path: '/2.html'
@@ -112,23 +114,26 @@ describe('Reloader', () => {
         reloadMissingCSS: true,
         originalPath: '',
         overrideURL: '',
-        serverURL: 'http://localhost:9876',
+        serverURL: 'http://localhost:9876'
       });
 
       setTimeout(() => {
         done(); // no reload after 100ms
       }, 100);
-
     });
 
     it('should not reload the page with liveCSS and css file updated', (done) => {
       const reloader = new Reloader(
-        { document: {
-          location: { reload() {
-            throw "Shall not reload!"
-          } },
-          getElementsByTagName () {return []}
-        } },
+        {
+          document: {
+            location: {
+              reload () {
+                throw new Error('Shall not reload!');
+              }
+            },
+            getElementsByTagName () { return []; }
+          }
+        },
         console,
         Timer
       );
@@ -139,7 +144,7 @@ describe('Reloader', () => {
 
       reloader.reload(message.path, {
         liveCSS: true,
-        reloadMissingCSS: false,
+        reloadMissingCSS: false
       });
 
       setTimeout(() => {
@@ -172,9 +177,7 @@ describe('Reloader', () => {
 
     it('should not reload with unknown url and no `others` plugin', (done) => {
       const reloader = new Reloader(
-        { document: { location: { reload() {
-          throw "Shall not reload!"
-        } } } },
+        { document: { location: { reload () { throw new Error('Shall not reload!'); } } } },
         console,
         Timer
       );
@@ -196,7 +199,6 @@ describe('Reloader', () => {
       setTimeout(() => {
         done(); // no reload after 100ms
       }, 100);
-
     });
 
     it('should reload anyway', (done) => {
