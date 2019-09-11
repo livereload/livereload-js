@@ -129,7 +129,7 @@ class LiveReload {
       originalPath: message.originalPath || '',
       overrideURL: message.overrideURL || '',
       serverURL: `http://${this.options.host}:${this.options.port}`,
-      pluginOrder: message.pluginOrder
+      pluginOrder: this.options.pluginOrder
     });
   }
 

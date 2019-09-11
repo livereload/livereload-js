@@ -11,6 +11,8 @@ class Options {
     this.mindelay = 1000;
     this.maxdelay = 60000;
     this.handshake_timeout = 5000;
+
+    this.pluginOrder = undefined;
   }
 
   set (name, value) {
