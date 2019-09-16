@@ -160,6 +160,13 @@ class Reloader {
         this.reloadPage();
         return true;
       }
+      if (pluginId === 'external') {
+        return this.plugins.some(plugin => {
+          if (plugin.reload && plugin.reload(path, options)) {
+            return true;
+          }
+        });
+      }
 
       return this.plugins.filter(
         plugin => plugin.constructor.identifier === pluginId
