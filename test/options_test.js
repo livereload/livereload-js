@@ -77,6 +77,15 @@ describe('Options', function () {
     return assert.strictEqual(true, options.https);
   });
 
+  it('should extract pluginOrder as array', function () {
+    const dom = new JSDOM('<script src="http://somewhere.com:9876/livereload.js?pluginOrder=css,others"></script>');
+
+    const options = Options.extract(dom.window.document);
+    assert.ok(options);
+    assert.deepStrictEqual(['css', 'others'], options.pluginOrder);
+    return assert.strictEqual(9876, options.port);
+  });
+
   return it('should recognize protocol-relative https URL', function () {
     const dom = new JSDOM('<script src="//somewhere.com/132324324/23243443/4343/livereload.js"></script>', {
       url: 'https://somewhere.org/'

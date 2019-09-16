@@ -12,7 +12,11 @@ class Options {
     this.maxdelay = 60000;
     this.handshake_timeout = 5000;
 
-    this.pluginOrder = undefined;
+    var pluginOrder = [];
+    Object.defineProperty(this, 'pluginOrder', {
+      get () { return pluginOrder; },
+      set (v) { pluginOrder.push.apply(pluginOrder, v.split(/[,;]/)); }
+    });
   }
 
   set (name, value) {
