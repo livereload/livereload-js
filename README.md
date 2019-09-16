@@ -149,7 +149,34 @@ The set of supported options is the same for both methods:
 * `handshake_timeout`: timeout for a protocol handshake to be completed after a connection attempt; mostly only needed if you're running an interactive debugger on your web socket server
 * `isChromeExtension`: reload chrome runtime instead of page when true (default: false)
 * `reloadMissingCSS`: prevent reload of CSS when changed stylesheet isn't found in page (default: true)
+* `pluginOrder`: overrides plugins launch order; for details see below
 
+### Plugin order
+
+By default LiveReload runs external plugins one by one, then tries live CSS reloading, live IMG reloading, reloads chrome extension and as a last resort reloads the whole page, if no plugin matched the updated file name. So, by default assume `pluginOrder = ['external', 'css', 'img', 'extension', 'others']`.
+
+Alternatively, you can define `pluginOrder` to match your workflow.
+
+If you're using `LiveReloadOptions` object on page, then define array of plugins:
+
+```javascript
+var LiveReloadOptions = {
+    ...,
+    pluginOrder: ['css', 'img'],
+    // or
+    pluginOrder: 'css img'.split(' ')
+}
+```
+
+If you're configuring LivReload using `<script>` tag, then use following syntax:
+
+```html
+<script src="//livereload.js?pluginOrder=css,img">
+```
+
+This means LiveReload will only try to do live `css` and `img` reloading, regardless of any external plugins.
+
+You can specify external plugins order by adding each plugin id into `pluginOrder` or just use `external` to run all external plugins in default order.
 
 Issues & Limitations
 --------------------
