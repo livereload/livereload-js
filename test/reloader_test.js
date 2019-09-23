@@ -134,7 +134,7 @@ describe('Reloader', () => {
             getElementsByTagName () { return []; }
           }
         },
-        console,
+        { log () {} },
         Timer
       );
 
@@ -231,7 +231,7 @@ describe('Reloader', () => {
             getElementsByTagName () { return []; }
           }
         },
-        console,
+        { log () {} },
         Timer
       );
 
