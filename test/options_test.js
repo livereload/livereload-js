@@ -40,6 +40,15 @@ describe('Options', function () {
     return assert.strictEqual(2, options.extver);
   });
 
+  it('should extract pluginOrder as array', function () {
+    const dom = new JSDOM('<script src="http://somewhere.com:9876/livereload.js?pluginOrder=css,others"></script>');
+
+    const options = Options.extract(dom.window.document);
+    assert.ok(options);
+    assert.deepStrictEqual(['css', 'others'], options.pluginOrder);
+    return assert.strictEqual(9876, options.port);
+  });
+
   it('should be cool with a strange URL', function () {
     const dom = new JSDOM('<script src="safari-ext://132324324/23243443/4343/livereload.js?host=somewhere.com"></script>');
 
