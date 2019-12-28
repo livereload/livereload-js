@@ -2035,7 +2035,7 @@ var _require = require('./protocol'),
     PROTOCOL_6 = _require.PROTOCOL_6,
     PROTOCOL_7 = _require.PROTOCOL_7;
 
-var VERSION = "3.2.0";
+var VERSION = "3.2.1";
 
 var Connector =
 /*#__PURE__*/
@@ -3013,6 +3013,10 @@ var splitUrl = function splitUrl(url) {
 };
 
 var pathFromUrl = function pathFromUrl(url) {
+  if (!url) {
+    return '';
+  }
+
   var path;
 
   var _splitUrl = splitUrl(url);
@@ -3430,8 +3434,8 @@ function () {
       }
 
       this.console.log("LiveReload found ".concat(links.length, " LINKed stylesheets, ").concat(imported.length, " @imported stylesheets"));
-      var match = pickBestMatch(path, links.concat(imported), function (l) {
-        return pathFromUrl(_this4.linkHref(l));
+      var match = pickBestMatch(path, links.concat(imported), function (link) {
+        return pathFromUrl(_this4.linkHref(link));
       });
 
       if (match) {
@@ -3542,7 +3546,7 @@ function () {
     key: "linkHref",
     value: function linkHref(link) {
       // prefixfree uses data-href when it turns LINK into STYLE
-      return link.href || link.getAttribute('data-href');
+      return link.href || link.getAttribute && link.getAttribute('data-href');
     }
   }, {
     key: "reattachStylesheetLink",
