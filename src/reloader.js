@@ -29,7 +29,7 @@ const splitUrl = function (url) {
 
 const pathFromUrl = function (url) {
   if (!url) {
-    return "";
+    return '';
   }
   let path;
   ({ url } = splitUrl(url));
@@ -292,7 +292,11 @@ class Reloader {
     }
 
     this.console.log(`LiveReload found ${links.length} LINKed stylesheets, ${imported.length} @imported stylesheets`);
-    const match = pickBestMatch(path, links.concat(imported), l => pathFromUrl(this.linkHref(l)));
+    const match = pickBestMatch(
+      path,
+      links.concat(imported),
+      link => pathFromUrl(this.linkHref(link))
+    );
 
     if (match) {
       if (match.object.rule) {
