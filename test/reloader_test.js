@@ -35,6 +35,20 @@ describe('Reloader', () => {
     assert(reloader);
   });
 
+  describe('linkHref()', () => {
+    it('should not throw when no value is available', () => {
+      const reloader = new Reloader(
+        { },
+        console,
+        Timer
+      );
+
+      assert.doesNotThrow(() => {
+        reloader.linkHref({});
+      });
+    });
+  });
+
   describe('reload()', () => {
     it('should reload the page', (done) => {
       const reloader = new Reloader(
@@ -152,6 +166,7 @@ describe('Reloader', () => {
       }, 100);
     });
   });
+
   describe('reload() with plugin order', () => {
     it('should reload with same plugin order', (done) => {
       const reloader = new Reloader(
