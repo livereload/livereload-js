@@ -2035,11 +2035,9 @@ var _require = require('./protocol'),
     PROTOCOL_6 = _require.PROTOCOL_6,
     PROTOCOL_7 = _require.PROTOCOL_7;
 
-var VERSION = "3.2.1";
+var VERSION = "3.2.2";
 
-var Connector =
-/*#__PURE__*/
-function () {
+var Connector = /*#__PURE__*/function () {
   function Connector(options, WebSocket, Timer, handlers) {
     var _this = this;
 
@@ -2284,9 +2282,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var LessPlugin =
-/*#__PURE__*/
-function () {
+var LessPlugin = /*#__PURE__*/function () {
   function LessPlugin(window, host) {
     _classCallCheck(this, LessPlugin);
 
@@ -2397,9 +2393,7 @@ var _require4 = require('./reloader'),
 var _require5 = require('./protocol'),
     ProtocolError = _require5.ProtocolError;
 
-var LiveReload =
-/*#__PURE__*/
-function () {
+var LiveReload = /*#__PURE__*/function () {
   function LiveReload(window) {
     var _this = this;
 
@@ -2688,9 +2682,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Options =
-/*#__PURE__*/
-function () {
+var Options = /*#__PURE__*/function () {
   function Options() {
     _classCallCheck(this, Options);
 
@@ -2847,9 +2839,7 @@ var ProtocolError = function ProtocolError(reason, data) {
 
 ;
 
-var Parser =
-/*#__PURE__*/
-function () {
+var Parser = /*#__PURE__*/function () {
   function Parser(handlers) {
     _classCallCheck(this, Parser);
 
@@ -3110,9 +3100,7 @@ var IMAGE_STYLES = [{
   styleNames: ['borderImage', 'webkitBorderImage', 'MozBorderImage']
 }];
 
-var Reloader =
-/*#__PURE__*/
-function () {
+var Reloader = /*#__PURE__*/function () {
   function Reloader(window, console, Timer) {
     _classCallCheck(this, Reloader);
 
@@ -3744,9 +3732,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Timer =
-/*#__PURE__*/
-function () {
+var Timer = /*#__PURE__*/function () {
   function Timer(func) {
     var _this = this;
 
