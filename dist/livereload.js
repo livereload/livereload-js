@@ -2733,7 +2733,9 @@ Options.extract = function (document) {
     var srcAttr = element.getAttribute('src');
     var lrUrlRegexp = /^([^:]+:\/\/([^/:]+)(?::(\d+))?\/|\/\/|\/)?([^/].*\/)?z?livereload\.js(?:\?(.*))?$/; //                   ^proto:// ^host       ^port     ^//  ^/   ^folder
 
-    if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexp))) {
+    var lrUrlRegexpAttr = /^(?:(?:([^:/]+)?:?)\/{0,2})([^:]+)(?::(\d+))?/; //                              ^proto             ^host/folder ^port
+
+    if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexpAttr))) {
       var _m = m,
           _m2 = _slicedToArray(_m, 6),
           host = _m2[2],
