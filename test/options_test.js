@@ -90,6 +90,7 @@ describe('Options', function () {
     return assert.strictEqual(80, options.port);
 
   });
+  
   it('should recognize port 443', function () {
     let dom = new JSDOM('<script src="https://somewhere.com:443/132324324/23243443/4343/livereload.js"></script>');
     let options = Options.extract(dom.window.document);
