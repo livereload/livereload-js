@@ -334,7 +334,7 @@ module.exports = function (KEY, length, exec) {
   }
 };
 
-},{"./_defined":11,"./_fails":18,"./_hide":24,"./_redefine":54,"./_regexp-exec":56,"./_wks":75,"./es6.regexp.exec":82}],20:[function(require,module,exports){
+},{"./_defined":11,"./_fails":18,"./_hide":24,"./_redefine":54,"./_regexp-exec":56,"./_wks":75,"./es6.regexp.exec":83}],20:[function(require,module,exports){
 'use strict';
 // 21.2.5.3 get RegExp.prototype.flags
 var anObject = require('./_an-object');
@@ -1244,6 +1244,24 @@ addToUnscopables('values');
 addToUnscopables('entries');
 
 },{"./_add-to-unscopables":2,"./_iter-define":35,"./_iter-step":37,"./_iterators":38,"./_to-iobject":68}],79:[function(require,module,exports){
+var dP = require('./_object-dp').f;
+var FProto = Function.prototype;
+var nameRE = /^\s*function ([^ (]*)/;
+var NAME = 'name';
+
+// 19.2.4.2 name
+NAME in FProto || require('./_descriptors') && dP(FProto, NAME, {
+  configurable: true,
+  get: function () {
+    try {
+      return ('' + this).match(nameRE)[1];
+    } catch (e) {
+      return '';
+    }
+  }
+});
+
+},{"./_descriptors":12,"./_object-dp":42}],80:[function(require,module,exports){
 // 19.1.2.14 Object.keys(O)
 var toObject = require('./_to-object');
 var $keys = require('./_object-keys');
@@ -1254,7 +1272,7 @@ require('./_object-sap')('keys', function () {
   };
 });
 
-},{"./_object-keys":50,"./_object-sap":52,"./_to-object":70}],80:[function(require,module,exports){
+},{"./_object-keys":50,"./_object-sap":52,"./_to-object":70}],81:[function(require,module,exports){
 'use strict';
 // 19.1.3.6 Object.prototype.toString()
 var classof = require('./_classof');
@@ -1266,7 +1284,7 @@ if (test + '' != '[object z]') {
   }, true);
 }
 
-},{"./_classof":6,"./_redefine":54,"./_wks":75}],81:[function(require,module,exports){
+},{"./_classof":6,"./_redefine":54,"./_wks":75}],82:[function(require,module,exports){
 var global = require('./_global');
 var inheritIfRequired = require('./_inherit-if-required');
 var dP = require('./_object-dp').f;
@@ -1311,7 +1329,7 @@ if (require('./_descriptors') && (!CORRECT_NEW || require('./_fails')(function (
 
 require('./_set-species')('RegExp');
 
-},{"./_descriptors":12,"./_fails":18,"./_flags":20,"./_global":22,"./_inherit-if-required":27,"./_is-regexp":32,"./_object-dp":42,"./_object-gopn":46,"./_redefine":54,"./_set-species":58,"./_wks":75}],82:[function(require,module,exports){
+},{"./_descriptors":12,"./_fails":18,"./_flags":20,"./_global":22,"./_inherit-if-required":27,"./_is-regexp":32,"./_object-dp":42,"./_object-gopn":46,"./_redefine":54,"./_set-species":58,"./_wks":75}],83:[function(require,module,exports){
 'use strict';
 var regexpExec = require('./_regexp-exec');
 require('./_export')({
@@ -1322,14 +1340,14 @@ require('./_export')({
   exec: regexpExec
 });
 
-},{"./_export":16,"./_regexp-exec":56}],83:[function(require,module,exports){
+},{"./_export":16,"./_regexp-exec":56}],84:[function(require,module,exports){
 // 21.2.5.3 get RegExp.prototype.flags()
 if (require('./_descriptors') && /./g.flags != 'g') require('./_object-dp').f(RegExp.prototype, 'flags', {
   configurable: true,
   get: require('./_flags')
 });
 
-},{"./_descriptors":12,"./_flags":20,"./_object-dp":42}],84:[function(require,module,exports){
+},{"./_descriptors":12,"./_flags":20,"./_object-dp":42}],85:[function(require,module,exports){
 'use strict';
 
 var anObject = require('./_an-object');
@@ -1371,7 +1389,7 @@ require('./_fix-re-wks')('match', 1, function (defined, MATCH, $match, maybeCall
   ];
 });
 
-},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":19,"./_regexp-exec-abstract":55,"./_to-length":69}],85:[function(require,module,exports){
+},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":19,"./_regexp-exec-abstract":55,"./_to-length":69}],86:[function(require,module,exports){
 'use strict';
 
 var anObject = require('./_an-object');
@@ -1491,7 +1509,7 @@ require('./_fix-re-wks')('replace', 2, function (defined, REPLACE, $replace, may
   }
 });
 
-},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":19,"./_regexp-exec-abstract":55,"./_to-integer":67,"./_to-length":69,"./_to-object":70}],86:[function(require,module,exports){
+},{"./_advance-string-index":3,"./_an-object":4,"./_fix-re-wks":19,"./_regexp-exec-abstract":55,"./_to-integer":67,"./_to-length":69,"./_to-object":70}],87:[function(require,module,exports){
 'use strict';
 
 var isRegExp = require('./_is-regexp');
@@ -1627,7 +1645,7 @@ require('./_fix-re-wks')('split', 2, function (defined, SPLIT, $split, maybeCall
   ];
 });
 
-},{"./_advance-string-index":3,"./_an-object":4,"./_fails":18,"./_fix-re-wks":19,"./_is-regexp":32,"./_regexp-exec":56,"./_regexp-exec-abstract":55,"./_species-constructor":62,"./_to-length":69}],87:[function(require,module,exports){
+},{"./_advance-string-index":3,"./_an-object":4,"./_fails":18,"./_fix-re-wks":19,"./_is-regexp":32,"./_regexp-exec":56,"./_regexp-exec-abstract":55,"./_species-constructor":62,"./_to-length":69}],88:[function(require,module,exports){
 'use strict';
 require('./es6.regexp.flags');
 var anObject = require('./_an-object');
@@ -1654,7 +1672,7 @@ if (require('./_fails')(function () { return $toString.call({ source: 'a', flags
   });
 }
 
-},{"./_an-object":4,"./_descriptors":12,"./_fails":18,"./_flags":20,"./_redefine":54,"./es6.regexp.flags":83}],88:[function(require,module,exports){
+},{"./_an-object":4,"./_descriptors":12,"./_fails":18,"./_flags":20,"./_redefine":54,"./es6.regexp.flags":84}],89:[function(require,module,exports){
 // 21.1.3.7 String.prototype.includes(searchString, position = 0)
 'use strict';
 var $export = require('./_export');
@@ -1668,7 +1686,7 @@ $export($export.P + $export.F * require('./_fails-is-regexp')(INCLUDES), 'String
   }
 });
 
-},{"./_export":16,"./_fails-is-regexp":17,"./_string-context":64}],89:[function(require,module,exports){
+},{"./_export":16,"./_fails-is-regexp":17,"./_string-context":64}],90:[function(require,module,exports){
 'use strict';
 var $at = require('./_string-at')(true);
 
@@ -1687,7 +1705,7 @@ require('./_iter-define')(String, 'String', function (iterated) {
   return { value: point, done: false };
 });
 
-},{"./_iter-define":35,"./_string-at":63}],90:[function(require,module,exports){
+},{"./_iter-define":35,"./_string-at":63}],91:[function(require,module,exports){
 'use strict';
 // B.2.3.10 String.prototype.link(url)
 require('./_string-html')('link', function (createHTML) {
@@ -1696,7 +1714,7 @@ require('./_string-html')('link', function (createHTML) {
   };
 });
 
-},{"./_string-html":65}],91:[function(require,module,exports){
+},{"./_string-html":65}],92:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
 var global = require('./_global');
@@ -1944,7 +1962,7 @@ setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
 
-},{"./_an-object":4,"./_descriptors":12,"./_enum-keys":15,"./_export":16,"./_fails":18,"./_global":22,"./_has":23,"./_hide":24,"./_is-array":30,"./_is-object":31,"./_library":39,"./_meta":40,"./_object-create":41,"./_object-dp":42,"./_object-gopd":44,"./_object-gopn":46,"./_object-gopn-ext":45,"./_object-gops":47,"./_object-keys":50,"./_object-pie":51,"./_property-desc":53,"./_redefine":54,"./_set-to-string-tag":59,"./_shared":61,"./_to-iobject":68,"./_to-object":70,"./_to-primitive":71,"./_uid":72,"./_wks":75,"./_wks-define":73,"./_wks-ext":74}],92:[function(require,module,exports){
+},{"./_an-object":4,"./_descriptors":12,"./_enum-keys":15,"./_export":16,"./_fails":18,"./_global":22,"./_has":23,"./_hide":24,"./_is-array":30,"./_is-object":31,"./_library":39,"./_meta":40,"./_object-create":41,"./_object-dp":42,"./_object-gopd":44,"./_object-gopn":46,"./_object-gopn-ext":45,"./_object-gops":47,"./_object-keys":50,"./_object-pie":51,"./_property-desc":53,"./_redefine":54,"./_set-to-string-tag":59,"./_shared":61,"./_to-iobject":68,"./_to-object":70,"./_to-primitive":71,"./_uid":72,"./_wks":75,"./_wks-define":73,"./_wks-ext":74}],93:[function(require,module,exports){
 'use strict';
 // https://github.com/tc39/Array.prototype.includes
 var $export = require('./_export');
@@ -1958,10 +1976,10 @@ $export($export.P, 'Array', {
 
 require('./_add-to-unscopables')('includes');
 
-},{"./_add-to-unscopables":2,"./_array-includes":5,"./_export":16}],93:[function(require,module,exports){
+},{"./_add-to-unscopables":2,"./_array-includes":5,"./_export":16}],94:[function(require,module,exports){
 require('./_wks-define')('asyncIterator');
 
-},{"./_wks-define":73}],94:[function(require,module,exports){
+},{"./_wks-define":73}],95:[function(require,module,exports){
 var $iterators = require('./es6.array.iterator');
 var getKeys = require('./_object-keys');
 var redefine = require('./_redefine');
@@ -2021,7 +2039,7 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
   }
 }
 
-},{"./_global":22,"./_hide":24,"./_iterators":38,"./_object-keys":50,"./_redefine":54,"./_wks":75,"./es6.array.iterator":78}],95:[function(require,module,exports){
+},{"./_global":22,"./_hide":24,"./_iterators":38,"./_object-keys":50,"./_redefine":54,"./_wks":75,"./es6.array.iterator":78}],96:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2035,7 +2053,7 @@ var _require = require('./protocol'),
     PROTOCOL_6 = _require.PROTOCOL_6,
     PROTOCOL_7 = _require.PROTOCOL_7;
 
-var VERSION = "3.2.2";
+var VERSION = "3.2.3";
 
 var Connector = /*#__PURE__*/function () {
   function Connector(options, WebSocket, Timer, handlers) {
@@ -2232,7 +2250,7 @@ var Connector = /*#__PURE__*/function () {
 ;
 exports.Connector = Connector;
 
-},{"./protocol":100}],96:[function(require,module,exports){
+},{"./protocol":101}],97:[function(require,module,exports){
 "use strict";
 
 var CustomEvents = {
@@ -2267,7 +2285,7 @@ var CustomEvents = {
 exports.bind = CustomEvents.bind;
 exports.fire = CustomEvents.fire;
 
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 "use strict";
 
 require("core-js/modules/es6.string.iterator");
@@ -2354,12 +2372,20 @@ LessPlugin.identifier = 'less';
 LessPlugin.version = '1.0';
 module.exports = LessPlugin;
 
-},{"core-js/modules/es6.array.from":77,"core-js/modules/es6.regexp.match":84,"core-js/modules/es6.string.iterator":89}],98:[function(require,module,exports){
+},{"core-js/modules/es6.array.from":77,"core-js/modules/es6.regexp.match":85,"core-js/modules/es6.string.iterator":90}],99:[function(require,module,exports){
 "use strict";
 
 require("core-js/modules/es7.symbol.async-iterator");
 
 require("core-js/modules/es6.symbol");
+
+require("core-js/modules/es6.string.iterator");
+
+require("core-js/modules/es6.array.from");
+
+require("core-js/modules/es6.function.name");
+
+require("core-js/modules/es6.regexp.to-string");
 
 require("core-js/modules/web.dom.iterable");
 
@@ -2370,6 +2396,12 @@ require("core-js/modules/es6.object.to-string");
 require("core-js/modules/es6.object.keys");
 
 require("core-js/modules/es6.regexp.match");
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2605,30 +2637,21 @@ var LiveReload = /*#__PURE__*/function () {
       }
 
       var pluginsData = {};
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
+
+      var _iterator = _createForOfIteratorHelper(this.plugins),
+          _step;
 
       try {
-        for (var _iterator = this.plugins[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var plugin = _step.value;
           var pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
           pluginsData[plugin.constructor.identifier] = pluginData;
           pluginData.version = plugin.constructor.version;
         }
       } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
+        _iterator.e(err);
       } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
+        _iterator.f();
       }
 
       this.connector.sendCommand({
@@ -2645,20 +2668,22 @@ var LiveReload = /*#__PURE__*/function () {
 ;
 exports.LiveReload = LiveReload;
 
-},{"./connector":95,"./options":99,"./protocol":100,"./reloader":101,"./timer":103,"core-js/modules/es6.array.iterator":78,"core-js/modules/es6.object.keys":79,"core-js/modules/es6.object.to-string":80,"core-js/modules/es6.regexp.match":84,"core-js/modules/es6.symbol":91,"core-js/modules/es7.symbol.async-iterator":93,"core-js/modules/web.dom.iterable":94}],99:[function(require,module,exports){
+},{"./connector":96,"./options":100,"./protocol":101,"./reloader":102,"./timer":104,"core-js/modules/es6.array.from":77,"core-js/modules/es6.array.iterator":78,"core-js/modules/es6.function.name":79,"core-js/modules/es6.object.keys":80,"core-js/modules/es6.object.to-string":81,"core-js/modules/es6.regexp.match":85,"core-js/modules/es6.regexp.to-string":88,"core-js/modules/es6.string.iterator":90,"core-js/modules/es6.symbol":92,"core-js/modules/es7.symbol.async-iterator":94,"core-js/modules/web.dom.iterable":95}],100:[function(require,module,exports){
 "use strict";
+
+require("core-js/modules/es6.function.name");
 
 require("core-js/modules/es6.regexp.to-string");
 
 require("core-js/modules/es6.object.to-string");
 
-require("core-js/modules/es6.regexp.replace");
+require("core-js/modules/web.dom.iterable");
 
 require("core-js/modules/es7.symbol.async-iterator");
 
 require("core-js/modules/es6.symbol");
 
-require("core-js/modules/web.dom.iterable");
+require("core-js/modules/es6.regexp.replace");
 
 require("core-js/modules/es6.regexp.match");
 
@@ -2668,11 +2693,17 @@ require("core-js/modules/es6.array.from");
 
 require("core-js/modules/es6.regexp.split");
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -2752,12 +2783,11 @@ Options.extract = function (document) {
       options.port = port ? parseInt(port, 10) : portFromAttr ? parseInt(portFromAttr, 10) : options.port;
 
       if (params) {
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
+        var _iterator = _createForOfIteratorHelper(params.split('&')),
+            _step;
 
         try {
-          for (var _iterator = params.split('&')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
             var pair = _step.value;
             var keyAndValue;
 
@@ -2766,18 +2796,9 @@ Options.extract = function (document) {
             }
           }
         } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
+          _iterator.e(err);
         } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator.return != null) {
-              _iterator.return();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
+          _iterator.f();
         }
       }
 
@@ -2790,18 +2811,20 @@ Options.extract = function (document) {
 
 exports.Options = Options;
 
-},{"core-js/modules/es6.array.from":77,"core-js/modules/es6.object.to-string":80,"core-js/modules/es6.regexp.match":84,"core-js/modules/es6.regexp.replace":85,"core-js/modules/es6.regexp.split":86,"core-js/modules/es6.regexp.to-string":87,"core-js/modules/es6.string.iterator":89,"core-js/modules/es6.symbol":91,"core-js/modules/es7.symbol.async-iterator":93,"core-js/modules/web.dom.iterable":94}],100:[function(require,module,exports){
+},{"core-js/modules/es6.array.from":77,"core-js/modules/es6.function.name":79,"core-js/modules/es6.object.to-string":81,"core-js/modules/es6.regexp.match":85,"core-js/modules/es6.regexp.replace":86,"core-js/modules/es6.regexp.split":87,"core-js/modules/es6.regexp.to-string":88,"core-js/modules/es6.string.iterator":90,"core-js/modules/es6.symbol":92,"core-js/modules/es7.symbol.async-iterator":94,"core-js/modules/web.dom.iterable":95}],101:[function(require,module,exports){
 "use strict";
+
+require("core-js/modules/es6.function.name");
 
 require("core-js/modules/es6.regexp.to-string");
 
 require("core-js/modules/es6.object.to-string");
 
+require("core-js/modules/web.dom.iterable");
+
 require("core-js/modules/es7.symbol.async-iterator");
 
 require("core-js/modules/es6.symbol");
-
-require("core-js/modules/web.dom.iterable");
 
 require("core-js/modules/es6.string.iterator");
 
@@ -2815,11 +2838,15 @@ require("core-js/modules/es6.regexp.constructor");
 
 require("core-js/modules/es6.regexp.match");
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -2939,24 +2966,30 @@ var Parser = /*#__PURE__*/function () {
 exports.ProtocolError = ProtocolError;
 exports.Parser = Parser;
 
-},{"core-js/modules/es6.array.from":77,"core-js/modules/es6.object.to-string":80,"core-js/modules/es6.regexp.constructor":81,"core-js/modules/es6.regexp.match":84,"core-js/modules/es6.regexp.to-string":87,"core-js/modules/es6.string.includes":88,"core-js/modules/es6.string.iterator":89,"core-js/modules/es6.symbol":91,"core-js/modules/es7.array.includes":92,"core-js/modules/es7.symbol.async-iterator":93,"core-js/modules/web.dom.iterable":94}],101:[function(require,module,exports){
+},{"core-js/modules/es6.array.from":77,"core-js/modules/es6.function.name":79,"core-js/modules/es6.object.to-string":81,"core-js/modules/es6.regexp.constructor":82,"core-js/modules/es6.regexp.match":85,"core-js/modules/es6.regexp.to-string":88,"core-js/modules/es6.string.includes":89,"core-js/modules/es6.string.iterator":90,"core-js/modules/es6.symbol":92,"core-js/modules/es7.array.includes":93,"core-js/modules/es7.symbol.async-iterator":94,"core-js/modules/web.dom.iterable":95}],102:[function(require,module,exports){
 "use strict";
 
-require("core-js/modules/es6.string.link");
-
-require("core-js/modules/es6.string.iterator");
-
-require("core-js/modules/es6.array.from");
-
-require("core-js/modules/es6.regexp.match");
-
-require("core-js/modules/es6.regexp.split");
+require("core-js/modules/web.dom.iterable");
 
 require("core-js/modules/es7.symbol.async-iterator");
 
 require("core-js/modules/es6.symbol");
 
-require("core-js/modules/web.dom.iterable");
+require("core-js/modules/es6.function.name");
+
+require("core-js/modules/es6.regexp.to-string");
+
+require("core-js/modules/es6.object.to-string");
+
+require("core-js/modules/es6.string.link");
+
+require("core-js/modules/es6.regexp.match");
+
+require("core-js/modules/es6.string.iterator");
+
+require("core-js/modules/es6.array.from");
+
+require("core-js/modules/es6.regexp.split");
 
 require("core-js/modules/es6.regexp.constructor");
 
@@ -2967,6 +3000,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 /* global CSSRule */
 var splitUrl = function splitUrl(url) {
@@ -3031,12 +3070,12 @@ var pickBestMatch = function pickBestMatch(path, objects, pathFunc) {
   var bestMatch = {
     score: 0
   };
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
+
+  var _iterator = _createForOfIteratorHelper(objects),
+      _step;
 
   try {
-    for (var _iterator = objects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var object = _step.value;
       score = numberOfMatchingSegments(path, pathFunc(object));
 
@@ -3048,18 +3087,9 @@ var pickBestMatch = function pickBestMatch(path, objects, pathFunc) {
       }
     }
   } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
+    _iterator.e(err);
   } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
+    _iterator.f();
   }
 
   if (bestMatch.score === 0) {
@@ -3242,12 +3272,11 @@ var Reloader = /*#__PURE__*/function () {
       }
 
       if (this.document.querySelectorAll) {
-        var _iteratorNormalCompletion2 = true;
-        var _didIteratorError2 = false;
-        var _iteratorError2 = undefined;
+        var _iterator2 = _createForOfIteratorHelper(IMAGE_STYLES),
+            _step2;
 
         try {
-          for (var _iterator2 = IMAGE_STYLES[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
             var _step2$value = _step2.value,
                 selector = _step2$value.selector,
                 styleNames = _step2$value.styleNames;
@@ -3258,18 +3287,9 @@ var Reloader = /*#__PURE__*/function () {
             }
           }
         } catch (err) {
-          _didIteratorError2 = true;
-          _iteratorError2 = err;
+          _iterator2.e(err);
         } finally {
-          try {
-            if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-              _iterator2.return();
-            }
-          } finally {
-            if (_didIteratorError2) {
-              throw _iteratorError2;
-            }
-          }
+          _iterator2.f();
         }
       }
 
@@ -3301,28 +3321,18 @@ var Reloader = /*#__PURE__*/function () {
             break;
 
           case CSSRule.STYLE_RULE:
-            var _iteratorNormalCompletion3 = true;
-            var _didIteratorError3 = false;
-            var _iteratorError3 = undefined;
+            var _iterator3 = _createForOfIteratorHelper(IMAGE_STYLES),
+                _step3;
 
             try {
-              for (var _iterator3 = IMAGE_STYLES[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+              for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
                 var styleNames = _step3.value.styleNames;
                 this.reloadStyleImages(rule.style, styleNames, path, expando);
               }
             } catch (err) {
-              _didIteratorError3 = true;
-              _iteratorError3 = err;
+              _iterator3.e(err);
             } finally {
-              try {
-                if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-                  _iterator3.return();
-                }
-              } finally {
-                if (_didIteratorError3) {
-                  throw _iteratorError3;
-                }
-              }
+              _iterator3.f();
             }
 
             break;
@@ -3338,12 +3348,11 @@ var Reloader = /*#__PURE__*/function () {
     value: function reloadStyleImages(style, styleNames, path, expando) {
       var _this3 = this;
 
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
+      var _iterator4 = _createForOfIteratorHelper(styleNames),
+          _step4;
 
       try {
-        for (var _iterator4 = styleNames[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
           var styleName = _step4.value;
           var value = style[styleName];
 
@@ -3362,18 +3371,9 @@ var Reloader = /*#__PURE__*/function () {
           }
         }
       } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
+        _iterator4.e(err);
       } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-            _iterator4.return();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
-        }
+        _iterator4.f();
       }
     }
   }, {
@@ -3696,7 +3696,7 @@ var Reloader = /*#__PURE__*/function () {
 ;
 exports.Reloader = Reloader;
 
-},{"core-js/modules/es6.array.from":77,"core-js/modules/es6.regexp.constructor":81,"core-js/modules/es6.regexp.match":84,"core-js/modules/es6.regexp.replace":85,"core-js/modules/es6.regexp.split":86,"core-js/modules/es6.string.iterator":89,"core-js/modules/es6.string.link":90,"core-js/modules/es6.symbol":91,"core-js/modules/es7.symbol.async-iterator":93,"core-js/modules/web.dom.iterable":94}],102:[function(require,module,exports){
+},{"core-js/modules/es6.array.from":77,"core-js/modules/es6.function.name":79,"core-js/modules/es6.object.to-string":81,"core-js/modules/es6.regexp.constructor":82,"core-js/modules/es6.regexp.match":85,"core-js/modules/es6.regexp.replace":86,"core-js/modules/es6.regexp.split":87,"core-js/modules/es6.regexp.to-string":88,"core-js/modules/es6.string.iterator":90,"core-js/modules/es6.string.link":91,"core-js/modules/es6.symbol":92,"core-js/modules/es7.symbol.async-iterator":94,"core-js/modules/web.dom.iterable":95}],103:[function(require,module,exports){
 "use strict";
 
 require("core-js/modules/es6.regexp.match");
@@ -3725,7 +3725,7 @@ CustomEvents.bind(document, 'LiveReloadShutDown', function () {
   return LiveReload.shutDown();
 });
 
-},{"./customevents":96,"./less":97,"./livereload":98,"core-js/modules/es6.regexp.match":84}],103:[function(require,module,exports){
+},{"./customevents":97,"./less":98,"./livereload":99,"core-js/modules/es6.regexp.match":85}],104:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3783,4 +3783,4 @@ Timer.start = function (timeout, func) {
 
 exports.Timer = Timer;
 
-},{}]},{},[102]);
+},{}]},{},[103]);
