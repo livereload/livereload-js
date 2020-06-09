@@ -117,7 +117,7 @@ describe('Options', function () {
   });
 
   it('should recognize same site URLs', function () {
-    let dom = new JSDOM('<script src="/somewhere.com:80/132324324/23243443/4343/livereload.js"></script>', {
+    let dom = new JSDOM('<script src="/somewhere.com/132324324/23243443/4343/livereload.js"></script>', {
       url: 'https://somewhere.org/'
     });
     let options = Options.extract(dom.window.document);
