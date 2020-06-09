@@ -131,13 +131,6 @@ describe('Options', function () {
     assert.ok(options);
     assert.strictEqual('somewhere.org', options.host);
 
-    dom = new JSDOM('<script src="/somewhere.com/132324324/23243443/4343/livereload.js"></script>', {
-      url: 'https://somewhere.org/'
-    });
-    options = Options.extract(dom.window.document);
-    assert.ok(options);
-    assert.strictEqual('somewhere.org', options.host);
-
     dom = new JSDOM('<script src="livereload.js"></script>', {
       url: 'https://somewhere.org/'
     });
