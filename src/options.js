@@ -38,7 +38,9 @@ Options.extract = function (document) {
     var src = element.src; var srcAttr = element.getAttribute('src');
     var lrUrlRegexp = /^([^:]+:\/\/([^/:]+)(?::(\d+))?\/|\/\/|\/)?([^/].*\/)?z?livereload\.js(?:\?(.*))?$/;
     //                   ^proto:// ^host       ^port     ^//  ^/   ^folder
-    if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexp))) {
+    var lrUrlRegexpAttr = /^(?:(?:([^:/]+)?:?)\/{0,2})([^:]+)(?::(\d+))?/;
+    //                              ^proto             ^host/folder ^port
+    if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexpAttr))) {
       const [, , host, port, , params] = m;
       const [, , , portFromAttr] = mm;
       const options = new Options();

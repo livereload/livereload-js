@@ -72,15 +72,46 @@ describe('Options', function () {
   });
 
   it('should recognize port 80', function () {
-    const dom = new JSDOM('<script src="http://somewhere.com:80/132324324/23243443/4343/livereload.js"></script>');
-    const options = Options.extract(dom.window.document);
+    let dom = new JSDOM('<script src="http://somewhere.com:80/132324324/23243443/4343/livereload.js"></script>');
+    let options = Options.extract(dom.window.document);
+    assert.ok(options);
+    assert.strictEqual(80, options.port);
+
+    dom = new JSDOM('<script src="//somewhere.com:80/132324324/23243443/4343/livereload.js"></script>');
+    options = Options.extract(dom.window.document);
+    assert.ok(options);
+    assert.strictEqual(80, options.port);
+
+    dom = new JSDOM('<script src="/somewhere.com:80/132324324/23243443/4343/livereload.js"></script>', {
+      url: 'https://somewhere.org/'
+    });
+    options = Options.extract(dom.window.document);
     assert.ok(options);
     return assert.strictEqual(80, options.port);
+
+  });
+  
+  it('should recognize port 443', function () {
+    let dom = new JSDOM('<script src="https://somewhere.com:443/132324324/23243443/4343/livereload.js"></script>');
+    let options = Options.extract(dom.window.document);
+    assert.ok(options);
+    assert.strictEqual(443, options.port);
+
+    dom = new JSDOM('<script src="//somewhere.com:443/132324324/23243443/4343/livereload.js"></script>');
+    options = Options.extract(dom.window.document);
+    assert.ok(options);
+    assert.strictEqual(443, options.port);
+
+    dom = new JSDOM('<script src="/somewhere.com:443/132324324/23243443/4343/livereload.js"></script>', {
+      url: 'https://somewhere.org/'
+    });
+    options = Options.extract(dom.window.document);
+    assert.ok(options);
+    return assert.strictEqual(443, options.port);
   });
 
   it('should set https when using an https URL', function () {
     const dom = new JSDOM('<script src="https://somewhere.com:9876/livereload.js"></script>');
-
     const options = Options.extract(dom.window.document);
     assert.ok(options);
     return assert.strictEqual(true, options.https);
@@ -91,6 +122,13 @@ describe('Options', function () {
       url: 'https://somewhere.org/'
     });
     let options = Options.extract(dom.window.document);
+    assert.ok(options);
+    assert.strictEqual('somewhere.org', options.host);
+
+    dom = new JSDOM('<script src="/somewhere.com:443/132324324/23243443/4343/livereload.js"></script>', {
+      url: 'https://somewhere.org/'
+    });
+    options = Options.extract(dom.window.document);
     assert.ok(options);
     assert.strictEqual('somewhere.org', options.host);
 
