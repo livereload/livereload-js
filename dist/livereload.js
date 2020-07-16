@@ -2053,7 +2053,7 @@ var _require = require('./protocol'),
     PROTOCOL_6 = _require.PROTOCOL_6,
     PROTOCOL_7 = _require.PROTOCOL_7;
 
-var VERSION = "3.2.3";
+var VERSION = "3.2.4";
 
 var Connector = /*#__PURE__*/function () {
   function Connector(options, WebSocket, Timer, handlers) {
