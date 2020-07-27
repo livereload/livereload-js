@@ -1,15 +1,17 @@
 /* global CSSRule */
-const splitUrl = function (url) {
-  let hash, index, params;
-  if ((index = url.indexOf('#')) >= 0) {
+function splitUrl (url) {
+  let hash = '';
+  let params = '';
+  let index = url.indexOf('#');
+
+  if (index >= 0) {
     hash = url.slice(index);
     url = url.slice(0, index);
-  } else {
-    hash = '';
   }
 
   // http://your.domain.com/path/to/combo/??file1.css,file2,css
   const comboSign = url.indexOf('??');
+
   if (comboSign >= 0) {
     if ((comboSign + 1) !== url.lastIndexOf('?')) {
       index = url.lastIndexOf('?');
@@ -17,22 +19,24 @@ const splitUrl = function (url) {
   } else {
     index = url.indexOf('?');
   }
+
   if (index >= 0) {
     params = url.slice(index);
     url = url.slice(0, index);
-  } else {
-    params = '';
   }
 
   return { url, params, hash };
 };
 
-const pathFromUrl = function (url) {
+function pathFromUrl (url) {
   if (!url) {
     return '';
   }
+
   let path;
+
   ({ url } = splitUrl(url));
+
   if (url.indexOf('file://') === 0) {
     path = url.replace(new RegExp('^file://(localhost)?'), '');
   } else {
@@ -42,13 +46,15 @@ const pathFromUrl = function (url) {
 
   // decodeURI has special handling of stuff like semicolons, so use decodeURIComponent
   return decodeURIComponent(path);
-};
+}
 
-const pickBestMatch = function (path, objects, pathFunc) {
+function pickBestMatch (path, objects, pathFunc) {
   let score;
   let bestMatch = { score: 0 };
+
   for (const object of objects) {
     score = numberOfMatchingSegments(path, pathFunc(object));
+
     if (score > bestMatch.score) {
       bestMatch = { object, score };
     }
@@ -59,30 +65,33 @@ const pickBestMatch = function (path, objects, pathFunc) {
   }
 
   return bestMatch;
-};
+}
 
-var numberOfMatchingSegments = function (path1, path2) {
+function numberOfMatchingSegments (left, right) {
   // get rid of leading slashes and normalize to lower case
-  path1 = path1.replace(/^\/+/, '').toLowerCase();
-  path2 = path2.replace(/^\/+/, '').toLowerCase();
+  left = left.replace(/^\/+/, '').toLowerCase();
+  right = right.replace(/^\/+/, '').toLowerCase();
 
-  if (path1 === path2) {
+  if (left === right) {
     return 10000;
   }
 
-  const comps1 = path1.split('/').reverse();
-  const comps2 = path2.split('/').reverse();
+  const comps1 = left.split('/').reverse();
+  const comps2 = right.split('/').reverse();
   const len = Math.min(comps1.length, comps2.length);
 
   let eqCount = 0;
+
   while ((eqCount < len) && (comps1[eqCount] === comps2[eqCount])) {
     ++eqCount;
   }
 
   return eqCount;
-};
+}
 
-const pathsMatch = (path1, path2) => numberOfMatchingSegments(path1, path2) > 0;
+function pathsMatch (left, right) {
+  return numberOfMatchingSegments(left, right) > 0;
+}
 
 const IMAGE_STYLES = [
   { selector: 'background', styleNames: ['backgroundImage'] },
@@ -108,6 +117,7 @@ class Reloader {
 
   reload (path, options) {
     this.options = options; // avoid passing it through all the funcs
+
     if (!this.options.stylesheetReloadTimeout) {
       this.options.stylesheetReloadTimeout = 15000;
     }
@@ -122,19 +132,23 @@ class Reloader {
         return;
       }
     }
+
     if (options.liveCSS && path.match(/\.css(?:\.map)?$/i)) {
       if (this.reloadStylesheet(path)) {
         return;
       }
     }
+
     if (options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)) {
       this.reloadImages(path);
       return;
     }
+
     if (options.isChromeExtension) {
       this.reloadChromeExtension();
       return;
     }
+
     return this.reloadPage();
   }
 
@@ -147,22 +161,26 @@ class Reloader {
           }
         }
       }
+
       if (pluginId === 'img') {
         if (options.liveImg && path.match(/\.(jpe?g|png|gif)$/i)) {
           this.reloadImages(path);
           return true;
         }
       }
+
       if (pluginId === 'extension') {
         if (options.isChromeExtension) {
           this.reloadChromeExtension();
           return true;
         }
       }
+
       if (pluginId === 'others') {
         this.reloadPage();
         return true;
       }
+
       if (pluginId === 'external') {
         return this.plugins.some(plugin => {
           if (plugin.reload && plugin.reload(path, options)) {
@@ -173,11 +191,12 @@ class Reloader {
 
       return this.plugins.filter(
         plugin => plugin.constructor.identifier === pluginId
-      ).some(plugin => {
-        if (plugin.reload && plugin.reload(path, options)) {
-          return true;
-        }
-      });
+      )
+        .some(plugin => {
+          if (plugin.reload && plugin.reload(path, options)) {
+            return true;
+          }
+        });
     });
   }
 
@@ -216,6 +235,7 @@ class Reloader {
 
   reloadStylesheetImages (styleSheet, path, expando) {
     let rules;
+
     try {
       rules = (styleSheet || {}).cssRules;
     } catch (e) {}
@@ -244,14 +264,16 @@ class Reloader {
   reloadStyleImages (style, styleNames, path, expando) {
     for (const styleName of styleNames) {
       const value = style[styleName];
+
       if (typeof value === 'string') {
         const newValue = value.replace(new RegExp('\\burl\\s*\\(([^)]*)\\)'), (match, src) => {
           if (pathsMatch(path, pathFromUrl(src))) {
             return `url(${this.generateCacheBustUrl(src, expando)})`;
-          } else {
-            return match;
           }
+
+          return match;
         });
+
         if (newValue !== value) {
           style[styleName] = newValue;
         }
@@ -263,23 +285,28 @@ class Reloader {
     // has to be a real array, because DOMNodeList will be modified
     let style;
     let link;
+
     const links = ((() => {
       const result = [];
+
       for (link of Array.from(this.document.getElementsByTagName('link'))) {
         if (link.rel.match(/^stylesheet$/i) && !link.__LiveReload_pendingRemoval) {
           result.push(link);
         }
       }
+
       return result;
     })());
 
     // find all imported stylesheets
     const imported = [];
+
     for (style of Array.from(this.document.getElementsByTagName('style'))) {
       if (style.sheet) {
         this.collectImportedStylesheets(style, style.sheet, imported);
       }
     }
+
     for (link of Array.from(links)) {
       this.collectImportedStylesheets(link, link.sheet, imported);
     }
@@ -292,6 +319,7 @@ class Reloader {
     }
 
     this.console.log(`LiveReload found ${links.length} LINKed stylesheets, ${imported.length} @imported stylesheets`);
+
     const match = pickBestMatch(
       path,
       links.concat(imported),
@@ -311,6 +339,7 @@ class Reloader {
         this.console.log(`LiveReload will reload all stylesheets because path '${path}' did not match any specific one. \
 To disable this behavior, set 'options.reloadMissingCSS' to 'false'.`
         );
+
         for (link of Array.from(links)) {
           this.reattachStylesheetLink(link);
         }
@@ -382,9 +411,9 @@ and 'options.reloadMissingCSS' was set to 'false'.`
           this.console.log('LiveReload is polling until the new CSS finishes loading...');
 
           return executeCallback();
-        } else {
-          return this.Timer.start(50, poll);
         }
+
+        return this.Timer.start(50, poll);
       })();
     }
 
@@ -400,7 +429,11 @@ and 'options.reloadMissingCSS' was set to 'false'.`
   reattachStylesheetLink (link) {
     // ignore LINKs that will be removed by LR soon
     let clone;
-    if (link.__LiveReload_pendingRemoval) { return; }
+
+    if (link.__LiveReload_pendingRemoval) {
+      return;
+    }
+
     link.__LiveReload_pendingRemoval = true;
 
     if (link.tagName === 'STYLE') {
@@ -417,6 +450,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
 
     // insert the new LINK before the old one
     const parent = link.parentNode;
+
     if (parent.lastChild === link) {
       parent.appendChild(clone);
     } else {
@@ -508,12 +542,15 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     if (!expando) {
       expando = this.generateUniqueString();
     }
+
     ({ url, hash, params: oldParams } = splitUrl(url));
 
     if (this.options.overrideURL) {
       if (url.indexOf(this.options.serverURL) < 0) {
         const originalUrl = url;
+
         url = this.options.serverURL + this.options.overrideURL + '?url=' + encodeURIComponent(url);
+
         this.console.log(`LiveReload is overriding source URL ${originalUrl} with ${url}`);
       }
     }

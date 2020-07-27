@@ -20,13 +20,16 @@ class LessPlugin {
 
   reloadLess (path) {
     let link;
+
     const links = ((() => {
       const result = [];
+
       for (link of Array.from(document.getElementsByTagName('link'))) {
         if ((link.href && link.rel.match(/^stylesheet\/less$/i)) || (link.rel.match(/stylesheet/i) && link.type.match(/^text\/(x-)?less$/i))) {
           result.push(link);
         }
       }
+
       return result;
     })());
 

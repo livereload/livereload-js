@@ -21,6 +21,7 @@ class Parser {
   process (data) {
     try {
       let message;
+
       if (!this.protocol) {
         if (data.match(new RegExp('^!!ver:([\\d.]+)$'))) {
           this.protocol = 6;
@@ -37,12 +38,17 @@ class Parser {
         }
 
         return this.handlers.connected(this.protocol);
-      } else if (this.protocol === 6) {
+      }
+
+      if (this.protocol === 6) {
         message = JSON.parse(data);
+
         if (!message.length) {
           throw new ProtocolError('protocol 6 messages must be arrays');
         }
+
         const [command, options] = Array.from(message);
+
         if (command !== 'refresh') {
           throw new ProtocolError('unknown protocol 6 command');
         }
@@ -52,17 +58,17 @@ class Parser {
           path: options.path,
           liveCSS: options.apply_css_live != null ? options.apply_css_live : true
         });
-      } else {
-        message = this._parseMessage(data, ['reload', 'alert']);
-
-        return this.handlers.message(message);
       }
+
+      message = this._parseMessage(data, ['reload', 'alert']);
+
+      return this.handlers.message(message);
     } catch (e) {
       if (e instanceof ProtocolError) {
         return this.handlers.error(e);
-      } else {
-        throw e;
       }
+
+      throw e;
     }
   }
 

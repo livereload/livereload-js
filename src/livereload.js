@@ -29,20 +29,25 @@ class LiveReload {
     // i can haz sockets?
     if (!(this.WebSocket = this.window.WebSocket || this.window.MozWebSocket)) {
       this.console.error('LiveReload disabled because the browser does not seem to support web sockets');
+
       return;
     }
 
     // i can haz options?
     if ('LiveReloadOptions' in window) {
       this.options = new Options();
+
       for (const k of Object.keys(window.LiveReloadOptions || {})) {
         const v = window.LiveReloadOptions[k];
+
         this.options.set(k, v);
       }
     } else {
       this.options = Options.extract(this.window.document);
+
       if (!this.options) {
         this.console.error('LiveReload disabled because it could not find its own <SCRIPT> tag');
+
         return;
       }
     }
@@ -82,6 +87,7 @@ class LiveReload {
         if (typeof this.listeners.disconnect === 'function') {
           this.listeners.disconnect();
         }
+
         switch (reason) {
           case 'cannot-connect':
             return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port}, will retry in ${nextDelay} sec.`);
@@ -144,6 +150,7 @@ class LiveReload {
 
     this.connector.disconnect();
     this.log('LiveReload disconnected.');
+
     return (typeof this.listeners.shutdown === 'function' ? this.listeners.shutdown() : undefined);
   }
 
@@ -162,19 +169,20 @@ class LiveReload {
 
     this.pluginIdentifiers[PluginClass.identifier] = true;
 
-    const plugin = new PluginClass(this.window, {
+    const plugin = new PluginClass(
+      this.window,
+      {
+        // expose internal objects for those who know what they're doing
+        // (note that these are private APIs and subject to change at any time!)
+        _livereload: this,
+        _reloader: this.reloader,
+        _connector: this.connector,
 
-      // expose internal objects for those who know what they're doing
-      // (note that these are private APIs and subject to change at any time!)
-      _livereload: this,
-      _reloader: this.reloader,
-      _connector: this.connector,
-
-      // official API
-      console: this.console,
-      Timer,
-      generateCacheBustUrl: url => this.reloader.generateCacheBustUrl(url)
-    }
+        // official API
+        console: this.console,
+        Timer,
+        generateCacheBustUrl: url => this.reloader.generateCacheBustUrl(url)
+      }
     );
 
     // API that PluginClass can/must provide:
@@ -213,6 +221,7 @@ class LiveReload {
 
     for (const plugin of this.plugins) {
       var pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
+
       pluginsData[plugin.constructor.identifier] = pluginData;
       pluginData.version = plugin.constructor.version;
     }

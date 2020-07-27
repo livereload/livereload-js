@@ -121,6 +121,7 @@ class Connector {
   _closeOnError () {
     this._handshakeTimeout.stop();
     this._disconnectionReason = 'error';
+
     return this.socket.close();
   }
 
@@ -130,6 +131,7 @@ class Connector {
 
     // start handshake
     const hello = { command: 'hello', protocols: [PROTOCOL_6, PROTOCOL_7] };
+
     hello.ver = VERSION;
 
     if (this.options.ext) {

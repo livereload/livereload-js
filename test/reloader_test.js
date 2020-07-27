@@ -72,10 +72,18 @@ describe('Reloader', () => {
     });
 
     it('should reload when doc at the same location changed', (done) => {
-      const window = {
-        document: { location: { pathname: '/1.html', reload: done } }
+      const location = {
+        pathname: '/1.html',
+        reload: done
       };
-      window.location = window.document.location;
+
+      const window = {
+        document: {
+          location
+        },
+        location
+      };
+
       const reloader = new Reloader(
         window,
         console,
@@ -99,17 +107,20 @@ describe('Reloader', () => {
     });
 
     it('should not reload when different html changed', (done) => {
-      const window = {
-        document: {
-          location: {
-            pathname: '/1.html',
-            reload () {
-              throw new Error('Shall not reload!');
-            }
-          }
+      const location = {
+        pathname: '/1.html',
+        reload () {
+          throw new Error('Shall not reload!');
         }
       };
-      window.location = window.document.location;
+
+      const window = {
+        document: {
+          location
+        },
+        location
+      };
+
       const reloader = new Reloader(
         window,
         console,
@@ -137,18 +148,24 @@ describe('Reloader', () => {
     });
 
     it('should not reload the page with liveCSS and css file updated', (done) => {
+      const window = {
+        document: {
+          location: {
+            reload () {
+              throw new Error('Shall not reload!');
+            }
+          },
+          getElementsByTagName () { return []; }
+        }
+      };
+
+      const console = {
+        log () {}
+      };
+
       const reloader = new Reloader(
-        {
-          document: {
-            location: {
-              reload () {
-                throw new Error('Shall not reload!');
-              }
-            },
-            getElementsByTagName () { return []; }
-          }
-        },
-        { log () {} },
+        window,
+        console,
         Timer
       );
 
@@ -169,8 +186,14 @@ describe('Reloader', () => {
 
   describe('reload() with plugin order', () => {
     it('should reload with same plugin order', (done) => {
+      const window = {
+        document: {
+          location: { reload: done }
+        }
+      };
+
       const reloader = new Reloader(
-        { document: { location: { reload: done } } },
+        window,
         console,
         Timer
       );
@@ -191,8 +214,18 @@ describe('Reloader', () => {
     });
 
     it('should not reload with unknown url and no `others` plugin', (done) => {
+      const window = {
+        document: {
+          location: {
+            reload () {
+              throw new Error('Shall not reload!');
+            }
+          }
+        }
+      };
+
       const reloader = new Reloader(
-        { document: { location: { reload () { throw new Error('Shall not reload!'); } } } },
+        window,
         console,
         Timer
       );
@@ -217,8 +250,16 @@ describe('Reloader', () => {
     });
 
     it('should reload anyway', (done) => {
+      const window = {
+        document: {
+          location: {
+            reload: done
+          }
+        }
+      };
+
       const reloader = new Reloader(
-        { document: { location: { reload: done } } },
+        window,
         console,
         Timer
       );
@@ -235,18 +276,26 @@ describe('Reloader', () => {
     });
 
     it('should not reload the page with liveCSS and css file updated', (done) => {
-      const reloader = new Reloader(
-        {
-          document: {
-            location: {
-              reload () {
-                throw new Error('Shall not reload!');
-              }
-            },
-            getElementsByTagName () { return []; }
+      const window = {
+        document: {
+          location: {
+            reload () {
+              throw new Error('Shall not reload!');
+            }
+          },
+          getElementsByTagName () {
+            return [];
           }
-        },
-        { log () {} },
+        }
+      };
+
+      const console = {
+        log () {}
+      };
+
+      const reloader = new Reloader(
+        window,
+        console,
         Timer
       );
 

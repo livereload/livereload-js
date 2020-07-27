@@ -13,6 +13,7 @@ class Options {
     this.handshake_timeout = 5000;
 
     var pluginOrder = [];
+
     Object.defineProperty(this, 'pluginOrder', {
       get () { return pluginOrder; },
       set (v) { pluginOrder.push.apply(pluginOrder, v.split(/[,;]/)); }
@@ -34,13 +35,17 @@ class Options {
 
 Options.extract = function (document) {
   for (const element of Array.from(document.getElementsByTagName('script'))) {
-    var m; var mm;
-    var src = element.src; var srcAttr = element.getAttribute('src');
+    var src = element.src;
+    var srcAttr = element.getAttribute('src');
     var lrUrlRegexp = /^([^:]+:\/\/([^/:]+)(?::(\d+))?\/|\/\/|\/)?([^/].*\/)?z?livereload\.js(?:\?(.*))?$/;
     //                   ^proto:// ^host       ^port     ^//  ^/   ^folder
     var lrUrlRegexpAttr = /^(?:(?:([^:/]+)?:?)\/{0,2})([^:]+)(?::(\d+))?/;
     //                              ^proto             ^host/folder ^port
-    if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexpAttr))) {
+
+    var m = src.match(lrUrlRegexp);
+    var mm = srcAttr.match(lrUrlRegexpAttr);
+
+    if (m && mm) {
       const [, , host, port, , params] = m;
       const [, , , portFromAttr] = mm;
       const options = new Options();
