@@ -15,7 +15,7 @@
     "browserify": "^16.5.1",
     "core-js": "^2.6.11",
     "envify": "^4.1.0",
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
