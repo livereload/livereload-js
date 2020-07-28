@@ -408,7 +408,7 @@ describe('Reloader', () => {
     });
   });
 
-  describe('reloadStylesheet', done => {
+  describe('reloadStylesheet', () => {
     it('should handle duplicate filenames', done => {
       const dom = new JSDOM(`
         <!DOCTYPE html>
@@ -443,6 +443,43 @@ describe('Reloader', () => {
       reloader.reloadStylesheet(
         '/def/test.css'
       );
+    });
+  });
+
+  describe('reloadImages', () => {
+    it('should generate cache burst image url', () => {
+      const img = 'http://localhost/abc/test.png';
+
+      const dom = new JSDOM(`
+        <!DOCTYPE html>
+        <html>
+        <head></head>
+        <body>
+          <img src="${img}" />
+        </body>
+        </html>
+      `);
+
+      const cons = {
+        log () {
+          console.log(arguments);
+        }
+      };
+
+      const reloader = new Reloader(
+        dom.window,
+        cons,
+        Timer
+      );
+
+      reloader.reloadImages(
+        'C:\\Users\\abc\\test.png'
+      );
+
+      const reloadImg = Array.from(dom.window.document.images)[0].src;
+
+      assert(reloadImg.indexOf(img) === 0);
+      assert(/livereload=\d+/.test(reloadImg));
     });
   });
 });
