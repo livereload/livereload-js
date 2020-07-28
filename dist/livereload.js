@@ -2089,7 +2089,7 @@ var _require = require('./protocol'),
     PROTOCOL_6 = _require.PROTOCOL_6,
     PROTOCOL_7 = _require.PROTOCOL_7;
 
-var VERSION = "3.3.0";
+var VERSION = "3.3.1";
 
 var Connector = /*#__PURE__*/function () {
   function Connector(options, WebSocket, Timer, handlers) {
@@ -2796,23 +2796,24 @@ var Options = /*#__PURE__*/function () {
 Options.extract = function (document) {
   for (var _i = 0, _Array$from = Array.from(document.getElementsByTagName('script')); _i < _Array$from.length; _i++) {
     var element = _Array$from[_i];
+    var m;
+    var mm;
     var src = element.src;
     var srcAttr = element.getAttribute('src');
     var lrUrlRegexp = /^([^:]+:\/\/([^/:]+)(?::(\d+))?\/|\/\/|\/)?([^/].*\/)?z?livereload\.js(?:\?(.*))?$/; //                   ^proto:// ^host       ^port     ^//  ^/   ^folder
 
     var lrUrlRegexpAttr = /^(?:(?:([^:/]+)?:?)\/{0,2})([^:]+)(?::(\d+))?/; //                              ^proto             ^host/folder ^port
 
-    var m = src.match(lrUrlRegexp);
-    var mm = srcAttr.match(lrUrlRegexpAttr);
+    if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexpAttr))) {
+      var _m = m,
+          _m2 = _slicedToArray(_m, 6),
+          host = _m2[2],
+          port = _m2[3],
+          params = _m2[5];
 
-    if (m && mm) {
-      var _m = _slicedToArray(m, 6),
-          host = _m[2],
-          port = _m[3],
-          params = _m[5];
-
-      var _mm = _slicedToArray(mm, 4),
-          portFromAttr = _mm[3];
+      var _mm = mm,
+          _mm2 = _slicedToArray(_mm, 4),
+          portFromAttr = _mm2[3];
 
       var options = new Options();
       options.https = element.src.indexOf('https') === 0;
