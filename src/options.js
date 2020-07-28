@@ -35,6 +35,8 @@ class Options {
 
 Options.extract = function (document) {
   for (const element of Array.from(document.getElementsByTagName('script'))) {
+    var m;
+    var mm;
     var src = element.src;
     var srcAttr = element.getAttribute('src');
     var lrUrlRegexp = /^([^:]+:\/\/([^/:]+)(?::(\d+))?\/|\/\/|\/)?([^/].*\/)?z?livereload\.js(?:\?(.*))?$/;
@@ -42,10 +44,7 @@ Options.extract = function (document) {
     var lrUrlRegexpAttr = /^(?:(?:([^:/]+)?:?)\/{0,2})([^:]+)(?::(\d+))?/;
     //                              ^proto             ^host/folder ^port
 
-    var m = src.match(lrUrlRegexp);
-    var mm = srcAttr.match(lrUrlRegexpAttr);
-
-    if (m && mm) {
+    if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexpAttr))) {
       const [, , host, port, , params] = m;
       const [, , , portFromAttr] = mm;
       const options = new Options();
