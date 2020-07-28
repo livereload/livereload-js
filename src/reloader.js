@@ -128,6 +128,10 @@ const IMAGE_STYLES = [
   { selector: 'border', styleNames: ['borderImage', 'webkitBorderImage', 'MozBorderImage'] }
 ];
 
+const DEFAULT_OPTIONS = {
+  stylesheetReloadTimeout: 15000
+};
+
 class Reloader {
   constructor (window, console, Timer) {
     this.window = window;
@@ -145,12 +149,11 @@ class Reloader {
   analyze (callback) {
   }
 
-  reload (path, options) {
-    this.options = options; // avoid passing it through all the funcs
-
-    if (!this.options.stylesheetReloadTimeout) {
-      this.options.stylesheetReloadTimeout = 15000;
-    }
+  reload (path, options = {}) {
+    this.options = {
+      ...DEFAULT_OPTIONS,
+      ...options
+    }; // avoid passing it through all the funcs
 
     if (this.options.pluginOrder && this.options.pluginOrder.length) {
       this.runPluginsByOrder(path, options);
@@ -312,6 +315,8 @@ class Reloader {
   }
 
   reloadStylesheet (path) {
+    const options = this.options || DEFAULT_OPTIONS;
+
     // has to be a real array, because DOMNodeList will be modified
     let style;
     let link;
@@ -365,7 +370,7 @@ class Reloader {
         this.reattachStylesheetLink(match.object);
       }
     } else {
-      if (this.options.reloadMissingCSS) {
+      if (options.reloadMissingCSS) {
         this.console.log(`LiveReload will reload all stylesheets because path '${path}' did not match any specific one. \
 To disable this behavior, set 'options.reloadMissingCSS' to 'false'.`
         );
@@ -411,6 +416,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
   }
 
   waitUntilCssLoads (clone, func) {
+    const options = this.options || DEFAULT_OPTIONS;
     let callbackExecuted = false;
 
     const executeCallback = () => {
@@ -448,7 +454,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     }
 
     // fail safe
-    return this.Timer.start(this.options.stylesheetReloadTimeout, executeCallback);
+    return this.Timer.start(options.stylesheetReloadTimeout, executeCallback);
   }
 
   linkHref (link) {
@@ -490,7 +496,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
     return this.waitUntilCssLoads(clone, () => {
       let additionalWaitingTime;
 
-      if (/AppleWebKit/.test(navigator.userAgent)) {
+      if (/AppleWebKit/.test(this.window.navigator.userAgent)) {
         additionalWaitingTime = 5;
       } else {
         additionalWaitingTime = 200;
@@ -567,6 +573,7 @@ and 'options.reloadMissingCSS' was set to 'false'.`
   }
 
   generateCacheBustUrl (url, expando) {
+    const options = this.options || DEFAULT_OPTIONS;
     let hash, oldParams;
 
     if (!expando) {
@@ -575,11 +582,11 @@ and 'options.reloadMissingCSS' was set to 'false'.`
 
     ({ url, hash, params: oldParams } = splitUrl(url));
 
-    if (this.options.overrideURL) {
-      if (url.indexOf(this.options.serverURL) < 0) {
+    if (options.overrideURL) {
+      if (url.indexOf(options.serverURL) < 0) {
         const originalUrl = url;
 
-        url = this.options.serverURL + this.options.overrideURL + '?url=' + encodeURIComponent(url);
+        url = options.serverURL + options.overrideURL + '?url=' + encodeURIComponent(url);
 
         this.console.log(`LiveReload is overriding source URL ${originalUrl} with ${url}`);
       }

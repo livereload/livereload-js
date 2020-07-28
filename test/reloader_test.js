@@ -72,7 +72,7 @@ describe('pathFromUrl', () => {
 });
 
 describe('numberOfMatchingSegments', () => {
-  it('should', () => {
+  it('should count matching path parts', () => {
     const res = numberOfMatchingSegments(
       '/Users/abc/def/test.css',
       pathFromUrl('https://www.example.com/abc/test.css')
@@ -83,11 +83,11 @@ describe('numberOfMatchingSegments', () => {
 });
 
 describe('pickBestMatch', () => {
-  it('should', () => {
+  it('should return the best match', () => {
     const res = pickBestMatch(
       '/xyz/abc/def/test.css',
       [
-        '/abc/test.css',
+        '/abc/example.css',
         '/abc/def/test.css'
       ]
     );
@@ -396,6 +396,44 @@ describe('Reloader', () => {
       setTimeout(() => {
         done(); // no reload after 100ms
       }, 100);
+    });
+  });
+
+  describe('reloadStylesheet', done => {
+    it('should handle duplicate filenames', done => {
+      const dom = new JSDOM(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <link rel="stylesheet" href="http://localhost/abc/test.css">
+          <link rel="stylesheet" href="http://localhost/def/test.css">
+        </head>
+        <body></body>
+        </html>
+      `);
+
+      const cons = {
+        log () {
+        }
+      };
+
+      const reloader = new Reloader(
+        dom.window,
+        cons,
+        Timer
+      );
+
+      reloader.reattachStylesheetLink = function (link) {
+        const href = reloader.linkHref(link);
+
+        assert(href === 'http://localhost/def/test.css');
+
+        done();
+      };
+
+      reloader.reloadStylesheet(
+        '/def/test.css'
+      );
     });
   });
 });
