@@ -1,5 +1,12 @@
 const assert = require('assert');
-const { Reloader } = require('../src/reloader');
+const {
+  Reloader,
+  splitUrl,
+  pathFromUrl,
+  numberOfMatchingSegments,
+  pickBestMatch,
+  pathsMatch
+} = require('../src/reloader');
 const { Timer } = require('../src/timer');
 const { JSDOM } = require('jsdom');
 
@@ -25,6 +32,83 @@ ThisDocPlugin.prototype.analyze = function () {
     disable: false // !!(this.window.less && this.window.less.refresh)
   };
 };
+
+describe('splitUrl', () => {
+  it('should split url', () => {
+    const res = splitUrl('https://www.example.com/abc/test.css?def=1#xyz');
+
+    assert.deepStrictEqual(res, {
+      url: 'https://www.example.com/abc/test.css',
+      params: '?def=1',
+      hash: '#xyz'
+    });
+  });
+});
+
+describe('pathFromUrl', () => {
+  it('should handle url with only filename', () => {
+    const pathname = pathFromUrl('test.css');
+
+    assert.strictEqual(pathname, 'test.css');
+  });
+
+  it('should handle url with path and filename', () => {
+    const pathname = pathFromUrl('/abc/def/test.css');
+
+    assert.strictEqual(pathname, '/abc/def/test.css');
+  });
+
+  it('should parse url', () => {
+    const pathname = pathFromUrl('https://www.example.com/abc/test.css');
+
+    assert.strictEqual(pathname, '/abc/test.css');
+  });
+
+  it('should parse file url', () => {
+    const pathname = pathFromUrl('file://localhost/abc/test.css');
+
+    assert.strictEqual(pathname, '/abc/test.css');
+  });
+});
+
+describe('numberOfMatchingSegments', () => {
+  it('should', () => {
+    const res = numberOfMatchingSegments(
+      '/Users/abc/def/test.css',
+      pathFromUrl('https://www.example.com/abc/test.css')
+    );
+
+    assert(res === 1);
+  });
+});
+
+describe('pickBestMatch', () => {
+  it('should', () => {
+    const res = pickBestMatch(
+      '/xyz/abc/def/test.css',
+      [
+        '/abc/test.css',
+        '/abc/def/test.css'
+      ]
+    );
+
+    assert.deepStrictEqual(res, {
+      object: '/abc/def/test.css',
+      score: 3
+    });
+  });
+});
+
+describe('pathsMatch', () => {
+  it('should match paths', () => {
+    const res = pathsMatch(
+      '/xyz/abc/def/test.css',
+      '/abc/test.css'
+    );
+
+    assert(res);
+  });
+});
 
 describe('Reloader', () => {
   it('should be constructable', () => {

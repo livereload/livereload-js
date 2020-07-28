@@ -1,4 +1,10 @@
 /* global CSSRule */
+
+/**
+ * Split URL
+ * @param  {string} url
+ * @return {object}
+ */
 function splitUrl (url) {
   let hash = '';
   let params = '';
@@ -28,6 +34,11 @@ function splitUrl (url) {
   return { url, params, hash };
 };
 
+/**
+ * Get path from URL (remove protocol, host, port)
+ * @param  {string} url
+ * @return {string}
+ */
 function pathFromUrl (url) {
   if (!url) {
     return '';
@@ -48,25 +59,12 @@ function pathFromUrl (url) {
   return decodeURIComponent(path);
 }
 
-function pickBestMatch (path, objects, pathFunc) {
-  let score;
-  let bestMatch = { score: 0 };
-
-  for (const object of objects) {
-    score = numberOfMatchingSegments(path, pathFunc(object));
-
-    if (score > bestMatch.score) {
-      bestMatch = { object, score };
-    }
-  }
-
-  if (bestMatch.score === 0) {
-    return null;
-  }
-
-  return bestMatch;
-}
-
+/**
+ * Get number of matching path segments
+ * @param  {string} left
+ * @param  {string} right
+ * @return {int}
+ */
 function numberOfMatchingSegments (left, right) {
   // get rid of leading slashes and normalize to lower case
   left = left.replace(/^\/+/, '').toLowerCase();
@@ -89,6 +87,38 @@ function numberOfMatchingSegments (left, right) {
   return eqCount;
 }
 
+/**
+ * Pick best matching path from a collection
+ * @param  {string} path         Path to match
+ * @param  {array} objects       Collection of paths
+ * @param  {function} [pathFunc] Transform applied to each item in collection
+ * @return {object}
+ */
+function pickBestMatch (path, objects, pathFunc = s => s) {
+  let score;
+  let bestMatch = { score: 0 };
+
+  for (const object of objects) {
+    score = numberOfMatchingSegments(path, pathFunc(object));
+
+    if (score > bestMatch.score) {
+      bestMatch = { object, score };
+    }
+  }
+
+  if (bestMatch.score === 0) {
+    return null;
+  }
+
+  return bestMatch;
+}
+
+/**
+ * Test if paths match
+ * @param  {string} left
+ * @param  {string} right
+ * @return {bool}
+ */
 function pathsMatch (left, right) {
   return numberOfMatchingSegments(left, right) > 0;
 }
@@ -569,4 +599,9 @@ and 'options.reloadMissingCSS' was set to 'false'.`
   }
 };
 
+exports.splitUrl = splitUrl;
+exports.pathFromUrl = pathFromUrl;
+exports.numberOfMatchingSegments = numberOfMatchingSegments;
+exports.pickBestMatch = pickBestMatch;
+exports.pathsMatch = pathsMatch;
 exports.Reloader = Reloader;
