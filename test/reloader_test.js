@@ -80,6 +80,15 @@ describe('numberOfMatchingSegments', () => {
 
     assert(res === 1);
   });
+
+  it('should handle Windows paths', () => {
+    const res = numberOfMatchingSegments(
+      'C:\\Users\\abc\\def\\test.css',
+      pathFromUrl('https://www.example.com/abc/test.css')
+    );
+
+    assert(res === 1);
+  });
 });
 
 describe('pickBestMatch', () => {

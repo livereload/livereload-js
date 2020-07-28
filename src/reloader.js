@@ -74,8 +74,8 @@ function numberOfMatchingSegments (left, right) {
     return 10000;
   }
 
-  const comps1 = left.split('/').reverse();
-  const comps2 = right.split('/').reverse();
+  const comps1 = left.split(/\/|\\/).reverse();
+  const comps2 = right.split(/\/|\\/).reverse();
   const len = Math.min(comps1.length, comps2.length);
 
   let eqCount = 0;
