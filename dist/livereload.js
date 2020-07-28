@@ -2089,7 +2089,7 @@ var _require = require('./protocol'),
     PROTOCOL_6 = _require.PROTOCOL_6,
     PROTOCOL_7 = _require.PROTOCOL_7;
 
-var VERSION = "3.2.5";
+var VERSION = "3.3.0";
 
 var Connector = /*#__PURE__*/function () {
   function Connector(options, WebSocket, Timer, handlers) {
@@ -3143,8 +3143,8 @@ function numberOfMatchingSegments(left, right) {
     return 10000;
   }
 
-  var comps1 = left.split('/').reverse();
-  var comps2 = right.split('/').reverse();
+  var comps1 = left.split(/\/|\\/).reverse();
+  var comps2 = right.split(/\/|\\/).reverse();
   var len = Math.min(comps1.length, comps2.length);
   var eqCount = 0;
 
