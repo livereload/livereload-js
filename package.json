@@ -23,7 +23,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "jsdom": "^16.3.0",
     "mocha": "^8.0.1",
-    "terser": "^3.17.0",
+    "terser": "^4.8.0",
     "watchify": "^3.11.1"
   },
   "scripts": {
