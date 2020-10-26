@@ -1,4 +1,4 @@
-LiveReload.js
+LiveReload.js [![CI Status](https://github.com/livereload/livereload-js/workflows/CI/badge.svg)](https://github.com/livereload/livereload-js/actions)
 =============
 
 What is LiveReload?
