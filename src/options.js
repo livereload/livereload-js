@@ -12,7 +12,7 @@ class Options {
     this.maxdelay = 60000;
     this.handshake_timeout = 5000;
 
-    var pluginOrder = [];
+    const pluginOrder = [];
 
     Object.defineProperty(this, 'pluginOrder', {
       get () { return pluginOrder; },
@@ -35,13 +35,15 @@ class Options {
 
 Options.extract = function (document) {
   for (const element of Array.from(document.getElementsByTagName('script'))) {
+    // eslint-disable-next-line no-var
     var m;
+    // eslint-disable-next-line no-var
     var mm;
-    var src = element.src;
-    var srcAttr = element.getAttribute('src');
-    var lrUrlRegexp = /^([^:]+:\/\/([^/:]+)(?::(\d+))?\/|\/\/|\/)?([^/].*\/)?z?livereload\.js(?:\?(.*))?$/;
+    const src = element.src;
+    const srcAttr = element.getAttribute('src');
+    const lrUrlRegexp = /^([^:]+:\/\/([^/:]+)(?::(\d+))?\/|\/\/|\/)?([^/].*\/)?z?livereload\.js(?:\?(.*))?$/;
     //                   ^proto:// ^host       ^port     ^//  ^/   ^folder
-    var lrUrlRegexpAttr = /^(?:(?:([^:/]+)?:?)\/{0,2})([^:]+)(?::(\d+))?/;
+    const lrUrlRegexpAttr = /^(?:(?:([^:/]+)?:?)\/{0,2})([^:]+)(?::(\d+))?/;
     //                              ^proto             ^host/folder ^port
 
     if ((m = src.match(lrUrlRegexp)) && (mm = srcAttr.match(lrUrlRegexpAttr))) {
@@ -60,6 +62,7 @@ Options.extract = function (document) {
 
       if (params) {
         for (const pair of params.split('&')) {
+          // eslint-disable-next-line no-var
           var keyAndValue;
 
           if ((keyAndValue = pair.split('=')).length > 1) {

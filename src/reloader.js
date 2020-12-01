@@ -49,9 +49,11 @@ function pathFromUrl (url) {
   ({ url } = splitUrl(url));
 
   if (url.indexOf('file://') === 0) {
+    // eslint-disable-next-line prefer-regex-literals
     path = url.replace(new RegExp('^file://(localhost)?'), '');
   } else {
     //                        http  :   // hostname  :8080  /
+    // eslint-disable-next-line prefer-regex-literals
     path = url.replace(new RegExp('^([^:]+:)?//([^:/]+)(:\\d*)?/'), '/');
   }
 
@@ -215,21 +217,13 @@ class Reloader {
       }
 
       if (pluginId === 'external') {
-        return this.plugins.some(plugin => {
-          if (plugin.reload && plugin.reload(path, options)) {
-            return true;
-          }
-        });
+        return this.plugins.some(
+          plugin => plugin.reload && plugin.reload(path, options)
+        );
       }
 
-      return this.plugins.filter(
-        plugin => plugin.constructor.identifier === pluginId
-      )
-        .some(plugin => {
-          if (plugin.reload && plugin.reload(path, options)) {
-            return true;
-          }
-        });
+      return this.plugins.filter(plugin => plugin.constructor.identifier === pluginId)
+        .some(plugin => plugin.reload && plugin.reload(path, options));
     });
   }
 
@@ -299,6 +293,7 @@ class Reloader {
       const value = style[styleName];
 
       if (typeof value === 'string') {
+        // eslint-disable-next-line prefer-regex-literals
         const newValue = value.replace(new RegExp('\\burl\\s*\\(([^)]*)\\)'), (match, src) => {
           if (pathsMatch(path, pathFromUrl(src))) {
             return `url(${this.generateCacheBustUrl(src, expando)})`;

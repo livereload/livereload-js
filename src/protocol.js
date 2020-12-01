@@ -23,6 +23,7 @@ class Parser {
       let message;
 
       if (!this.protocol) {
+        // eslint-disable-next-line prefer-regex-literals
         if (data.match(new RegExp('^!!ver:([\\d.]+)$'))) {
           this.protocol = 6;
         } else if ((message = this._parseMessage(data, ['hello']))) {

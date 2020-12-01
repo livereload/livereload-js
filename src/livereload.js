@@ -16,15 +16,15 @@ class LiveReload {
     this.console =
       this.window.console && this.window.console.log && this.window.console.error
         ? this.window.location.href.match(/LR-verbose/)
-          ? this.window.console
-          : {
-            log () {},
-            error: this.window.console.error.bind(this.window.console)
-          }
+            ? this.window.console
+            : {
+                log () {},
+                error: this.window.console.error.bind(this.window.console)
+              }
         : {
-          log () {},
-          error () {}
-        };
+            log () {},
+            error () {}
+          };
 
     // i can haz sockets?
     if (!(this.WebSocket = this.window.WebSocket || this.window.MozWebSocket)) {
@@ -220,7 +220,7 @@ class LiveReload {
     const pluginsData = {};
 
     for (const plugin of this.plugins) {
-      var pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
+      const pluginData = (typeof plugin.analyze === 'function' ? plugin.analyze() : undefined) || {};
 
       pluginsData[plugin.constructor.identifier] = pluginData;
       pluginData.version = plugin.constructor.version;
