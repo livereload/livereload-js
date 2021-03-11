@@ -1,6 +1,6 @@
 {
   "name": "livereload-js",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "description": "LiveReload JS client - auto reload browser on changes",
   "main": "dist/livereload.js",
   "module": "src/startup.js",
