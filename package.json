@@ -8,22 +8,22 @@
     "test": "test"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/register": "^7.12.10",
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "@babel/register": "^7.13.8",
     "babelify": "^10.0.0",
     "browserify": "^17.0.0",
     "core-js": "^2.6.12",
     "envify": "^4.1.0",
-    "eslint": "^7.15.0",
+    "eslint": "^7.21.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "jsdom": "^16.4.0",
-    "mocha": "^8.2.1",
+    "eslint-plugin-promise": "^4.3.1",
+    "jsdom": "^16.5.0",
+    "mocha": "^8.3.1",
     "terser": "^4.8.0",
-    "watchify": "^3.11.1"
+    "watchify": "^4.0.0"
   },
   "scripts": {
     "lint": "eslint src test/*_test.js version-bower.js",

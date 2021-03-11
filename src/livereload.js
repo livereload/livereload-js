@@ -16,11 +16,11 @@ class LiveReload {
     this.console =
       this.window.console && this.window.console.log && this.window.console.error
         ? this.window.location.href.match(/LR-verbose/)
-            ? this.window.console
-            : {
-                log () {},
-                error: this.window.console.error.bind(this.window.console)
-              }
+          ? this.window.console
+          : {
+              log () {},
+              error: this.window.console.error.bind(this.window.console)
+            }
         : {
             log () {},
             error () {}
