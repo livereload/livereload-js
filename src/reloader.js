@@ -134,7 +134,7 @@ const DEFAULT_OPTIONS = {
   stylesheetReloadTimeout: 15000
 };
 
-const IMAGES_REGEX = /\.(jpe?g|png|gif|svg)$/i
+const IMAGES_REGEX = /\.(jpe?g|png|gif|svg)$/i;
 
 class Reloader {
   constructor (window, console, Timer) {
