@@ -54,11 +54,13 @@ Options.extract = function (document) {
       options.https = element.src.indexOf('https') === 0;
 
       options.host = host;
-      options.port = port
-        ? parseInt(port, 10)
-        : portFromAttr
-          ? parseInt(portFromAttr, 10)
-          : options.port;
+
+      // use port number that the script is loaded from as default
+      // for explicitly blank value; enables livereload through proxy
+      const ourPort = parseInt(port || portFromAttr, 10) || '';
+
+      // if port is specified in script use that as default instead
+      options.port = ourPort || options.port;
 
       if (params) {
         for (const pair of params.split('&')) {
@@ -70,6 +72,11 @@ Options.extract = function (document) {
           }
         }
       }
+
+      // if port was overwritten by empty value, then revert to using the same
+      // port as the script is running from again (note that it shouldn't be
+      // coerced to a numeric value, since that will be 0 for the empty string)
+      options.port = options.port || ourPort;
 
       return options;
     }
