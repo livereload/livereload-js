@@ -25,7 +25,7 @@ class Options {
       return;
     }
 
-    if (!isNaN(+value)) {
+    if (value && !isNaN(+value)) {
       value = +value;
     }
 
