@@ -138,19 +138,26 @@ describe('Options', function () {
     return assert.strictEqual(9090, options.port);
   });
 
-  it('should ignore invalid port parameter', function () {
+  it('should use invalid port parameter', function () {
     let dom = new JSDOM('<script src="https://somewhere.com/livereload.js?port="></script>');
     let options = Options.extract(dom.window.document);
 
     assert.ok(options);
-    assert.strictEqual(35729, options.port);
+    assert.strictEqual(0, options.port);
 
     dom = new JSDOM('<script src="https://somewhere.com:8080/livereload.js?port="></script>');
 
     options = Options.extract(dom.window.document);
     assert.ok(options);
 
-    return assert.strictEqual(8080, options.port);
+    assert.strictEqual(0, options.port);
+
+    dom = new JSDOM('<script src="http://somewhere.com/livereload.js?port=abc"></script>');
+
+    options = Options.extract(dom.window.document);
+    assert.ok(options);
+
+    return assert.strictEqual('abc', options.port);
   });
 
   it('should recognize same site URLs', function () {
