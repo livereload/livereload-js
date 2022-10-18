@@ -21,7 +21,7 @@ class Options {
   }
 
   set (name, value) {
-    if (typeof value === 'undefined') {
+    if (typeof value === 'undefined' || !value) {
       return;
     }
 
