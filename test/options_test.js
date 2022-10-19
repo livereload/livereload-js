@@ -151,10 +151,12 @@ describe('Options', function () {
     assert.ok(options);
 
     assert.strictEqual(0, options.port);
+  });
 
-    dom = new JSDOM('<script src="http://somewhere.com/livereload.js?port=abc"></script>');
+  it('should propagate arbitrary port number when non-empty', function () {
+    let dom = new JSDOM('<script src="http://somewhere.com/livereload.js?port=abc"></script>');
 
-    options = Options.extract(dom.window.document);
+    let options = Options.extract(dom.window.document);
     assert.ok(options);
 
     return assert.strictEqual('abc', options.port);
