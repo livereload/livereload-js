@@ -9,7 +9,8 @@ class Connector {
     this.Timer = Timer;
     this.handlers = handlers;
     const path = this.options.path ? `${this.options.path}` : 'livereload';
-    this._uri = `ws${this.options.https ? 's' : ''}://${this.options.host}:${this.options.port}/${path}`;
+    const port = this.options.port ? `:${this.options.port}` : '';
+    this._uri = `ws${this.options.https ? 's' : ''}://${this.options.host}${port}/${path}`;
 
     this._nextDelay = this.options.mindelay;
     this._connectionDesired = false;

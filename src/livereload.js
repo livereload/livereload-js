@@ -66,7 +66,10 @@ class LiveReload {
           this.listeners.connect();
         }
 
-        this.log(`LiveReload is connected to ${this.options.host}:${this.options.port} (protocol v${protocol}).`);
+        const { host } = this.options;
+        const port = this.options.port ? `:${this.options.port}` : '';
+
+        this.log(`LiveReload is connected to ${host}${port} (protocol v${protocol}).`);
 
         return this.analyze();
       },
@@ -88,19 +91,22 @@ class LiveReload {
           this.listeners.disconnect();
         }
 
+        const { host } = this.options;
+        const port = this.options.port ? `:${this.options.port}` : '';
+
         switch (reason) {
           case 'cannot-connect':
-            return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port}, will retry in ${nextDelay} sec.`);
+            return this.log(`LiveReload cannot connect to ${host}${port}, will retry in ${nextDelay} sec.`);
           case 'broken':
-            return this.log(`LiveReload disconnected from ${this.options.host}:${this.options.port}, reconnecting in ${nextDelay} sec.`);
+            return this.log(`LiveReload disconnected from ${host}${port}, reconnecting in ${nextDelay} sec.`);
           case 'handshake-timeout':
-            return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port} (handshake timeout), will retry in ${nextDelay} sec.`);
+            return this.log(`LiveReload cannot connect to ${host}${port} (handshake timeout), will retry in ${nextDelay} sec.`);
           case 'handshake-failed':
-            return this.log(`LiveReload cannot connect to ${this.options.host}:${this.options.port} (handshake failed), will retry in ${nextDelay} sec.`);
+            return this.log(`LiveReload cannot connect to ${host}${port} (handshake failed), will retry in ${nextDelay} sec.`);
           case 'manual': // nop
           case 'error': // nop
           default:
-            return this.log(`LiveReload disconnected from ${this.options.host}:${this.options.port} (${reason}), reconnecting in ${nextDelay} sec.`);
+            return this.log(`LiveReload disconnected from ${host}${port} (${reason}), reconnecting in ${nextDelay} sec.`);
         }
       },
 
@@ -128,14 +134,16 @@ class LiveReload {
   performReload (message) {
     this.log(`LiveReload received reload request: ${JSON.stringify(message, null, 2)}`);
 
+    const { host, port, pluginOrder } = this.options;
+
     return this.reloader.reload(message.path, {
       liveCSS: message.liveCSS != null ? message.liveCSS : true,
       liveImg: message.liveImg != null ? message.liveImg : true,
       reloadMissingCSS: message.reloadMissingCSS != null ? message.reloadMissingCSS : true,
       originalPath: message.originalPath || '',
       overrideURL: message.overrideURL || '',
-      serverURL: `http://${this.options.host}:${this.options.port}`,
-      pluginOrder: this.options.pluginOrder
+      serverURL: `http://${host}${port && `:${port}`}`,
+      pluginOrder
     });
   }
 
