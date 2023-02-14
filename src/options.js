@@ -2,7 +2,14 @@ class Options {
   constructor () {
     this.https = false;
     this.host = null;
-    this.port = 35729;
+    let port = 35729;  // backing variable for port property closure
+
+    // we allow port to be overridden with a falsy value to indicate
+    // that we should not add a port specification to the backend url
+    Object.defineProperty(this, 'port', {
+      get () { return port; },
+      set (v) { port = (v && v || null); }
+    });
 
     this.snipver = null;
     this.ext = null;
@@ -25,7 +32,7 @@ class Options {
       return;
     }
 
-    if (value && !isNaN(+value)) {
+    if (!isNaN(+value)) {
       value = +value;
     }
 
