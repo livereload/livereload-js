@@ -5,10 +5,11 @@ class Options {
     let port = 35729;  // backing variable for port property closure
 
     // we allow port to be overridden with a falsy value to indicate
-    // that we should not add a port specification to the backend url
+    // that we should not add a port specification to the backend url;
+    // port is now either a number, or a non-numeric string
     Object.defineProperty(this, 'port', {
       get () { return port; },
-      set (v) { port = (v && v || null); }
+      set (v) { port = (v ? (isNaN(v) ? v : +v) : ''); }
     });
 
     this.snipver = null;
