@@ -139,26 +139,26 @@ describe('Options', function () {
   });
 
   it('should allow the port parameter to be set to blank', function () {
-    let dom = new JSDOM('<script src="https://somewhere.com/livereload.js?port="></script>');
-    let options = Options.extract(dom.window.document);
+    const dom = new JSDOM('<script src="https://somewhere.com/livereload.js?port="></script>');
+    const options = Options.extract(dom.window.document);
 
     assert.ok(options);
     return assert.strictEqual('', options.port);
   });
 
   it('should inherit the port parameter from the script URL if blank', function () {
-    let dom = new JSDOM('<script src="https://somewhere.com:8080/livereload.js?port="></script>');
+    const dom = new JSDOM('<script src="https://somewhere.com:8080/livereload.js?port="></script>');
 
-    let options = Options.extract(dom.window.document);
+    const options = Options.extract(dom.window.document);
     assert.ok(options);
 
     return assert.strictEqual(8080, options.port);
   });
 
   it('should propagate arbitrary port number when non-empty', function () {
-    let dom = new JSDOM('<script src="http://somewhere.com/livereload.js?port=abc"></script>');
+    const dom = new JSDOM('<script src="http://somewhere.com/livereload.js?port=abc"></script>');
 
-    let options = Options.extract(dom.window.document);
+    const options = Options.extract(dom.window.document);
     assert.ok(options);
 
     return assert.strictEqual('abc', options.port);

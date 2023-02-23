@@ -2,7 +2,7 @@ class Options {
   constructor () {
     this.https = false;
     this.host = null;
-    let port = 35729;  // backing variable for port property closure
+    let port = 35729; // backing variable for port property closure
 
     // we allow port to be overridden with a falsy value to indicate
     // that we should not add a port specification to the backend url;
