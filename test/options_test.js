@@ -196,7 +196,7 @@ describe('Options', function () {
     return assert.strictEqual('somewhere.org', options.host);
   });
 
-  return it('should recognize protocol-relative https URL', function () {
+  it('should recognize protocol-relative https URL', function () {
     const dom = new JSDOM('<script src="//somewhere.com/132324324/23243443/4343/livereload.js"></script>', {
       url: 'https://somewhere.org/'
     });
@@ -205,5 +205,23 @@ describe('Options', function () {
     assert.ok(options);
 
     return assert.strictEqual(true, options.https);
+  });
+
+  it('should extract IPv6 hosts', function () {
+    let dom = new JSDOM('<script src="http://[::1]:9876/livereload.js"></script>');
+    let options = Options.extract(dom.window.document);
+
+    assert.ok(options);
+    assert.strictEqual('[::1]', options.host);
+    assert.strictEqual(9876, options.port);
+
+    dom = new JSDOM('<script src="/somewhere.com/livereload.js"></script>', {
+      url: 'https://[abcd::1234:ef56]:7890'
+    });
+    options = Options.extract(dom.window.document);
+
+    assert.ok(options);
+    assert.strictEqual('[abcd::1234:ef56]', options.host);
+    return assert.strictEqual(7890, options.port);
   });
 });
