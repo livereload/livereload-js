@@ -15,14 +15,14 @@
     "browserify": "^17.0.0",
     "core-js": "^2.6.12",
     "envify": "^4.1.0",
-    "eslint": "^8.34.0",
+    "eslint": "^8.35.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "jsdom": "^21.1.0",
     "mocha": "^10.2.0",
-    "terser": "^5.16.4",
+    "terser": "^5.16.6",
     "watchify": "^4.0.0"
   },
   "scripts": {
