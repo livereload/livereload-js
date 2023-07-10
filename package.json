@@ -20,7 +20,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
-    "jsdom": "^21.1.0",
+    "jsdom": "^22.1.0",
     "mocha": "^10.2.0",
     "terser": "^5.16.6",
     "watchify": "^4.0.0"
