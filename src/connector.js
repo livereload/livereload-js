@@ -10,7 +10,11 @@ class Connector {
     this.handlers = handlers;
     const path = this.options.path ? `${this.options.path}` : 'livereload';
     const port = this.options.port ? `:${this.options.port}` : '';
-    this._uri = `ws${this.options.https ? 's' : ''}://${this.options.host}${port}/${path}`;
+    let host = this.options.host || window.location.hostname;
+    if (host && host.includes(':') && !host.startsWith('[')) {
+      host = `[${host}]`;
+    }
+    this._uri = `ws${this.options.https ? 's' : ''}://${host}${port}/${path}`;
 
     this._nextDelay = this.options.mindelay;
     this._connectionDesired = false;
