@@ -16,7 +16,6 @@ class Connector {
     } else {
       host = this.options.host;
     }
-    let host = this.options.host || window.location.hostname;
     if (host && host.includes(':') && !host.startsWith('[')) {
       host = `[${host}]`;
     }
