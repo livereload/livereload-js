@@ -10,6 +10,12 @@ class Connector {
     this.handlers = handlers;
     const path = this.options.path ? `${this.options.path}` : 'livereload';
     const port = this.options.port ? `:${this.options.port}` : '';
+    let host;
+    if (typeof window !== 'undefined') {
+      host = this.options.host || window.location.hostname;
+    } else {
+      host = this.options.host;
+    }
     let host = this.options.host || window.location.hostname;
     if (host && host.includes(':') && !host.startsWith('[')) {
       host = `[${host}]`;
