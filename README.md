@@ -4,7 +4,7 @@ LiveReload.js [![CI Status](https://github.com/livereload/livereload-js/workflow
 What is LiveReload?
 -------------------
 
-LiveReload is a tool for web developers and designers. See [livereload.com](http://livereload.com) for more info.
+LiveReload is a tool for web developers and designers. <del>See [livereload.com](http://livereload.com) for more info</del> (currently offline).
 
 To use LiveReload, you need a client (this script) in your browser and a server running on your development machine.
 
@@ -12,13 +12,13 @@ This repository (livereload.js) implements the client side of the protocol. The 
 
 The server notifies the client whenever a change is made. Available servers are:
 
-* [LiveReload app for Mac](http://livereload.com/)
+* <del>[LiveReload app for Mac](http://livereload.com/)</del> (currently offline)
 * [rack-livereload](https://github.com/johnbintz/rack-livereload)
 * [guard-livereload](https://github.com/guard/guard-livereload)
 * [grunt-contrib-watch](https://github.com/gruntjs/grunt-contrib-watch)
 * [python-livereload](https://github.com/lepture/python-livereload)
 * more available on Google :-)
-* you can even write your own; refer to the [LiveReload protocol](http://livereload.com/api/protocol/)
+* you can even write your own; <del>refer to the [LiveReload protocol](http://livereload.com/api/protocol/)</del> (currently offline)
 
 If you are a web developer looking to _use_ LiveReload, you should refer to your LiveReload server/app/tool's documentation, rather that this repository. **You should use the copy of livereload.js script bundled with your server**, because it's guaranteed to be compatible, and may be customized for that server.
 
